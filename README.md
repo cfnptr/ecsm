@@ -1,6 +1,6 @@
 # ECSM ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
 
-Easy to use template based C++ Entity Component System Manager (ECS) header only library.
+Easy to use template based C++ Entity Component System Manager header only library. (ECS)
 
 ## Features
 
@@ -16,45 +16,45 @@ Easy to use template based C++ Entity Component System Manager (ECS) header only
 ```c++
 struct RigidBodyComponent final : public Component
 {
-	float size = 0.0f;
+    float size = 0.0f;
 };
 
 class PhysicsSystem final : public System
 {
-	void initialize() final
-	{
-		// initialize...
-	}
-	void terminate() final
-	{
-		// terminate...
-	}
+    void initialize() final
+    {
+        // initialize...
+    }
+    void terminate() final
+    {
+        // terminate...
+    }
 
-	void update() final
-	{
-		// on update tick...
-	}
+    void update() final
+    {
+        // on update tick...
+    }
 
-	friend class ecsm::Manager;
+    friend class ecsm::Manager;
 };
 
 void ecsmExample()
 {
-	ecsm::Manager manager;
+    ecsm::Manager manager;
 
-	manager.createSystem<PhysicsSystem>();
-	manager.createSystem<GraphicsSystem>(false, 123);
+    manager.createSystem<PhysicsSystem>();
+    manager.createSystem<GraphicsSystem>(false, 123);
 
-	manager.createSubsystem<GraphicsSystem, SkyGxSystem>();
-	manager.createSubsystem<GraphicsSystem, MeshGxSystem>("arg");
+    manager.createSubsystem<GraphicsSystem, SkyGxSystem>();
+    manager.createSubsystem<GraphicsSystem, MeshGxSystem>("arg");
 
-	manager.initialize();
+    manager.initialize();
 
-	auto rigidBody = manager.createEntity();
-	auto rigidBodyComponent = manager.add<RigidBodyComponent>(rigidBody);
-	rigidBodyComponent->size = 1.0f;
+    auto rigidBody = manager.createEntity();
+    auto rigidBodyComponent = manager.add<RigidBodyComponent>(rigidBody);
+    rigidBodyComponent->size = 1.0f;
 
-	manager.start();
+    manager.start();
 }
 ```
 
