@@ -20,7 +20,7 @@ if(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
 	message(FATAL_ERROR "Prevented in-tree build")
 endif()
 
-if(TARGET ecsm-static)
+if(TARGET ecsm)
 	return()
 endif()
 
