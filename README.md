@@ -70,6 +70,12 @@ void ecsmExample()
 * [Git 2.30+](https://git-scm.com/)
 * [CMake 3.16+](https://cmake.org/)
 
+### CMake options
+
+| Name             | Description              | Default value |
+|------------------|--------------------------|---------------|
+| ECSM_BUILD_TESTS | Build ECSM library tests | `ON`          |
+
 ## Cloning
 
 ```
