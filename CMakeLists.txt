@@ -25,7 +25,7 @@ if(TARGET ecsm)
 endif()
 
 project(ecsm VERSION 1.0.0 LANGUAGES CXX
-	DESCRIPTION "Easy to use Entity Component System Manager C++ library."
+	DESCRIPTION "Easy to use Entity Component System Manager C++ library"
 	HOMEPAGE_URL "https://github.com/cfnptr/ecsm")
 
 set(CMAKE_CXX_STANDARD 17)

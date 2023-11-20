@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 // Copyright 2022-2023 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 
 #pragma once
 #include <stack>
@@ -32,7 +32,7 @@ using namespace std;
 template<class T, bool Destroy = true>
 class LinearPool;
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 template<class T>
 struct ID final
 {
@@ -52,10 +52,10 @@ public:
 	bool operator==(ID<T> v) const noexcept { return index == v.index; }
 	bool operator!=(ID<T> v) const noexcept { return index != v.index; }
 	bool operator<(ID<T> v) const noexcept { return index < v.index; }
-	bool isNull() const noexcept { return !index; }
+	operator bool() const noexcept { return index; }
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 template<class T>
 struct View final
 {
@@ -84,6 +84,7 @@ public:
 	template<class U>
 	explicit View(const View<U>& view) noexcept {
 		memcpy(this, &view, sizeof(View<T>)); }
+	operator bool() const noexcept { return item; }
 
 	T* operator->()
 	{
@@ -120,7 +121,7 @@ public:
 	}
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 template<typename T>
 struct Ref final
 {
@@ -131,13 +132,12 @@ public:
 	Ref() = default;
 	Ref(ID<T> item)
 	{
-		if (!item.isNull())
-			counter = new atomic<int64_t>(1);
+		if (item) counter = new atomic<int64_t>(1);
 		this->item = item;
 	}
 	~Ref()
 	{
-		if (item.isNull()) return;
+		if (!item) return;
 		auto count = counter->fetch_sub(1);
 		assert(count >= 1);
 		if (count > 1) return;
@@ -153,7 +153,7 @@ public:
 	}
 	Ref& operator=(const Ref& ref)
 	{
-		if (!item.isNull())
+		if (item)
 		{
 			auto count = counter->fetch_sub(1);
 			assert(count >= 1);
@@ -183,17 +183,17 @@ public:
 	}
 	
 	operator ID<T>() const noexcept { return item; }
+	operator bool() const noexcept { return item; }
 	uint32_t operator*() const noexcept { return *item; }
-	bool isNull() const noexcept { return item.isNull(); }
 
 	int64_t getRefCount() const noexcept
 	{
-		if (item.isNull()) return 0;
+		if (!item) return 0;
 		return counter->load();
 	}
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 // DestroyItems - is linear pool should call destroy() function of the item.
 template<class T, bool DestroyItems /* = true */>
 class LinearPool
@@ -224,7 +224,7 @@ public:
 		delete[] items;
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	template<typename... Args>
 	ID<T> create(Args&&... args)
 	{
@@ -270,7 +270,7 @@ public:
 	}
 	void destroy(ID<T> instance)
 	{
-		if (instance.isNull()) return;
+		if (!instance) return;
 		#ifndef NDEBUG
 		assert(*instance - 1 < occupancy);
 		version++; // Protects from the use after free.
@@ -278,12 +278,12 @@ public:
 		garbageItems.push_back(instance);
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	View<T> get(ID<T> instance) const
 	{
-		assert(!instance.isNull());
+		assert(instance);
 		assert(*instance - 1 < occupancy);
-		assert(isAllocated[*instance - 1] == true);
+		assert(isAllocated[*instance - 1]);
 		#ifndef NDEBUG
 		return View(&items[*instance - 1], version);
 		#else
@@ -307,11 +307,11 @@ public:
 	uint32_t getCount() const noexcept { return occupancy - (uint32_t)freeItems.size(); }
 	uint32_t getOccupancy() const noexcept { return occupancy; }
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	void clear(bool destroyItems = DestroyItems)
 	{
 		#ifndef NDEBUG
-		if (destroyItems == true && DestroyItems == false)
+		if (destroyItems && !DestroyItems)
 			throw runtime_error("Item does not have destroy function.");
 
 		if (isChanging)
@@ -352,7 +352,7 @@ public:
 		#endif
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	void dispose()
 	{
 		if constexpr (DestroyItems)

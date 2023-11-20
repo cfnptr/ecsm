@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 // Copyright 2022-2023 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 
 #pragma once
 #include "linear-pool.hpp"
@@ -36,7 +36,7 @@ class Manager;
 
 struct Component { };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 class System
 {
 	Manager* manager = nullptr;
@@ -45,10 +45,6 @@ class System
 	friend class Manager;
 protected:
 	virtual ~System() = default;
-
-	virtual void initialize() { } 
-	virtual void terminate() { }
-	virtual void update() { }
 
 	virtual type_index getComponentType() const { return typeid(Component); }
 	virtual ID<Component> createComponent(ID<Entity> entity) {
@@ -61,9 +57,13 @@ protected:
 public:
 	Manager* getManager() noexcept { return manager; }
 	const Manager* getManager() const noexcept { return manager; }
+
+	virtual void initialize() { } 
+	virtual void terminate() { }
+	virtual void update() { }
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 class Entity final
 {
 	map<type_index, pair<System*, ID<Component>>> components;
@@ -83,7 +83,7 @@ public:
 		const noexcept { return components; }
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 class Manager final
 {
 public:
@@ -117,7 +117,6 @@ private:
 	Manager(const Manager&) = default;
 	Manager& operator=(const Manager&) = default;
 public:
-//--------------------------------------------------------------------------------------------------
 	Manager() = default;
 	~Manager()
 	{
@@ -144,15 +143,7 @@ public:
 		}
 	}
 
-	template<class T = System>
-	bool has() const
-	{
-		static_assert(is_base_of_v<System, T>,
-			"Must be derived from the System class.");
-		return systemData.find(typeid(T)) != systemData.end();
-	}
-
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	template<class T = System, typename... Args>
 	void createSystem(Args&&... args)
 	{
@@ -188,11 +179,11 @@ public:
 		}
 
 		auto result = systemData.emplace(typeid(T), SystemData(system));
-		assert(result.second == true);
+		assert(result.second);
 		systems.emplace_back(system);
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	template<class T = System, class S = System, typename... Args>
 	void createSubsystem(Args&&... args)
 	{
@@ -238,11 +229,10 @@ public:
 		}
 		
 		auto result = systemData.emplace(typeid(S), SystemData(system));
-		assert(result.second == true);
+		assert(result.second);
 		systemData.at(typeid(T)).subsystems.emplace_back(SubsystemData(system, false));
 	}
 
-//--------------------------------------------------------------------------------------------------
 	template<class T = System>
 	void registerSubsystem(System* subsystem)
 	{
@@ -262,20 +252,19 @@ public:
 		systemData.at(typeid(T)).subsystems.emplace_back(SubsystemData(subsystem, true));
 	}
 
+//------------------------------------------------------------------------------------------------------------
+	bool has(type_index type) const
+	{
+		return systemData.find(type) != systemData.end();
+	}
 	template<class T = System>
-	T* get() const
+	bool has() const
 	{
 		static_assert(is_base_of_v<System, T>,
 			"Must be derived from the System class.");
-		#ifndef NDEBUG
-		if (systemData.find(typeid(T)) == systemData.end())
-		{
-			throw runtime_error("System is not created. ("
-				"name: " + string(typeid(T).name()) + ")");
-		}
-		#endif
-		return (T*)systemData.at(typeid(T)).instance;
+		return has(typeid(T));
 	}
+
 	System* get(type_index type) const
 	{
 		#ifndef NDEBUG
@@ -287,8 +276,28 @@ public:
 		#endif
 		return systemData.at(type).instance;
 	}
+	template<class T = System>
+	T* get() const
+	{
+		static_assert(is_base_of_v<System, T>,
+			"Must be derived from the System class.");
+		return (T*)get(typeid(T));
+	}
 
-//--------------------------------------------------------------------------------------------------
+	System* tryGet(type_index type) const
+	{
+		auto result = systemData.find(type);
+		return result == systemData.end() ? nullptr : result->second.instance;
+	}
+	template<class T = System>
+	T* tryGet() const
+	{
+		static_assert(is_base_of_v<System, T>,
+			"Must be derived from the System class.");
+		return (T*)tryGet(typeid(T));
+	}
+
+//------------------------------------------------------------------------------------------------------------
 	const vector<System*>& getSystems() const noexcept { return systems; }
 
 	template<class T = System>
@@ -308,30 +317,15 @@ public:
 
 	void disposeComponents(System* system) { system->disposeComponents(); }
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	ID<Entity> createEntity() { return entities.create(); }
 	void destroy(ID<Entity> instance) { entities.destroy(instance); }
 	View<Entity> get(ID<Entity> instance) const { return entities.get(instance); }
-
-	bool has(ID<Entity> entity, type_index componentType) const
-	{
-		assert(!entity.isNull());
-		auto entityView = entities.get(entity);
-		auto& components = entityView->components;
-		return components.find(componentType) != components.end();
-	}
-	template<class T = Component>
-	bool has(ID<Entity> entity) const
-	{
-		static_assert(is_base_of_v<Component, T>,
-			"Must be derived from the Component class.");
-		return has(entity, typeid(T));
-	}
 	
 	View<Component> add(ID<Entity> entity, type_index componentType)
 	{
 		#ifndef NDEBUG
-		assert(!entity.isNull());
+		assert(entity);
 		if (componentTypes.find(componentType) == componentTypes.end())
 		{
 			throw runtime_error("Component is not registered by any system. ("
@@ -367,10 +361,10 @@ public:
 		return View<T>(add(entity, typeid(T)));
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 	void remove(ID<Entity> entity, type_index componentType)
 	{ 
-		assert(!entity.isNull());
+		assert(entity);
 		auto entityView = entities.get(entity);
 		auto& components = entityView->components;
 		auto iterator = components.find(componentType);
@@ -396,10 +390,25 @@ public:
 		remove(entity, typeid(T));
 	}
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
+	bool has(ID<Entity> entity, type_index componentType) const
+	{
+		assert(entity);
+		auto entityView = entities.get(entity);
+		auto& components = entityView->components;
+		return components.find(componentType) != components.end();
+	}
+	template<class T = Component>
+	bool has(ID<Entity> entity) const
+	{
+		static_assert(is_base_of_v<Component, T>,
+			"Must be derived from the Component class.");
+		return has(entity, typeid(T));
+	}
+
 	View<Component> get(ID<Entity> entity, type_index componentType) const
 	{
-		assert(!entity.isNull());
+		assert(entity);
 		auto entityView = entities.get(entity);
 
 		#ifndef NDEBUG
@@ -423,7 +432,23 @@ public:
 		return View<T>(get(entity, typeid(T)));
 	}
 
-	const LinearPool<Entity>& getEntities() const noexcept { return entities; }
+	View<Component> tryGet(ID<Entity> entity, type_index componentType) const
+	{
+		assert(entity);
+		auto entityView = entities.get(entity);
+		auto& components = entityView->components;
+		auto result = components.find(componentType);
+		if (result == components.end()) return {};
+		auto& pair = result->second;
+		return pair.first->getComponent(pair.second);
+	}
+	template<class T = Component>
+	View<T> tryGet(ID<Entity> entity) const
+	{
+		static_assert(is_base_of_v<Component, T>,
+			"Must be derived from the Component class.");
+		return View<T>(tryGet(entity, typeid(T)));
+	}
 
 	uint32_t getComponentCount(ID<Entity> entity) const
 	{
@@ -431,7 +456,9 @@ public:
 		return (uint32_t)entityView->components.size();
 	}
 
-//--------------------------------------------------------------------------------------------------
+	const LinearPool<Entity>& getEntities() const noexcept { return entities; }
+
+//------------------------------------------------------------------------------------------------------------
 	void initialize()
 	{
 		#ifndef NDEBUG
@@ -467,7 +494,7 @@ public:
 	}
 };
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 struct DoNotDestroyComponent : public Component { };
 
 class DoNotDestroySystem : public System
