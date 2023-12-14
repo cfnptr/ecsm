@@ -450,6 +450,49 @@ public:
 		return View<T>(tryGet(entity, typeid(T)));
 	}
 
+	ID<Component> getID(ID<Entity> entity, type_index componentType) const
+	{
+		assert(entity);
+		auto entityView = entities.get(entity);
+
+		#ifndef NDEBUG
+		if (entityView->components.find(componentType) ==
+			entityView->components.end())
+		{
+			throw runtime_error("Component is not added. ("
+				"name: " + string(componentType.name()) +
+				"entity:" + to_string(*entity) + ")");
+		}
+		#endif
+
+		return entityView->components.at(componentType).second;
+	}
+	template<class T = Component>
+	ID<T> getID(ID<Entity> entity) const
+	{
+		static_assert(is_base_of_v<Component, T>,
+			"Must be derived from the Component class.");
+		return ID<T>(getID(entity, typeid(T)));
+	}
+
+	ID<Component> tryGetID(ID<Entity> entity, type_index componentType) const
+	{
+		assert(entity);
+		auto entityView = entities.get(entity);
+		auto& components = entityView->components;
+		auto result = components.find(componentType);
+		if (result == components.end()) return {};
+		auto& pair = result->second;
+		return pair.second;
+	}
+	template<class T = Component>
+	ID<T> tryGetID(ID<Entity> entity) const
+	{
+		static_assert(is_base_of_v<Component, T>,
+			"Must be derived from the Component class.");
+		return ID<T>(tryGetID(entity, typeid(T)));
+	}
+
 	uint32_t getComponentCount(ID<Entity> entity) const
 	{
 		auto entityView = entities.get(entity);
