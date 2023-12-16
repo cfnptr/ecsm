@@ -173,7 +173,7 @@ public:
 		ref.counter = nullptr;
 		ref.item = ID<T>();
 	}
-	Ref& operator=(Ref&& ref)
+	Ref& operator=(Ref&& ref) noexcept
 	{
 		counter = ref.counter;
 		item = ref.item;
