@@ -1,5 +1,4 @@
-//------------------------------------------------------------------------------------------------------------
-// Copyright 2022-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2022-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//------------------------------------------------------------------------------------------------------------
+
+/***********************************************************************************************************************
+ * @file
+ **********************************************************************************************************************/
 
 #pragma once
 #include <stack>
@@ -32,7 +34,14 @@ using namespace std;
 template<class T, bool Destroy = true>
 class LinearPool;
 
-//------------------------------------------------------------------------------------------------------------
+/***********************************************************************************************************************
+ * @brief Item identifier in the @ref LinearPool.
+ * @tparam T type of the item in the linear pool
+ * 
+ * @details
+ * Identifier or index associated with individual items within the pool. Each item in the pool 
+ * can be uniquely identified by its identifier, which helps in managing and referencing items.
+ */
 template<class T>
 struct ID final
 {
@@ -44,18 +53,68 @@ private:
 	friend class LinearPool<T, false>;
 public:
 	ID() = default;
-	template<class U>
-	explicit ID(ID<U> id) noexcept : index(*id) { }
 
+	/**
+	 * @brief Changes the type of the identifier item.
+	 * @details Useful in cases where we need to cast item identifier type.
+	 * 
+	 * @tparam U is a new type of the identifier item
+	 * @param id item identifier in the linear pool
+	 */
+	template<class U>
+	explicit ID(ID<U> id) noexcept : index(*id)
+	#ifdef ECSM_DEEP_ID_TRACKING
+		, version(id.getVersion())
+	#endif
+	{ }
+
+	/**
+	 * @brief Returns item index + 1 in the linear pool.
+	 * @details Used to get internal integer index.
+	 */
 	uint32_t operator*() const noexcept { return index; }
-	uint32_t& operator*() noexcept { return index; } // Use this to set uint32 value.
+	/**
+	 * @brief Returns reference to the item index + 1 in the linear pool.
+	 * @note You can use it to set the identifier index value.
+	 */
+	uint32_t& operator*() noexcept { return index; }
+
+	/**
+	 * @brief Returns true if this identifier is equal to the v identifier.
+	 * @param v other identifier value
+	 */
 	bool operator==(ID<T> v) const noexcept { return index == v.index; }
+	/**
+	 * @brief Returns true if this identifier is not equal to the v identifier.
+	 * @param v other identifier value
+	 */
 	bool operator!=(ID<T> v) const noexcept { return index != v.index; }
+	/**
+	 * @brief Returns true if this identifier is less than the v identifier.
+	 * @param v other identifier value
+	 */
 	bool operator<(ID<T> v) const noexcept { return index < v.index; }
+	/**
+	 * @brief Returns true if item is not null.
+	 */
 	operator bool() const noexcept { return index; }
+
+#ifdef ECSM_DEEP_ID_TRACKING
+private:
+	uint64_t version = 0;
+public:
+	uint64_t getVersion() const noexcept { return version; }
+#endif
 };
 
-//------------------------------------------------------------------------------------------------------------
+/***********************************************************************************************************************
+ * @brief View of the item in the @ref LinearPool.
+ * @tparam T type of the item in the linear pool
+ * 
+ * @details
+ * The view provides a way to access the contents of an item 
+ * within the pool, allowing to inspect or modify its data.
+ */
 template<class T>
 struct View final
 {
@@ -63,29 +122,52 @@ private:
 	T* item = nullptr;
 
 	#ifndef NDEBUG
-	const size_t* poolVersion = nullptr;
-	size_t version = 0;
-
-	View(T* item, const size_t& poolVersion) noexcept
+	/**
+	 * @brief Creates a new view.
+	 */
+	View(T* item, const uint64_t& poolVersion) noexcept
 	{
 		this->item = item;
 		this->poolVersion = &poolVersion;
 		this->version = poolVersion;
 	}
 	#else
+	/**
+	 * @brief Creates a new view.
+	 */
 	View(T* item) noexcept { this->item = item; }
 	#endif
 	
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
+	/**
+	 * @brief Creates a new null item view.
+	 */
 	View() = default;
 
+	/**
+	 * @brief Changes the type of the item view.
+	 * @details Useful in cases where we need to cast item view type.
+	 * 
+	 * @tparam U is a new type of the item view
+	 * @param[in] view target item view
+	 */
 	template<class U>
-	explicit View(const View<U>& view) noexcept {
-		memcpy(this, &view, sizeof(View<T>)); }
+	explicit View(const View<U>& view) noexcept : item((T*)*view)
+	#ifndef NDEBUG
+		, poolVersion(view.getPoolVersion()), version(view.getVersion())
+	#endif
+	{ }
+	
+	/**
+	 * @brief Returns true if item is not null.
+	 */
 	operator bool() const noexcept { return item; }
 
+	/**
+	 * @brief Item data accessor.
+	 */
 	T* operator->()
 	{
 		#ifndef NDEBUG
@@ -94,6 +176,9 @@ public:
 		#endif
 		return item;
 	}
+	/**
+	 * @brief Item constant data accessor.
+	 */
 	const T* operator->() const
 	{
 		#ifndef NDEBUG
@@ -103,6 +188,9 @@ public:
 		return item;
 	}
 
+	/**
+	 * @brief Returns pointer to the item memory in the pool.
+	 */
 	T* operator*()
 	{
 		#ifndef NDEBUG
@@ -111,6 +199,9 @@ public:
 		#endif
 		return item;
 	}
+	/**
+	 * @brief Returns pointer to the constant item memory in the pool.
+	 */
 	const T* operator*() const
 	{
 		#ifndef NDEBUG
@@ -119,9 +210,25 @@ public:
 		#endif
 		return item;
 	}
+
+#ifndef NDEBUG
+private:
+	const uint64_t* poolVersion = nullptr;
+	uint64_t version = 0;
+public:
+	const uint64_t* getPoolVersion() const noexcept { return poolVersion; }
+	uint64_t getVersion() const noexcept { return version; }
+#endif
 };
 
-//------------------------------------------------------------------------------------------------------------
+/***********************************************************************************************************************
+ * @brief Item identifier in the @ref LinearPool with usage counter.
+ * @tparam T type of the item in the linear pool
+ * 
+ * @details
+ * Useful in cases where we need to track item usage in the 
+ * program and destroy it when it's not needed anymore.
+ */
 template<typename T>
 struct Ref final
 {
@@ -182,10 +289,22 @@ public:
 		return *this;
 	}
 	
+	/**
+	 * @brief Returns item @ref ID.
+	 */
 	operator ID<T>() const noexcept { return item; }
+	/**
+	 * @brief Returns true if item is not null.
+	 */
 	operator bool() const noexcept { return item; }
+	/**
+	 * @brief Returns item index + 1 in the linear pool.
+	 */
 	uint32_t operator*() const noexcept { return *item; }
 
+	/**
+	 * @brief Returns current item reference count.
+	 */
 	int64_t getRefCount() const noexcept
 	{
 		if (!item) return 0;
@@ -193,8 +312,16 @@ public:
 	}
 };
 
-//------------------------------------------------------------------------------------------------------------
-// DestroyItems - is linear pool should call destroy() function of the item.
+/***********************************************************************************************************************
+ * @details
+ * In a linear pool, a fixed-size block of memory is pre-allocated, and individual items or objects are then 
+ * allocated from this pool. The linear allocation strategy means that these items are placed sequentially in memory, 
+ * which can improve cache locality. Cache locality refers to the tendency of accessing nearby memory locations at 
+ * the same time, which can result in better performance due to the way modern computer architectures use caches.
+ * 
+ * @tparam T type of the item in the linear pool
+ * @tparam DestroyItems linear pool should call destroy() function of the items.
+ */
 template<class T, bool DestroyItems /* = true */>
 class LinearPool
 {
@@ -205,11 +332,19 @@ class LinearPool
 
 	#ifndef NDEBUG
 	vector<bool> isAllocated;
-	size_t version = 0;
+	uint64_t version = 0;
 	bool isChanging = false;
+	#endif
+
+	#ifdef ECSM_DEEP_ID_TRACKING
+	vector<uint64_t> itemVersions;
 	#endif
 public:
 	LinearPool() { items = new T[1]; }
+
+	/**
+	 * @brief Destroys linear pool items.
+	 */
 	~LinearPool()
 	{
 		if constexpr (DestroyItems)
@@ -224,16 +359,20 @@ public:
 		delete[] items;
 	}
 
-//------------------------------------------------------------------------------------------------------------
+	/**
+	 * @brief Creates a new item in the pool.
+	 * @details Reallocates linear memory block or reuses free item slots.
+	 * @warning This function can reallocate items memory and invalidate all previous @ref View.
+	 * 
+	 * @param args additional item arguments or empty
+	 * @return A new item identifier in the linear pool.
+	 */
 	template<typename... Args>
 	ID<T> create(Args&&... args)
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-		{
-			throw runtime_error("Creation of the item inside "
-				"other creation/destruction/clear is not allowed.");
-		}
+			throw runtime_error("Creation of the item inside other creation/destruction/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -243,12 +382,19 @@ public:
 			freeItems.pop();
 			auto& item = items[*freeItem - 1];
 			item = T(std::forward<Args>(args)...);
+
 			#ifndef NDEBUG
 			isAllocated[*freeItem - 1] = true;
 			isChanging = false;
 			#endif
+
+			#ifdef ECSM_DEEP_ID_TRACKING
+			freeItem.version = ++itemVersions[*freeItem - 1];
+			#endif
+
 			return freeItem;
 		}
+		
 		if (occupancy == capacity)
 		{
 			capacity *= 2;
@@ -260,14 +406,29 @@ public:
 		}
 
 		items[occupancy] = T(std::forward<Args>(args)...);
+		auto id = ID<T>(++occupancy);
 
 		#ifndef NDEBUG
 		isAllocated.push_back(true);
 		isChanging = false;
 		version++;
 		#endif
-		return ID<T>(++occupancy);
+
+		#ifdef ECSM_DEEP_ID_TRACKING
+		id.version = 1;
+		itemVersions.push_back(1);
+		#endif
+
+		return id;
 	}
+
+	/**
+	 * @brief Destroys linear pool item.
+	 * @details It puts items to the garbage array, and destroys them after @ref dispose() call.
+	 * 
+	 * @param instance item identifier in the pool or null
+	 * @tparam T type of the item in the linear pool
+	 */
 	void destroy(ID<T> instance)
 	{
 		if (!instance) return;
@@ -275,39 +436,75 @@ public:
 		assert(*instance - 1 < occupancy);
 		version++; // Protects from the use after free.
 		#endif
+		#ifdef ECSM_DEEP_ID_TRACKING
+		assert(instance.version == itemVersions[*instance - 1]);
+		#endif
 		garbageItems.push_back(instance);
 	}
 
-//------------------------------------------------------------------------------------------------------------
-	View<T> get(ID<T> instance) const
+	/*******************************************************************************************************************
+	 * @brief Returns @ref View of the item in the linear pool.
+	 * @warning Do not store views, use them only in place. Because item memory can be reallocated later.
+	 * 
+	 * @param instance item identifier in the pool
+	 * @tparam T type of the item in the linear pool
+	 */
+	View<T> get(ID<T> instance) const noexcept
 	{
 		assert(instance);
 		assert(*instance - 1 < occupancy);
 		assert(isAllocated[*instance - 1]);
+		#ifdef ECSM_DEEP_ID_TRACKING
+		assert(instance.version == itemVersions[*instance - 1]);
+		#endif
 		#ifndef NDEBUG
 		return View(&items[*instance - 1], version);
 		#else
 		return View(&items[*instance - 1]);
 		#endif
 	}
-	ID<T> getID(const T* instance) const
+	/**
+	 * @brief Returns @ref ID of the item pointer.
+	 * 
+	 * @param[in] instance pointer to the item data
+	 * @tparam T type of the item in the linear pool
+	 */
+	ID<T> getID(const T* instance) const noexcept
 	{
-		#ifndef NDEBUG
-		if (instance < items || instance >= items + capacity)
-			throw runtime_error("Out of items array bounds.");
-		#endif
+		assert(instance >= items);
+		assert(instance < items + capacity);
 		return ID<T>((uint32_t)(instance - items) + 1);
 	}
 
-	// WARNING: Contains destroyed items!
+	/**
+	 * @brief Returns linear pool item memory block.
+	 * @warning It contains destroyed items too. Use custom code to detect freed items.
+	 * @tparam T type of the item in the linear pool
+	 */
 	T* getData() noexcept { return items; }
-	// WARNING: Contains destroyed items!
+	/**
+	 * @brief Returns linear pool constant item memory block.
+	 * @warning It contains destroyed items too. Use custom code to detect freed items.
+	 * @tparam T type of the item in the linear pool
+	 */
 	const T* getData() const noexcept { return items; }
 	
+	/**
+	 * @brief Returns current created item count.
+	 * @note This is not an allocated item count.
+	 */
 	uint32_t getCount() const noexcept { return occupancy - (uint32_t)freeItems.size(); }
+	/**
+	 * @brief Returns linear memory used item slots count.
+	 * @warning This number also contains destroyed items.
+	 */
 	uint32_t getOccupancy() const noexcept { return occupancy; }
 
-//------------------------------------------------------------------------------------------------------------
+	/*******************************************************************************************************************
+	 * @brief Destroys all items in the linear pool.
+	 * @warning This function deallocates items memory and invalidates all previous @ref View.
+	 * @param destroyItems should call destroy() function of the items
+	 */
 	void clear(bool destroyItems = DestroyItems)
 	{
 		#ifndef NDEBUG
@@ -352,7 +549,10 @@ public:
 		#endif
 	}
 
-//------------------------------------------------------------------------------------------------------------
+	/*******************************************************************************************************************
+	 * @brief Actually destroys items.
+	 * @details See the @ref destroy(). It marks destroyed item memory as free, and can reuse it later.
+	 */
 	void dispose()
 	{
 		if constexpr (DestroyItems)
@@ -387,4 +587,4 @@ public:
 	}
 };
 
-} // ecsm
+} // namespace ecsm

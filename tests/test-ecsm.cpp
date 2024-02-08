@@ -1,5 +1,4 @@
-//------------------------------------------------------------------------------------------------------------
-// Copyright 2022-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2022-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//------------------------------------------------------------------------------------------------------------
 
 #include "ecsm.hpp"
 using namespace ecsm;
@@ -27,28 +25,46 @@ class TestSystem final : public System
 {
 	LinearPool<TestComponent, false> components;
 
-	void initialize() final { isInitialized = true; }
-	void update() final { updateCounter++; }
+	TestSystem(Manager* manager) : System(manager)
+	{
+		manager->subscribeToEvent("Init", bind(&TestSystem::init, this));
+		manager->subscribeToEvent("Update", bind(&TestSystem::update, this));
+		manager->subscribeToEvent("PostUpdate", bind(&TestSystem::postUpdate, this));
+	}
 
 	type_index getComponentType() const final { return typeid(TestComponent); }
-	ID<Component> createComponent(ID<Entity> entity) final {
-		return ID<Component>(components.create()); }
-	void destroyComponent(ID<Component> instance) final {
-		components.destroy(ID<TestComponent>(instance)); }
+	ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
+	void destroyComponent(ID<Component> instance) final { components.destroy(ID<TestComponent>(instance)); }
 	View<Component> getComponent(ID<Component> instance) final {
 		return View<Component>(components.get(ID<TestComponent>(instance))); }
-	void disposeComponents() final { components.dispose(); }\
+	void disposeComponents() final { components.dispose(); }
+
+	void init()
+	{
+		isInitialized = true;
+	}
+	void update()
+	{
+		updateCounter++;
+	}
+	void postUpdate()
+	{
+		postUpdateCounter = 2;
+	}
 
 	friend class ecsm::Manager;
 public:
 	int updateCounter = 0;
+	int postUpdateCounter = 0;
 	bool isInitialized = false;
 };
 
-//------------------------------------------------------------------------------------------------------------
+//**********************************************************************************************************************
 int main()
 {
 	Manager manager;
+
+	manager.registerEventAfter("PostUpdate", "Update");
 
 	if (manager.has<TestSystem>())
 		throw runtime_error("Found bad test system.");
@@ -85,16 +101,19 @@ int main()
 	if (testComponent->ID != 1 || testComponent->someData != 123.456f)
 		throw runtime_error("Bad test component data.");
 
-	if (system->updateCounter != 0)
+	if (system->updateCounter != 0 || system->postUpdateCounter != 0)
 		throw runtime_error("Bad test system data.");
 
 	manager.update();
 
-	if (system->updateCounter != 1)
+	if (system->updateCounter != 1 || system->postUpdateCounter != 2)
 		throw runtime_error("Bad test system data.");
 
 	manager.remove<TestComponent>(testEntity);
 
 	if (manager.has<TestComponent>(testEntity))
 		throw runtime_error("Found bad test component.");
+
+	manager.unregisterEvent("PostUpdate");
+	manager.deinitialize();
 }
