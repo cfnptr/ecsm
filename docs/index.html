@@ -84,7 +84,11 @@ Usage example</h1>
 <div class="line"> </div>
 <div class="line">    PhysicsSystem(<a class="code hl_class" href="classecsm_1_1_manager.html">Manager</a>* manager) : <a class="code hl_class" href="classecsm_1_1_system.html">System</a>(manager)</div>
 <div class="line">    {</div>
-<div class="line">        manager-&gt;<a class="code hl_function" href="classecsm_1_1_manager.html#a763cd18baaf66b9378899779bba80076">subscribeToEvent</a>(<span class="stringliteral">&quot;Update&quot;</span>, bind(&amp;PhysicsSystem::update, <span class="keyword">this</span>));</div>
+<div class="line">        <a class="code hl_define" href="ecsm_8hpp.html#a2c11b493896f524cf2b14f496447a3fd">SUBSCRIBE_TO_EVENT</a>(<span class="stringliteral">&quot;Update&quot;</span>, PhysicsSystem::update);</div>
+<div class="line">    }</div>
+<div class="line">    ~PhysicsSystem() final</div>
+<div class="line">    {</div>
+<div class="line">        <a class="code hl_define" href="ecsm_8hpp.html#a4ead73a6a45b42e953a215084417373c">UNSUBSCRIBE_FROM_EVENT</a>(<span class="stringliteral">&quot;Update&quot;</span>, PhysicsSystem::update);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">void</span> update()</div>
@@ -92,12 +96,26 @@ Usage example</h1>
 <div class="line">        <span class="comment">// Process components...</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_classRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> getComponentType() const final { <span class="keywordflow">return</span> <span class="keyword">typeid</span>(RigidBodyComponent); }</div>
-<div class="line">    <a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> createComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Entity&gt;</a> entity) <span class="keyword">final</span> { <span class="keywordflow">return</span> <a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a>(components.create()); }</div>
-<div class="line">    <span class="keywordtype">void</span> destroyComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> <a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>) <span class="keyword">final</span> { components.destroy(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;RigidBodyComponent&gt;</a>(<a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>)); }</div>
-<div class="line">    <a class="code hl_struct" href="structecsm_1_1_i_d.html">View&lt;Component&gt;</a> getComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> <a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>) <span class="keyword">final</span> {</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code hl_struct" href="structecsm_1_1_i_d.html">View&lt;Component&gt;</a>(components.get(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;RigidBodyComponent&gt;</a>(<a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>))); }</div>
-<div class="line">    <span class="keywordtype">void</span> disposeComponents() <a class="code hl_struct" href="structecsm_1_1_i_d.html">final</a> { components.dispose(); }</div>
+<div class="line">    <a class="code hl_classRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> getComponentType() const final</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">return</span> <span class="keyword">typeid</span>(RigidBodyComponent);</div>
+<div class="line">    }</div>
+<div class="line">    <a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> createComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Entity&gt;</a> entity) <span class="keyword">final</span></div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a>(components.create());</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordtype">void</span> destroyComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> <a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>) <span class="keyword">final</span></div>
+<div class="line">    {</div>
+<div class="line">        components.destroy(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;RigidBodyComponent&gt;</a>(<a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>));</div>
+<div class="line">    }</div>
+<div class="line">    <a class="code hl_struct" href="structecsm_1_1_i_d.html">View&lt;Component&gt;</a> getComponent(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;Component&gt;</a> <a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>) <span class="keyword">final</span></div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_struct" href="structecsm_1_1_i_d.html">View&lt;Component&gt;</a>(components.get(<a class="code hl_struct" href="structecsm_1_1_i_d.html">ID&lt;RigidBodyComponent&gt;</a>(<a class="code hl_struct" href="structecsm_1_1_i_d.html">instance</a>)));</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordtype">void</span> disposeComponents() <a class="code hl_struct" href="structecsm_1_1_i_d.html">final</a></div>
+<div class="line">    {</div>
+<div class="line">        components.dispose();</div>
+<div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classecsm_1_1_manager.html">ecsm::Manager</a>;</div>
 <div class="line">};</div>
@@ -118,16 +136,17 @@ Usage example</h1>
 <div class="line"> </div>
 <div class="line">    manager.<a class="code hl_function" href="classecsm_1_1_manager.html#a60de64d75454385b23995437f1d72669">start</a>();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassecsm_1_1_linear_pool_html"><div class="ttname"><a href="classecsm_1_1_linear_pool.html">ecsm::LinearPool</a></div><div class="ttdef"><b>Definition</b> linear-pool.hpp:327</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html"><div class="ttname"><a href="classecsm_1_1_manager.html">ecsm::Manager</a></div><div class="ttdef"><b>Definition</b> ecsm.hpp:187</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_a25a40b6614565f755233080a384c35f1"><div class="ttname"><a href="classecsm_1_1_manager.html#a25a40b6614565f755233080a384c35f1">ecsm::Manager::initialize</a></div><div class="ttdeci">void initialize()</div><div class="ttdoc">Initializes all created systems.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:930</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_a48f021b26d5ab8bffa3c87709d0cf618"><div class="ttname"><a href="classecsm_1_1_manager.html#a48f021b26d5ab8bffa3c87709d0cf618">ecsm::Manager::createSystem</a></div><div class="ttdeci">void createSystem(Args &amp;&amp;... args)</div><div class="ttdoc">Creates a new system instance.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:273</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_a60de64d75454385b23995437f1d72669"><div class="ttname"><a href="classecsm_1_1_manager.html#a60de64d75454385b23995437f1d72669">ecsm::Manager::start</a></div><div class="ttdeci">void start()</div><div class="ttdoc">Enters update loop. Executes update() on each tick.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:978</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_a763cd18baaf66b9378899779bba80076"><div class="ttname"><a href="classecsm_1_1_manager.html#a763cd18baaf66b9378899779bba80076">ecsm::Manager::subscribeToEvent</a></div><div class="ttdeci">void subscribeToEvent(const string &amp;name, const std::function&lt; void()&gt; &amp;onEvent)</div><div class="ttdoc">Adds a new event subscriber.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:856</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_aac95fe010f3fa9f1221aa7a2019d3c47"><div class="ttname"><a href="classecsm_1_1_manager.html#aac95fe010f3fa9f1221aa7a2019d3c47">ecsm::Manager::add</a></div><div class="ttdeci">View&lt; Component &gt; add(ID&lt; Entity &gt; entity, type_index componentType)</div><div class="ttdoc">Adds a new component to the entity.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:412</div></div>
-<div class="ttc" id="aclassecsm_1_1_manager_html_ab19ef77d5d8153a9378a4773489cdd02"><div class="ttname"><a href="classecsm_1_1_manager.html#ab19ef77d5d8153a9378a4773489cdd02">ecsm::Manager::createEntity</a></div><div class="ttdeci">ID&lt; Entity &gt; createEntity()</div><div class="ttdoc">Creates a new entity instance.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:387</div></div>
-<div class="ttc" id="aclassecsm_1_1_system_html"><div class="ttname"><a href="classecsm_1_1_system.html">ecsm::System</a></div><div class="ttdoc">Base system class.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:83</div></div>
-<div class="ttc" id="astructecsm_1_1_component_html"><div class="ttname"><a href="structecsm_1_1_component.html">ecsm::Component</a></div><div class="ttdoc">Base component structure.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:63</div></div>
+<div class="ttc" id="aclassecsm_1_1_linear_pool_html"><div class="ttname"><a href="classecsm_1_1_linear_pool.html">ecsm::LinearPool</a></div><div class="ttdoc">Item array with linear memory block.</div><div class="ttdef"><b>Definition</b> linear-pool.hpp:329</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html"><div class="ttname"><a href="classecsm_1_1_manager.html">ecsm::Manager</a></div><div class="ttdoc">Systems and entities coordinator.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:200</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html_a25a40b6614565f755233080a384c35f1"><div class="ttname"><a href="classecsm_1_1_manager.html#a25a40b6614565f755233080a384c35f1">ecsm::Manager::initialize</a></div><div class="ttdeci">void initialize()</div><div class="ttdoc">Initializes all created systems.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:945</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html_a48f021b26d5ab8bffa3c87709d0cf618"><div class="ttname"><a href="classecsm_1_1_manager.html#a48f021b26d5ab8bffa3c87709d0cf618">ecsm::Manager::createSystem</a></div><div class="ttdeci">void createSystem(Args &amp;&amp;... args)</div><div class="ttdoc">Creates a new system instance.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:286</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html_a60de64d75454385b23995437f1d72669"><div class="ttname"><a href="classecsm_1_1_manager.html#a60de64d75454385b23995437f1d72669">ecsm::Manager::start</a></div><div class="ttdeci">void start()</div><div class="ttdoc">Enters update loop. Executes update() on each tick.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:979</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html_aac95fe010f3fa9f1221aa7a2019d3c47"><div class="ttname"><a href="classecsm_1_1_manager.html#aac95fe010f3fa9f1221aa7a2019d3c47">ecsm::Manager::add</a></div><div class="ttdeci">View&lt; Component &gt; add(ID&lt; Entity &gt; entity, type_index componentType)</div><div class="ttdoc">Adds a new component to the entity.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:425</div></div>
+<div class="ttc" id="aclassecsm_1_1_manager_html_ab19ef77d5d8153a9378a4773489cdd02"><div class="ttname"><a href="classecsm_1_1_manager.html#ab19ef77d5d8153a9378a4773489cdd02">ecsm::Manager::createEntity</a></div><div class="ttdeci">ID&lt; Entity &gt; createEntity()</div><div class="ttdoc">Creates a new entity instance.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:400</div></div>
+<div class="ttc" id="aclassecsm_1_1_system_html"><div class="ttname"><a href="classecsm_1_1_system.html">ecsm::System</a></div><div class="ttdoc">Base system class.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:92</div></div>
+<div class="ttc" id="aecsm_8hpp_html_a2c11b493896f524cf2b14f496447a3fd"><div class="ttname"><a href="ecsm_8hpp.html#a2c11b493896f524cf2b14f496447a3fd">SUBSCRIBE_TO_EVENT</a></div><div class="ttdeci">#define SUBSCRIBE_TO_EVENT(name, func)</div><div class="ttdoc">Subscribes System function to the event.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:57</div></div>
+<div class="ttc" id="aecsm_8hpp_html_a4ead73a6a45b42e953a215084417373c"><div class="ttname"><a href="ecsm_8hpp.html#a4ead73a6a45b42e953a215084417373c">UNSUBSCRIBE_FROM_EVENT</a></div><div class="ttdeci">#define UNSUBSCRIBE_FROM_EVENT(name, func)</div><div class="ttdoc">Unsubscribes System function from the event.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:61</div></div>
+<div class="ttc" id="astructecsm_1_1_component_html"><div class="ttname"><a href="structecsm_1_1_component.html">ecsm::Component</a></div><div class="ttdoc">Base component structure.</div><div class="ttdef"><b>Definition</b> ecsm.hpp:72</div></div>
 <div class="ttc" id="astructecsm_1_1_i_d_html"><div class="ttname"><a href="structecsm_1_1_i_d.html">ecsm::ID</a></div><div class="ttdoc">Item identifier in the LinearPool.</div><div class="ttdef"><b>Definition</b> linear-pool.hpp:47</div></div>
 <div class="ttc" id="atype_index_html"><div class="ttname"><a href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></div></div>
 </div><!-- fragment --><p>Use <code>#define ECSM_DEEP_ID_TRACKING</code> to detect and debug pool memory corruptions and errors.</p>
@@ -164,7 +183,7 @@ Cloning <img src="https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/bad
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 8 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -78,6 +78,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1029e9005d4b9a469cc4b21f39521c24" id="r_a1029e9005d4b9a469cc4b21f39521c24"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1029e9005d4b9a469cc4b21f39521c24">getComponentType</a> () const</td></tr>
 <tr class="memdesc:a1029e9005d4b9a469cc4b21f39521c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:a1029e9005d4b9a469cc4b21f39521c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad10850018caf219d629f145a07e4835b" id="r_ad10850018caf219d629f145a07e4835b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad10850018caf219d629f145a07e4835b">disposeComponents</a> ()</td></tr>
+<tr class="memdesc:ad10850018caf219d629f145a07e4835b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually destroys components.  <br /></td></tr>
+<tr class="separator:ad10850018caf219d629f145a07e4835b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -96,9 +99,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:afa19be9a00b0a94fd6528d20b0393f80" id="r_afa19be9a00b0a94fd6528d20b0393f80"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa19be9a00b0a94fd6528d20b0393f80">getComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance)</td></tr>
 <tr class="memdesc:afa19be9a00b0a94fd6528d20b0393f80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component <a class="el" href="structecsm_1_1_view.html">View</a>.  <br /></td></tr>
 <tr class="separator:afa19be9a00b0a94fd6528d20b0393f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad10850018caf219d629f145a07e4835b" id="r_ad10850018caf219d629f145a07e4835b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad10850018caf219d629f145a07e4835b">disposeComponents</a> ()</td></tr>
-<tr class="memdesc:ad10850018caf219d629f145a07e4835b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually destroys components.  <br /></td></tr>
-<tr class="separator:ad10850018caf219d629f145a07e4835b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -265,36 +265,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 
 </div>
 </div>
-<a id="ad10850018caf219d629f145a07e4835b" name="ad10850018caf219d629f145a07e4835b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad10850018caf219d629f145a07e4835b">&#9670;&#160;</a></span>disposeComponents()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void disposeComponents </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Actually destroys components. </p>
-<p>Components are not destroyed immediately, only after the dispose call. </p>
-
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ae3591fbf7d6547e79124a65da45ea2a7">DoNotDestroySystem</a>.</p>
-
-</div>
-</div>
 <a id="a2475fdb0316d1f7fb677d634f73ccd97" name="a2475fdb0316d1f7fb677d634f73ccd97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2475fdb0316d1f7fb677d634f73ccd97">&#9670;&#160;</a></span>getManager() <span class="overload">[1/2]</span></h2>
 
@@ -381,13 +351,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 
 </div>
 </div>
+<a id="ad10850018caf219d629f145a07e4835b" name="ad10850018caf219d629f145a07e4835b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad10850018caf219d629f145a07e4835b">&#9670;&#160;</a></span>disposeComponents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void disposeComponents </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Actually destroys components. </p>
+<p>Components are not destroyed immediately, only after the dispose call. </p>
+
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ae3591fbf7d6547e79124a65da45ea2a7">DoNotDestroySystem</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_system.html">System</a></li>
-    <li class="footer">Generated on Thu Feb 8 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -39,7 +39,7 @@ struct Component;
 class System;
 class Manager;
 
-/*
+/**
  * @brief Returns @ref type_index string representation.
  * @param type target type
  */
@@ -52,6 +52,15 @@ static string typeToString(type_index type)
 }
 
 /**
+ * @brief Subscribes @ref System function to the event.
+ */
+#define SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this));
+/**
+ * @brief Unsubscribes @ref System function from the event.
+ */
+#define UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this));
+
+/***********************************************************************************************************************
  * @brief Base component structure.
  * 
  * @details
@@ -62,7 +71,7 @@ static string typeToString(type_index type)
 struct Component
 {
 protected:
-	ID<Entity> entity;
+	ID<Entity> entity = {};
 	friend class Manager;
 public:
 	/**
@@ -116,11 +125,6 @@ protected:
 	 * @details You should use @ref Manager to get components of the entity.
 	 */
 	virtual View<Component> getComponent(ID<Component> instance) { throw runtime_error("System has no components."); }
-	/**
-	 * @brief Actually destroys components.
-	 * @details Components are not destroyed immediately, only after the dispose call.
-	 */
-	virtual void disposeComponents() { }
 public:
 	/**
 	 * @brief Returns manager instance of the system.
@@ -138,9 +142,16 @@ public:
 	 * @note Override it to define custom component of the system.
 	 */
 	virtual type_index getComponentType() const { return typeid(Component); }
+	/**
+	 * @brief Actually destroys components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
+	virtual void disposeComponents() { }
 };
 
 /***********************************************************************************************************************
+ * @brief An object containing components.
+ * 
  * @details
  * The entity is a general-purpose object. It doesn't have any inherent behavior 
  * or data by itself. Instead, it serves as a container for components.
@@ -177,6 +188,8 @@ public:
 };
 
 /***********************************************************************************************************************
+ * @brief Systems and entities coordinator.
+ * 
  * @details
  * Manager serves as a central coordinating object responsible for overseeing various aspects of the system. 
  * It manages entity-related tasks such as creation, destruction, and component assignment.
@@ -215,8 +228,8 @@ private:
 	Events events;
 	OrderedEvents orderedEvents;
 	EntityPool entities;
-	bool isInitialized = false;
-	bool isRunning = false;
+	bool initialized = false;
+	bool running = false;
 
 	Manager(Manager&&) = default;
 	Manager(const Manager&) = default;
@@ -243,7 +256,7 @@ public:
 	~Manager()
 	{
 		entities.clear(false);
-		if (isInitialized)
+		if (initialized)
 		{
 			runEvent("PreDeinit");
 			runEvent("Deinit");
@@ -916,12 +929,14 @@ public:
 	 * @note Use manager functions to access entities.
 	 */
 	const EntityPool& getEntities() const noexcept { return entities; }
-
 	/**
-	 * @brief Actually destroy components.
-	 * @details Components are not destroyed immediately, only after the dispose call.
+	 * @brief Returns true if manager is initialized.
 	 */
-	void disposeComponents(System* system) { system->disposeComponents(); }
+	bool isInitialized() const noexcept { return initialized; }
+	/**
+	 * @brief Returns true if manager is currently running.
+	 */
+	bool isRunning() const noexcept { return running; }
 
 	/*******************************************************************************************************************
 	 * @brief Initializes all created systems.
@@ -929,27 +944,13 @@ public:
 	 */
 	void initialize()
 	{
-		if (isInitialized)
+		if (initialized)
 			throw runtime_error("Manager is already initialized.");
 
 		runEvent("PreInit");
 		runEvent("Init");
 		runEvent("PostInit");
-		isInitialized = true;
-	}
-	/**
-	 * @brief Deinitializes all created systems.
-	 * @throw runtime_error if manager is not initialized.
-	 */
-	void deinitialize()
-	{
-		if (!isInitialized)
-			throw runtime_error("Manager is not initialized.");
-
-		runEvent("PreDeinit");
-		runEvent("Deinit");
-		runEvent("PostDeinit");
-		isInitialized = false;
+		initialized = true;
 	}
 
 	/**
@@ -958,7 +959,7 @@ public:
 	 */
 	void update()
 	{
-		if (!isInitialized)
+		if (!initialized)
 			throw runtime_error("Manager is not initialized.");
 
 		runOrderedEvents();
@@ -977,21 +978,18 @@ public:
 	 */
 	void start()
 	{
-		if (!isInitialized)
+		if (!initialized)
 			throw runtime_error("Manager is not initialized.");
 
-		isRunning = true;
-		while (isRunning) update();
+		running = true;
+		while (running) update();
 	}
 
 	/**
 	 * @brief Stops update loop.
 	 * @details Used to stop the update loop from some system.
 	 */
-	void stop()
-	{
-		isRunning = false;
-	}
+	void stop() { running = false; }
 };
 
 /***********************************************************************************************************************
@@ -1000,10 +998,15 @@ public:
  */
 struct DoNotDestroyComponent : public Component { };
 
+/**
+ * @brief Handles entities that should not be destroyed.
+ */
 class DoNotDestroySystem : public System
 {
 protected:
 	LinearPool<DoNotDestroyComponent, false> components;
+
+	DoNotDestroySystem(Manager* manager) : System(manager) { }
 
 	type_index getComponentType() const override { return typeid(DoNotDestroyComponent); }
 	ID<Component> createComponent(ID<Entity> entity) override { return ID<Component>(components.create()); }

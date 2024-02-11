@@ -313,6 +313,8 @@ public:
 };
 
 /***********************************************************************************************************************
+ * @brief Item array with linear memory block.
+ * 
  * @details
  * In a linear pool, a fixed-size block of memory is pre-allocated, and individual items or objects are then 
  * allocated from this pool. The linear allocation strategy means that these items are placed sequentially in memory, 

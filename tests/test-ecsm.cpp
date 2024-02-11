@@ -27,9 +27,15 @@ class TestSystem final : public System
 
 	TestSystem(Manager* manager) : System(manager)
 	{
-		manager->subscribeToEvent("Init", bind(&TestSystem::init, this));
-		manager->subscribeToEvent("Update", bind(&TestSystem::update, this));
-		manager->subscribeToEvent("PostUpdate", bind(&TestSystem::postUpdate, this));
+		SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
+		SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
+		SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
+	}
+	~TestSystem() final
+	{
+		UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
+		UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
+		UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
 
 	type_index getComponentType() const final { return typeid(TestComponent); }
@@ -115,5 +121,4 @@ int main()
 		throw runtime_error("Found bad test component.");
 
 	manager.unregisterEvent("PostUpdate");
-	manager.deinitialize();
 }

@@ -46,9 +46,9 @@ var classecsm_1_1_manager =
     [ "getEvents", "classecsm_1_1_manager.html#a2fd56df79cd9c1e1d0489080a57b692d", null ],
     [ "getOrderedEvents", "classecsm_1_1_manager.html#a7d23598b00cfbee955b3fec21c41ead4", null ],
     [ "getEntities", "classecsm_1_1_manager.html#a0191b4c0ed9efd020092a680731c2a4f", null ],
-    [ "disposeComponents", "classecsm_1_1_manager.html#aaef285f200f59432ef85154aac502b84", null ],
+    [ "isInitialized", "classecsm_1_1_manager.html#a5cfb8987393c5e966e68649412ae2f93", null ],
+    [ "isRunning", "classecsm_1_1_manager.html#ab30f9ed09c146fe86ecc5594b87938dd", null ],
     [ "initialize", "classecsm_1_1_manager.html#a25a40b6614565f755233080a384c35f1", null ],
-    [ "deinitialize", "classecsm_1_1_manager.html#a5f040a4635c90c304d5d3d0a760ed383", null ],
     [ "update", "classecsm_1_1_manager.html#ac5c54df7ed3b930268c8d7752c101725", null ],
     [ "start", "classecsm_1_1_manager.html#a60de64d75454385b23995437f1d72669", null ],
     [ "stop", "classecsm_1_1_manager.html#a8c528baf37154d347366083f0f816846", null ]

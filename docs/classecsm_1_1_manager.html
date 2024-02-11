@@ -62,6 +62,9 @@ $(function(){initNavTree('classecsm_1_1_manager.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
+<p>Systems and entities coordinator.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;ecsm.hpp&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -239,15 +242,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0191b4c0ed9efd020092a680731c2a4f" id="r_a0191b4c0ed9efd020092a680731c2a4f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classecsm_1_1_linear_pool.html">EntityPool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0191b4c0ed9efd020092a680731c2a4f">getEntities</a> () const noexcept</td></tr>
 <tr class="memdesc:a0191b4c0ed9efd020092a680731c2a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager entities.  <br /></td></tr>
 <tr class="separator:a0191b4c0ed9efd020092a680731c2a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaef285f200f59432ef85154aac502b84" id="r_aaef285f200f59432ef85154aac502b84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef285f200f59432ef85154aac502b84">disposeComponents</a> (<a class="el" href="classecsm_1_1_system.html">System</a> *<a class="elRef" href="https://en.cppreference.com/w/cpp/utility/program/system.html">system</a>)</td></tr>
-<tr class="memdesc:aaef285f200f59432ef85154aac502b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually destroy components.  <br /></td></tr>
-<tr class="separator:aaef285f200f59432ef85154aac502b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cfb8987393c5e966e68649412ae2f93" id="r_a5cfb8987393c5e966e68649412ae2f93"><td class="memItemLeft" align="right" valign="top"><a id="a5cfb8987393c5e966e68649412ae2f93" name="a5cfb8987393c5e966e68649412ae2f93"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isInitialized</b> () const noexcept</td></tr>
+<tr class="memdesc:a5cfb8987393c5e966e68649412ae2f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if manager is initialized. <br /></td></tr>
+<tr class="separator:a5cfb8987393c5e966e68649412ae2f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab30f9ed09c146fe86ecc5594b87938dd" id="r_ab30f9ed09c146fe86ecc5594b87938dd"><td class="memItemLeft" align="right" valign="top"><a id="ab30f9ed09c146fe86ecc5594b87938dd" name="ab30f9ed09c146fe86ecc5594b87938dd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b> () const noexcept</td></tr>
+<tr class="memdesc:ab30f9ed09c146fe86ecc5594b87938dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if manager is currently running. <br /></td></tr>
+<tr class="separator:ab30f9ed09c146fe86ecc5594b87938dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25a40b6614565f755233080a384c35f1" id="r_a25a40b6614565f755233080a384c35f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25a40b6614565f755233080a384c35f1">initialize</a> ()</td></tr>
 <tr class="memdesc:a25a40b6614565f755233080a384c35f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all created systems.  <br /></td></tr>
 <tr class="separator:a25a40b6614565f755233080a384c35f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f040a4635c90c304d5d3d0a760ed383" id="r_a5f040a4635c90c304d5d3d0a760ed383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f040a4635c90c304d5d3d0a760ed383">deinitialize</a> ()</td></tr>
-<tr class="memdesc:a5f040a4635c90c304d5d3d0a760ed383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitializes all created systems.  <br /></td></tr>
-<tr class="separator:a5f040a4635c90c304d5d3d0a760ed383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c54df7ed3b930268c8d7752c101725" id="r_ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
 <tr class="memdesc:ac5c54df7ed3b930268c8d7752c101725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs ordered events and disposes destroyed resources on each tick.  <br /></td></tr>
 <tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,7 +264,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8c528baf37154d347366083f0f816846"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classecsm_1_1_manager.html">Manager</a> serves as a central coordinating object responsible for overseeing various aspects of the system. It manages entity-related tasks such as creation, destruction, and component assignment. Additionally, it handles the storage and retrieval of components, facilitates system initialization, configuration and supports event handling for communication and reaction to changes. </p>
+<div class="textblock"><p>Systems and entities coordinator. </p>
+<p><a class="el" href="classecsm_1_1_manager.html" title="Systems and entities coordinator.">Manager</a> serves as a central coordinating object responsible for overseeing various aspects of the system. It manages entity-related tasks such as creation, destruction, and component assignment. Additionally, it handles the storage and retrieval of components, facilitates system initialization, configuration and supports event handling for communication and reaction to changes. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a48f021b26d5ab8bffa3c87709d0cf618" name="a48f021b26d5ab8bffa3c87709d0cf618"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a48f021b26d5ab8bffa3c87709d0cf618">&#9670;&#160;</a></span>createSystem()</h2>
@@ -1906,34 +1912,6 @@ template&lt;class T  = Component&gt; </div>
 
 </div>
 </div>
-<a id="aaef285f200f59432ef85154aac502b84" name="aaef285f200f59432ef85154aac502b84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaef285f200f59432ef85154aac502b84">&#9670;&#160;</a></span>disposeComponents()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void disposeComponents </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classecsm_1_1_system.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Actually destroy components. </p>
-<p>Components are not destroyed immediately, only after the dispose call. </p>
-
-</div>
-</div>
 <a id="a25a40b6614565f755233080a384c35f1" name="a25a40b6614565f755233080a384c35f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25a40b6614565f755233080a384c35f1">&#9670;&#160;</a></span>initialize()</h2>
 
@@ -1961,39 +1939,6 @@ template&lt;class T  = Component&gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">runtime_error</td><td>if manager is already initialized. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a5f040a4635c90c304d5d3d0a760ed383" name="a5f040a4635c90c304d5d3d0a760ed383"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f040a4635c90c304d5d3d0a760ed383">&#9670;&#160;</a></span>deinitialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void deinitialize </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deinitializes all created systems. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">runtime_error</td><td>if manager is not initialized. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2100,7 +2045,7 @@ template&lt;class T  = Component&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_manager.html">Manager</a></li>
-    <li class="footer">Generated on Thu Feb 8 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
