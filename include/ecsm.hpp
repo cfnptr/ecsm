@@ -599,7 +599,8 @@ public:
 		auto entityView = entities.get(entity);
 		const auto& components = entityView->components;
 		auto result = components.find(componentType);
-		if (result == components.end()) return {};
+		if (result == components.end())
+			return {};
 		auto pair = result->second;
 		return pair.first->getComponent(pair.second);
 	}
@@ -670,7 +671,8 @@ public:
 		auto entityView = entities.get(entity);
 		const auto& components = entityView->components;
 		auto result = components.find(componentType);
-		if (result == components.end()) return {};
+		if (result == components.end())
+			return {};
 		auto pair = result->second;
 		return pair.second;
 	}
@@ -728,7 +730,8 @@ public:
 
 		for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 		{
-			if ((*i)->name != beforeEvent) continue;
+			if ((*i)->name != beforeEvent)
+				continue;
 			orderedEvents.insert(i, result.first->second);
 			return;
 		}
@@ -755,7 +758,8 @@ public:
 
 		for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 		{
-			if ((*i)->name != afterEvent) continue;
+			if ((*i)->name != afterEvent)
+				continue;
 			orderedEvents.insert(i + 1, result.first->second);
 			return;
 		}
@@ -783,7 +787,8 @@ public:
 			bool isEventFound = false;
 			for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 			{
-				if (*i != event) continue;
+				if (*i != event)
+					continue;
 				orderedEvents.erase(i);
 				isEventFound = true;
 				break;
@@ -897,7 +902,8 @@ public:
 		auto& subscribers = result->second->subscribers;
 		for (auto i = subscribers.begin(); i != subscribers.end(); i++)
 		{
-			if (i->target_type() != onEvent.target_type()) continue;
+			if (i->target_type() != onEvent.target_type())
+				continue;
 			subscribers.erase(i);
 			return;
 		}

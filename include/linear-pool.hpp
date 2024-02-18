@@ -239,21 +239,26 @@ public:
 	Ref() = default;
 	Ref(ID<T> item)
 	{
-		if (item) counter = new atomic<int64_t>(1);
+		if (item)
+			counter = new atomic<int64_t>(1);
 		this->item = item;
 	}
 	~Ref()
 	{
-		if (!item) return;
+		if (!item)
+			return;
+
 		auto count = counter->fetch_sub(1);
 		assert(count >= 1);
-		if (count > 1) return;
+		if (count > 1)
+			return;
 		delete counter;
 	}
 
 	Ref(const Ref& ref)
 	{
-    	if (!ref.counter) return;
+    	if (!ref.counter)
+			return;
 		counter = ref.counter;
 		counter->fetch_add(1);
 		item = ref.item;
@@ -264,12 +269,14 @@ public:
 		{
 			auto count = counter->fetch_sub(1);
 			assert(count >= 1);
-			if (count <= 1) delete counter;
+			if (count <= 1)
+				delete counter;
 		}
 
 		counter = ref.counter;
 		item = ref.item;
-		if (counter) counter->fetch_add(1);
+		if (counter)
+			counter->fetch_add(1);
 		return *this;
 	}
 
@@ -307,7 +314,8 @@ public:
 	 */
 	int64_t getRefCount() const noexcept
 	{
-		if (!item) return 0;
+		if (!item)
+			return 0;
 		return counter->load();
 	}
 };
@@ -433,7 +441,8 @@ public:
 	 */
 	void destroy(ID<T> instance)
 	{
-		if (!instance) return;
+		if (!instance)
+			return;
 		#ifndef NDEBUG
 		assert(*instance - 1 < occupancy);
 		version++; // Protects from the use after free.
@@ -563,7 +572,8 @@ public:
 			{
 				auto item = garbageItems[i];
 				auto index = *item - 1;
-				if (!items[index].destroy()) continue;
+				if (!items[index].destroy())
+					continue;
 
 				#ifndef NDEBUG
 				isAllocated[index] = false;
