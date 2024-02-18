@@ -33,9 +33,13 @@ class TestSystem final : public System
 	}
 	~TestSystem() final
 	{
-		UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
-		UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
-		UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
+		auto manager = getManager();
+		if (manager->isRunning())
+		{
+			UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
+			UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
+			UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
+		}
 	}
 
 	type_index getComponentType() const final { return typeid(TestComponent); }

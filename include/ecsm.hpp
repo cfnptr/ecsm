@@ -96,8 +96,9 @@ class System
 	friend class Manager;
 protected:
 	/**
-	 * @brief Creates a new system.
+	 * @brief Creates a new system instance.
 	 * @param[in] manager valid manager instance
+	 * @note You should use @ref Manager to create systems.
 	 */
 	System(Manager* manager)
 	{
@@ -105,7 +106,7 @@ protected:
 		this->manager = manager;
 	}
 	/**
-	 * @brief Destroys system.
+	 * @brief Destroys system instance.
 	 * @warning Override it to destroy unmanaged resources.
 	 */
 	virtual ~System() = default;
@@ -139,7 +140,7 @@ public:
 
 	/**
 	 * @brief Returns specific component typeid() of the system.
-	 * @note Override it to define custom component of the system.
+	 * @note Override it to define a custom component of the system.
 	 */
 	virtual type_index getComponentType() const { return typeid(Component); }
 	/**
