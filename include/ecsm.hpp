@@ -54,11 +54,20 @@ static string typeToString(type_index type)
 /**
  * @brief Subscribes @ref System function to the event.
  */
-#define SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this));
+#define SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event.
  */
-#define UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this));
+#define UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this))
+
+/**
+ * @brief Subscribes @ref System function to the event if exist.
+ */
+#define TRY_SUBSCRIBE_TO_EVENT(name, func) manager->trySubscribeToEvent(name, std::bind(&func, this))
+/**
+ * @brief Unsubscribes @ref System function from the event if exist.
+ */
+#define TRY_UNSUBSCRIBE_FROM_EVENT(name, func) manager->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
 /***********************************************************************************************************************
  * @brief Base component structure.
@@ -328,6 +337,33 @@ public:
 	{
 		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
 		destroySystem(typeid(T));
+	}
+
+	/**
+	 * @brief Terminates and destroys system if exist.
+	 * @param type target system typeid()
+	 * @return True if system is destroyed, otherwise false.
+	 */
+	bool tryDestroySystem(type_index type)
+	{
+		auto result = systems.find(type);
+		if (result != systems.end())
+			return false;
+		auto system = result->second;
+		systems.erase(result);
+		delete system;
+		return true;
+	}
+	/**
+	 * @brief Terminates and destroys system if exist.
+	 * @tparam T target system type
+	 * @return True if system is destroyed, otherwise false.
+	 */
+	template<class T = System>
+	bool tryDestroySystem()
+	{
+		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		return tryDestroySystem(typeid(T));
 	}
 
 	/*******************************************************************************************************************
@@ -779,6 +815,7 @@ public:
 		auto iterator = events.find(name);
 		if (iterator == events.end())
 			throw runtime_error("Event is not registered. (name: " + name + ")");
+		
 		auto event = iterator->second;
 		events.erase(iterator);
 
@@ -802,6 +839,41 @@ public:
 	}
 
 	/**
+	 * @brief Unregisters event if exist.
+	 * @param[in] name target event name
+	 * @return True if event is unregistered, otherwise false.
+	 */
+	bool tryUnregisterEvent(const string& name)
+	{
+		assert(!name.empty());
+		auto iterator = events.find(name);
+		if (iterator == events.end())
+			return false;
+
+		auto event = iterator->second;
+		events.erase(iterator);
+
+		if (event->isOrdered)
+		{
+			bool isEventFound = false;
+			for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
+			{
+				if (*i != event)
+					continue;
+				orderedEvents.erase(i);
+				isEventFound = true;
+				break;
+			}
+
+			if (!isEventFound)
+				return false;
+		}
+		
+		delete event;
+		return true;
+	}
+
+	/**
 	 * @brief Returns true if event is registered.
 	 * @param[in] name target event name
 	 */
@@ -813,6 +885,7 @@ public:
 	/**
 	 * @brief Returns true if event is ordered.
 	 * @param[in] name target event name
+	 * @throw runtime_error if event is not registered.
 	 */
 	bool isEventOrdered(const string& name) const
 	{
@@ -825,6 +898,7 @@ public:
 	/**
 	 * @brief Returns all event subscribers.
 	 * @param[in] name target event name
+	 * @throw runtime_error if event is not registered.
 	 */
 	const Event::Subscribers& getEventSubscribers(const string& name) const
 	{
@@ -834,10 +908,24 @@ public:
 			throw runtime_error("Event is not registered. (name: " + name + ")");
 		return result->second->subscribers;
 	}
+	/**
+	 * @brief Returns true if event has subscribers.
+	 * @param[in] name target event name
+	 * @throw runtime_error if event is not registered.
+	 */
+	bool isEventHasSubscribers(const string& name) const
+	{
+		assert(!name.empty());
+		auto result = events.find(name);
+		if (result == events.end())
+			throw runtime_error("Event is not registered. (name: " + name + ")");
+		return !result->second->subscribers.empty();
+	}
 
 	/**
 	 * @brief Calls all event subscribers.
 	 * @param[in] name target event name
+	 * @throw runtime_error if event is not registered.
 	 */
 	void runEvent(const string& name)
 	{
@@ -909,6 +997,55 @@ public:
 		}
 		
 		throw runtime_error("Event subscriber not found. (name: " + name + ")");
+	}
+
+	/**
+	 * @brief Adds a new event subscriber if not exist.
+	 * 
+	 * @param[in] name target event name
+	 * @param[in] onEvent on event function callback
+	 * 
+	 * @return True if subscribed to the event, otherwise false.
+	 */
+	bool trySubscribeToEvent(const string& name, const std::function<void()>& onEvent)
+	{
+		assert(!name.empty());
+		assert(onEvent);
+		
+		auto result = events.find(name);
+		if (result == events.end())
+			return false;
+
+		result->second->subscribers.push_back(onEvent);
+		return true;
+	}
+	/**
+	 * @brief Removes existing event subscriber if exist.
+	 * 
+	 * @param[in] name target event name
+	 * @param[in] onEvent on event function callback
+	 * 
+	 * @throw True if unsubscribed from the event, otherwise false.
+	 */
+	bool tryUnsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
+	{
+		assert(!name.empty());
+		assert(onEvent);
+		
+		auto result = events.find(name);
+		if (result == events.end())
+			return false;
+
+		auto& subscribers = result->second->subscribers;
+		for (auto i = subscribers.begin(); i != subscribers.end(); i++)
+		{
+			if (i->target_type() != onEvent.target_type())
+				continue;
+			subscribers.erase(i);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/*******************************************************************************************************************
