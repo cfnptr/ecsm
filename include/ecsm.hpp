@@ -205,6 +205,17 @@ public:
  * It manages entity-related tasks such as creation, destruction, and component assignment.
  * Additionally, it handles the storage and retrieval of components, facilitates system initialization, 
  * configuration and supports event handling for communication and reaction to changes.
+ * 
+ * - PreInit event or phase is the earliest stage in the initialization process. It occurs before 
+ *     most of the system's or component's initialization logic runs. This phase is typically used 
+ *     for preliminary setup tasks that need to occur before the main initialization.
+ * - Init event or phase is the main stage of initialization. During this phase, components and 
+ *     systems perform their core setup tasks. This includes initializing internal data structures, 
+ *     loading resources, or setting up dependencies with other components or systems.
+ * - PostInit event or phase happens after the main initialization logic. This stage is 
+ *     used for tasks that must occur after all components and systems have been initialized. 
+ *     It's particularly useful for setup steps that require all other components to 
+ *     be in a ready state or for cross-component communications and linking.
  */
 class Manager final
 {
