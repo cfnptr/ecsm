@@ -42,6 +42,7 @@ class TestSystem final : public System
 		}
 	}
 
+	string_view getComponentName() const final { return "Test"; }
 	type_index getComponentType() const final { return typeid(TestComponent); }
 	ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
 	void destroyComponent(ID<Component> instance) final { components.destroy(ID<TestComponent>(instance)); }
@@ -93,6 +94,9 @@ int main()
 	
 	if (system->isInitialized != true)
 		throw runtime_error("Test system is not initialized.");
+
+	if (system->getComponentName() != "Test")
+		throw runtime_error("Bad system component name.");
 
 	auto testEntity = manager.createEntity();
 

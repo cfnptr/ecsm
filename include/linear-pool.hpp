@@ -357,6 +357,12 @@ public:
 	 */
 	~LinearPool()
 	{
+		#ifndef NDEBUG
+		if (isChanging)
+			abort(); // Destruction of the items inside other create/destroy is not allowed.
+		isChanging = true;
+		#endif
+		
 		if constexpr (DestroyItems)
 		{
 			if (occupancy - (uint32_t)freeItems.size() > 0)
@@ -367,6 +373,10 @@ public:
 		}
 		
 		delete[] items;
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 
 	/**
@@ -382,7 +392,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Creation of the item inside other creation/destruction/clear is not allowed.");
+			throw runtime_error("Creation of the item inside other create/destroy/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -443,14 +453,24 @@ public:
 	{
 		if (!instance)
 			return;
+
 		#ifndef NDEBUG
 		assert(*instance - 1 < occupancy);
+		if (isChanging)
+			throw runtime_error("Destruction of the item inside other create/destroy/clear is not allowed.");
+		isChanging = true;
 		version++; // Protects from the use after free.
 		#endif
+
 		#ifdef ECSM_DEEP_ID_TRACKING
 		assert(instance.version == itemVersions[*instance - 1]);
 		#endif
+
 		garbageItems.push_back(instance);
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 
 	/*******************************************************************************************************************
@@ -521,12 +541,8 @@ public:
 		#ifndef NDEBUG
 		if (destroyItems && !DestroyItems)
 			throw runtime_error("Item does not have destroy function.");
-
 		if (isChanging)
-		{
-			throw runtime_error("Clear of the items inside "
-				"other creation/destruction/clear is not allowed.");
-		}
+			throw runtime_error("Clear of the items inside other create/destroy/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -566,6 +582,12 @@ public:
 	 */
 	void dispose()
 	{
+		#ifndef NDEBUG
+		if (isChanging)
+			throw runtime_error("Destruction of the items inside other create/destroy/clear is not allowed.");
+		isChanging = true;
+		#endif
+
 		if constexpr (DestroyItems)
 		{
 			for (int64_t i = garbageItems.size() - 1; i >= 0; i--)
@@ -596,6 +618,10 @@ public:
 			}
 			garbageItems.clear();
 		}
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 };
 

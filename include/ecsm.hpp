@@ -148,6 +148,11 @@ public:
 	const Manager* getManager() const noexcept { return manager; }
 
 	/**
+	 * @brief Returns specific component name of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
+	virtual string_view getComponentName() const { return ""; }
+	/**
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
@@ -252,6 +257,10 @@ private:
 	bool initialized = false;
 	bool running = false;
 
+	#ifndef NDEBUG
+	bool isChanging = false;
+	#endif
+
 	Manager(Manager&&) = default;
 	Manager(const Manager&) = default;
 	Manager& operator=(const Manager&) = default;
@@ -284,10 +293,20 @@ public:
 			runEvent("PostDeinit");
 		}
 
+		#ifndef NDEBUG
+		if (isChanging)
+			abort(); // Destruction of the systems inside other create/destroy is not allowed.
+		isChanging = true;
+		#endif
+
 		for (const auto& pair : systems)
 			delete pair.second;
 		for (const auto& pair : events)
 			delete pair.second;
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 
 	/*******************************************************************************************************************
@@ -307,6 +326,12 @@ public:
 	void createSystem(Args&&... args)
 	{
 		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		#ifndef NDEBUG
+		if (isChanging)
+			throw runtime_error("Creation of the system inside other create/destroy is not allowed.");
+		isChanging = true;
+		#endif
+
 		auto system = new T(this, std::forward<Args>(args)...);
 
 		auto componentType = system->getComponentType();
@@ -322,6 +347,17 @@ public:
 
 		if (!systems.emplace(typeid(T), system).second)
 			throw runtime_error("System is already created. (name: " + typeToString(typeid(T)) + ")");
+
+		if (running)
+		{
+			runEvent("PreInit");
+			runEvent("Init");
+			runEvent("PostInit");
+		}
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 
 	/**
@@ -331,12 +367,30 @@ public:
 	 */
 	void destroySystem(type_index type)
 	{
+		#ifndef NDEBUG
+		if (isChanging)
+			throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
+		isChanging = true;
+		#endif
+
 		auto result = systems.find(type);
 		if (result != systems.end())
 			throw runtime_error("System is not created. (name: " + typeToString(type) + ")");
+
+		if (running)
+		{
+			runEvent("PreDeinit");
+			runEvent("Deinit");
+			runEvent("PostDeinit");
+		}
+
 		auto system = result->second;
 		systems.erase(result);
 		delete system;
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 	}
 	/**
 	 * @brief Terminates and destroys system.
@@ -357,12 +411,28 @@ public:
 	 */
 	bool tryDestroySystem(type_index type)
 	{
+		#ifndef NDEBUG
+		if (isChanging)
+			throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
+		isChanging = true;
+		#endif
+
 		auto result = systems.find(type);
 		if (result != systems.end())
+		{
+			#ifndef NDEBUG
+			isChanging = false;
+			#endif
 			return false;
+		}
+
 		auto system = result->second;
 		systems.erase(result);
 		delete system;
+
+		#ifndef NDEBUG
+		isChanging = false;
+		#endif
 		return true;
 	}
 	/**
