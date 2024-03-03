@@ -30,29 +30,29 @@ struct RigidBodyComponent final : public Component
 
 class PhysicsSystem final : public System
 {
-	LinearPool<RigidBodyComponent, false> components;
+    LinearPool<RigidBodyComponent, false> components;
 
     PhysicsSystem(Manager* manager) : System(manager)
-	{
-		SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
-	}
-	~PhysicsSystem() final
-	{
-		UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
-	}
+    {
+        SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
+    }
+    ~PhysicsSystem() final
+    {
+        UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
+    }
 
-	void update()
-	{
-		// Process components...
-	}
+    void update()
+    {
+        // Process components...
+    }
 
-	string_view getComponentName() const final { return "RigidBody"; }
-	type_index getComponentType() const final { return typeid(RigidBodyComponent); }
-	ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
-	void destroyComponent(ID<Component> instance) final { components.destroy(ID<RigidBodyComponent>(instance)); }
-	View<Component> getComponent(ID<Component> instance) final
-	{ return View<Component>(components.get(ID<RigidBodyComponent>(instance))); }
-	void disposeComponents() final { components.dispose(); }
+    string_view getComponentName() const final { return "RigidBody"; }
+    type_index getComponentType() const final { return typeid(RigidBodyComponent); }
+    ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
+    void destroyComponent(ID<Component> instance) final { components.destroy(ID<RigidBodyComponent>(instance)); }
+    View<Component> getComponent(ID<Component> instance) final
+    { return View<Component>(components.get(ID<RigidBodyComponent>(instance))); }
+    void disposeComponents() final { components.dispose(); }
 
     friend class ecsm::Manager;
 };
@@ -63,7 +63,7 @@ void ecsmExample()
 
     manager.createSystem<PhysicsSystem>();
     manager.createSystem<GraphicsSystem>(false, 123);
-	// ...
+    // ...
 
     manager.initialize();
 
