@@ -95,7 +95,8 @@ int main()
 	if (system->isInitialized != true)
 		throw runtime_error("Test system is not initialized.");
 
-	if (system->getComponentName() != "Test")
+	auto baseSystem = (System*)system;
+	if (baseSystem->getComponentName() != "Test")
 		throw runtime_error("Bad system component name.");
 
 	auto testEntity = manager.createEntity();
