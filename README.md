@@ -38,9 +38,9 @@ class PhysicsSystem final : public System
     }
     ~PhysicsSystem() final
     {
-		auto manager = getManager();
-		if (manager->isRunning())
-        	UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
+        auto manager = getManager();
+        if (manager->isRunning())
+            UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 
     void update()
@@ -49,26 +49,26 @@ class PhysicsSystem final : public System
     }
 
     const string& getComponentName() const final
-	{
-		static const string name = "Rigid Body";
-		return name;
-	}
+    {
+        static const string name = "Rigid Body";
+        return name;
+    }
     type_index getComponentType() const final
-	{
-		return typeid(RigidBodyComponent);
-	}
+    {
+        return typeid(RigidBodyComponent);
+    }
     ID<Component> createComponent(ID<Entity> entity) final
-	{
-		return ID<Component>(components.create());
-	}
+    {
+        return ID<Component>(components.create());
+    }
     void destroyComponent(ID<Component> instance) final
-	{
-		components.destroy(ID<RigidBodyComponent>(instance));
-	}
+    {
+        components.destroy(ID<RigidBodyComponent>(instance));
+    }
     View<Component> getComponent(ID<Component> instance) final
     {
-		return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
-	}
+        return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
+    }
     void disposeComponents() final { components.dispose(); }
 
     friend class ecsm::Manager;
