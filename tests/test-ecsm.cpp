@@ -42,12 +42,27 @@ class TestSystem final : public System
 		}
 	}
 
-	string_view getComponentName() const final { return "Test"; }
-	type_index getComponentType() const final { return typeid(TestComponent); }
-	ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
-	void destroyComponent(ID<Component> instance) final { components.destroy(ID<TestComponent>(instance)); }
-	View<Component> getComponent(ID<Component> instance) final {
-		return View<Component>(components.get(ID<TestComponent>(instance))); }
+	const string& getComponentName() const final
+	{
+		static const string name = "Test";
+		return name;
+	}
+	type_index getComponentType() const final
+	{
+		return typeid(TestComponent);
+	}
+	ID<Component> createComponent(ID<Entity> entity) final
+	{
+		return ID<Component>(components.create());
+	}
+	void destroyComponent(ID<Component> instance) final
+	{
+		components.destroy(ID<TestComponent>(instance));
+	}
+	View<Component> getComponent(ID<Component> instance) final
+	{
+		return View<Component>(components.get(ID<TestComponent>(instance)));
+	}
 	void disposeComponents() final { components.dispose(); }
 
 	void init()
