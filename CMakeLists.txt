@@ -46,6 +46,6 @@ if(ECSM_BUILD_TESTS)
 	enable_testing()
 
 	add_executable(TestEcsm tests/test-ecsm.cpp)
-	target_link_libraries(TestEcsm PUBLIC ecsm)
+	target_link_libraries(TestEcsm PUBLIC ecsm-static)
 	add_test(NAME TestEcsm COMMAND TestEcsm)
 endif()
