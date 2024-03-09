@@ -1,6 +1,6 @@
 # ECSM
 
-Easy to use template based C++ **Entity Component System Manager** header only library.
+Easy to use template based C++ **Entity Component System Manager** library.
 
 The ECS pattern, or Entity-Component-System pattern, is a design pattern commonly used in game development and 
 simulation software. It is a way to organize and manage the behavior and data of objects within a system. 
@@ -93,9 +93,10 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 
 ### CMake options
 
-| Name             | Description              | Default value |
-|------------------|--------------------------|---------------|
-| ECSM_BUILD_TESTS | Build ECSM library tests | `ON`          |
+| Name              | Description               | Default value |
+|-------------------|---------------------------|---------------|
+| ECSM_BUILD_SHARED | Build ECSM shared library | `ON`          |
+| ECSM_BUILD_TESTS  | Build ECSM library tests  | `ON`          |
 
 ## Cloning ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
 

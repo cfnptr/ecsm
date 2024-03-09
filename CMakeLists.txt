@@ -18,7 +18,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
 	message(FATAL_ERROR "Prevented in-tree build")
 endif()
 
-if(TARGET ecsm)
+if(TARGET ecsm-static)
 	return()
 endif()
 
@@ -29,10 +29,18 @@ project(ecsm VERSION 0.0.1 LANGUAGES CXX
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+option(ECSM_BUILD_SHARED "Build ECSM shared library" ON)
 option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 
-add_library(ecsm INTERFACE)
-target_include_directories(ecsm INTERFACE ${PROJECT_SOURCE_DIR}/include)
+add_library(ecsm-static STATIC source/ecsm.cpp)
+target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+if(ECSM_BUILD_SHARED)
+	add_library(ecsm-shared SHARED source/ecsm.cpp)
+	set_target_properties(ecsm-shared PROPERTIES
+		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	target_include_directories(ecsm-shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
+endif()
 
 if(ECSM_BUILD_TESTS)
 	enable_testing()

@@ -50,6 +50,15 @@ static string typeToString(type_index type)
 	else
 		return to_string(type.hash_code());
 }
+/**
+ * @brief Returns type string representation.
+ * @tparam T target type
+ */
+template<typename T>
+static string typeToString()
+{
+	return typeToString(typeid(T));
+}
 
 /**
  * @brief Subscribes @ref System function to the event.
@@ -109,11 +118,7 @@ protected:
 	 * @param[in] manager valid manager instance
 	 * @note You should use @ref Manager to create systems.
 	 */
-	System(Manager* manager)
-	{
-		assert(manager);
-		this->manager = manager;
-	}
+	System(Manager* manager);
 	/**
 	 * @brief Destroys system instance.
 	 * @warning Override it to destroy unmanaged resources.
@@ -124,17 +129,17 @@ protected:
 	 * @brief Creates a new component instance for the entity.
 	 * @details You should use @ref Manager to add components to the entity.
 	 */
-	virtual ID<Component> createComponent(ID<Entity> entity) { throw runtime_error("System has no components."); }
+	virtual ID<Component> createComponent(ID<Entity> entity);
 	/**
 	 * @brief Destroys component instance.
 	 * @details You should use @ref Manager to remove components from the entity.
 	 */
-	virtual void destroyComponent(ID<Component> instance) { throw runtime_error("System has no components."); }
+	virtual void destroyComponent(ID<Component> instance);
 	/**
 	 * @brief Returns specific component @ref View.
 	 * @details You should use @ref Manager to get components of the entity.
 	 */
-	virtual View<Component> getComponent(ID<Component> instance) { throw runtime_error("System has no components."); }
+	virtual View<Component> getComponent(ID<Component> instance);
 public:
 	/**
 	 * @brief Returns manager instance of the system.
@@ -151,17 +156,17 @@ public:
 	 * @brief Returns specific component name of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual string_view getComponentName() const { return ""; }
+	virtual const string& getComponentName() const;
 	/**
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual type_index getComponentType() const { return typeid(Component); }
+	virtual type_index getComponentType() const;
 	/**
 	 * @brief Actually destroys components.
 	 * @details Components are not destroyed immediately, only after the dispose call.
 	 */
-	virtual void disposeComponents() { }
+	virtual void disposeComponents();
 };
 
 /***********************************************************************************************************************
@@ -184,16 +189,7 @@ public:
 	 * @brief Destroys all entity components.
 	 * @note Components are not destroyed immediately, only after the dispose call.
 	 */
-	bool destroy()
-	{
-		for (const auto& component : components)
-		{
-			auto pair = component.second;
-			pair.first->destroyComponent(pair.second);
-		}
-		components.clear();
-		return true;
-	}
+	bool destroy();
 
 	/**
 	 * @brief Returns entity components map.
@@ -268,46 +264,11 @@ public:
 	/**
 	 * @brief Initializes manager.
 	 */
-	Manager()
-	{
-		auto name = "PreInit"; events.emplace(name, new Event(name));
-		name = "Init"; events.emplace(name, new Event(name));
-		name = "PostInit"; events.emplace(name, new Event(name));
-		name = "Update"; events.emplace(name, new Event(name));
-		name = "PreDeinit"; events.emplace(name, new Event(name));
-		name = "Deinit"; events.emplace(name, new Event(name));
-		name = "PostDeinit"; events.emplace(name, new Event(name));
-		orderedEvents.push_back(events["Update"]);
-	}
-
+	Manager();
 	/**
 	 * @brief Terminates and destroys all manager systems.
 	 */
-	~Manager()
-	{
-		entities.clear(false);
-		if (initialized)
-		{
-			runEvent("PreDeinit");
-			runEvent("Deinit");
-			runEvent("PostDeinit");
-		}
-
-		#ifndef NDEBUG
-		if (isChanging)
-			abort(); // Destruction of the systems inside other create/destroy is not allowed.
-		isChanging = true;
-		#endif
-
-		for (const auto& pair : systems)
-			delete pair.second;
-		for (const auto& pair : events)
-			delete pair.second;
-
-		#ifndef NDEBUG
-		isChanging = false;
-		#endif
-	}
+	~Manager();
 
 	/*******************************************************************************************************************
 	 * @brief Creates a new system instance.
@@ -365,33 +326,7 @@ public:
 	 * @param type target system typeid()
 	 * @throw runtime_error if system is not found.
 	 */
-	void destroySystem(type_index type)
-	{
-		#ifndef NDEBUG
-		if (isChanging)
-			throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
-		isChanging = true;
-		#endif
-
-		auto result = systems.find(type);
-		if (result != systems.end())
-			throw runtime_error("System is not created. (name: " + typeToString(type) + ")");
-
-		if (running)
-		{
-			runEvent("PreDeinit");
-			runEvent("Deinit");
-			runEvent("PostDeinit");
-		}
-
-		auto system = result->second;
-		systems.erase(result);
-		delete system;
-
-		#ifndef NDEBUG
-		isChanging = false;
-		#endif
-	}
+	void destroySystem(type_index type);
 	/**
 	 * @brief Terminates and destroys system.
 	 * @tparam T target system type
@@ -409,32 +344,7 @@ public:
 	 * @param type target system typeid()
 	 * @return True if system is destroyed, otherwise false.
 	 */
-	bool tryDestroySystem(type_index type)
-	{
-		#ifndef NDEBUG
-		if (isChanging)
-			throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
-		isChanging = true;
-		#endif
-
-		auto result = systems.find(type);
-		if (result != systems.end())
-		{
-			#ifndef NDEBUG
-			isChanging = false;
-			#endif
-			return false;
-		}
-
-		auto system = result->second;
-		systems.erase(result);
-		delete system;
-
-		#ifndef NDEBUG
-		isChanging = false;
-		#endif
-		return true;
-	}
+	bool tryDestroySystem(type_index type);
 	/**
 	 * @brief Terminates and destroys system if exist.
 	 * @tparam T target system type
@@ -540,33 +450,7 @@ public:
 	 * @return Returns @ref View of the created component.
 	 * @throw runtime_error if component type is not registered, or component is already added.
 	 */
-	View<Component> add(ID<Entity> entity, type_index componentType)
-	{
-		assert(entity);
-
-		auto result = componentTypes.find(componentType);
-		if (result == componentTypes.end())
-		{
-			throw runtime_error("Component is not registered by any system. ("
-				"name: " + typeToString(componentType) +
-				"entity:" + to_string(*entity) + ")");
-		}
-
-		auto system = result->second;
-		auto component = system->createComponent(entity);
-		auto componentView = system->getComponent(component);
-		auto entityView = entities.get(entity);
-		componentView->entity = entity;
-
-		if (!entityView->components.emplace(componentType, make_pair(system, component)).second)
-		{
-			throw runtime_error("Component is already added to the entity. ("
-				"name: " + typeToString(componentType) +
-				"entity:" + to_string(*entity) + ")");
-		}
-
-		return componentView;
-	}
+	View<Component> add(ID<Entity> entity, type_index componentType);
 
 	/**
 	 * @brief Adds a new component to the entity.
@@ -600,24 +484,7 @@ public:
 	 * 
 	 * @throw runtime_error if component is not found.
 	 */
-	void remove(ID<Entity> entity, type_index componentType)
-	{ 
-		assert(entity);
-		auto entityView = entities.get(entity);
-		auto& components = entityView->components;
-		auto iterator = components.find(componentType);
-
-		if (iterator == components.end())
-		{
-			throw runtime_error("Component is not added. ("
-				"name: " + typeToString(componentType) +
-				"entity:" + to_string(*entity) + ")");
-		}
-
-		auto pair = iterator->second;
-		components.erase(iterator);
-		pair.first->destroyComponent(pair.second);
-	}
+	void remove(ID<Entity> entity, type_index componentType);
 
 	/**
 	 * @brief Removes component from the entity.
@@ -645,8 +512,7 @@ public:
 	bool has(ID<Entity> entity, type_index componentType) const noexcept
 	{
 		assert(entity);
-		auto entityView = entities.get(entity);
-		const auto& components = entityView->components;
+		const auto& components = entities.get(entity)->components;
 		return components.find(componentType) != components.end();
 	}
 	/**
@@ -713,8 +579,7 @@ public:
 	View<Component> tryGet(ID<Entity> entity, type_index componentType) const noexcept
 	{
 		assert(entity);
-		auto entityView = entities.get(entity);
-		const auto& components = entityView->components;
+		const auto& components = entities.get(entity)->components;
 		auto result = components.find(componentType);
 		if (result == components.end())
 			return {};
@@ -785,8 +650,7 @@ public:
 	ID<Component> tryGetID(ID<Entity> entity, type_index componentType) const noexcept
 	{
 		assert(entity);
-		auto entityView = entities.get(entity);
-		const auto& components = entityView->components;
+		const auto& components = entities.get(entity)->components;
 		auto result = components.find(componentType);
 		if (result == components.end())
 			return {};
@@ -813,8 +677,7 @@ public:
 	 */
 	uint32_t getComponentCount(ID<Entity> entity) const noexcept
 	{
-		auto entityView = entities.get(entity);
-		return (uint32_t)entityView->components.size();
+		return (uint32_t)entities.get(entity)->components.size();
 	}
 
 	/*******************************************************************************************************************
@@ -822,12 +685,7 @@ public:
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is already registered.
 	 */
-	void registerEvent(const string& name)
-	{
-		assert(!name.empty());
-		if (!events.emplace(name, new Event(name, false)).second)
-			throw runtime_error("Event is already registered. (name: " + name + ")");
-	}
+	void registerEvent(const string& name);
 	/**
 	 * @brief Registers a new ordered event before another.
 	 * 
@@ -836,26 +694,7 @@ public:
 	 * 
 	 * @throw runtime_error if event is already registered.
 	 */
-	void registerEventBefore(const string& newEvent, const string& beforeEvent)
-	{
-		assert(!newEvent.empty());
-		assert(!beforeEvent.empty());
-
-		auto result = events.emplace(newEvent, new Event(newEvent));
-		if (!result.second)
-			throw runtime_error("Event is already registered. (newEvent: " + newEvent + ")");
-
-		for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
-		{
-			if ((*i)->name != beforeEvent)
-				continue;
-			orderedEvents.insert(i, result.first->second);
-			return;
-		}
-
-		throw runtime_error("Before event is not registered. ("
-			"newEvent: " + newEvent + ", beforeEvent: " + beforeEvent + ")");
-	}
+	void registerEventBefore(const string& newEvent, const string& beforeEvent);
 	/**
 	 * @brief Registers a new ordered event after another.
 	 *
@@ -864,95 +703,20 @@ public:
 	 *
 	 * @throw runtime_error if event is already registered.
 	 */
-	void registerEventAfter(const string& newEvent, const string& afterEvent)
-	{
-		assert(!newEvent.empty());
-		assert(!afterEvent.empty());
-
-		auto result = events.emplace(newEvent, new Event(newEvent));
-		if (!result.second)
-			throw runtime_error("Event is already registered. (newEvent: " + newEvent + ")");
-
-		for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
-		{
-			if ((*i)->name != afterEvent)
-				continue;
-			orderedEvents.insert(i + 1, result.first->second);
-			return;
-		}
-
-		throw runtime_error("After event is not registered. ("
-			"newEvent: " + newEvent + ", afterEvent: " + afterEvent + ")");
-	}
+	void registerEventAfter(const string& newEvent, const string& afterEvent);
 
 	/**
 	 * @brief Unregisters existing event.
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is not registered, or not found.
 	 */
-	void unregisterEvent(const string& name)
-	{
-		assert(!name.empty());
-		auto iterator = events.find(name);
-		if (iterator == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-		
-		auto event = iterator->second;
-		events.erase(iterator);
-
-		if (event->isOrdered)
-		{
-			bool isEventFound = false;
-			for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
-			{
-				if (*i != event)
-					continue;
-				orderedEvents.erase(i);
-				isEventFound = true;
-				break;
-			}
-
-			if (!isEventFound)
-				throw runtime_error("Ordered event is not found. (name: " + name + ")");
-		}
-		
-		delete event;
-	}
-
+	void unregisterEvent(const string& name);
 	/**
 	 * @brief Unregisters event if exist.
 	 * @param[in] name target event name
 	 * @return True if event is unregistered, otherwise false.
 	 */
-	bool tryUnregisterEvent(const string& name)
-	{
-		assert(!name.empty());
-		auto iterator = events.find(name);
-		if (iterator == events.end())
-			return false;
-
-		auto event = iterator->second;
-		events.erase(iterator);
-
-		if (event->isOrdered)
-		{
-			bool isEventFound = false;
-			for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
-			{
-				if (*i != event)
-					continue;
-				orderedEvents.erase(i);
-				isEventFound = true;
-				break;
-			}
-
-			if (!isEventFound)
-				return false;
-		}
-		
-		delete event;
-		return true;
-	}
+	bool tryUnregisterEvent(const string& name);
 
 	/**
 	 * @brief Returns true if event is registered.
@@ -968,70 +732,31 @@ public:
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is not registered.
 	 */
-	bool isEventOrdered(const string& name) const
-	{
-		assert(!name.empty());
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-		return result->second->isOrdered;
-	}
+	bool isEventOrdered(const string& name) const;
 	/**
 	 * @brief Returns all event subscribers.
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is not registered.
 	 */
-	const Event::Subscribers& getEventSubscribers(const string& name) const
-	{
-		assert(!name.empty());
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-		return result->second->subscribers;
-	}
+	const Event::Subscribers& getEventSubscribers(const string& name) const;
 	/**
 	 * @brief Returns true if event has subscribers.
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is not registered.
 	 */
-	bool isEventHasSubscribers(const string& name) const
-	{
-		assert(!name.empty());
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-		return !result->second->subscribers.empty();
-	}
+	bool isEventHasSubscribers(const string& name) const;
 
 	/**
 	 * @brief Calls all event subscribers.
 	 * @param[in] name target event name
 	 * @throw runtime_error if event is not registered.
 	 */
-	void runEvent(const string& name)
-	{
-		assert(!name.empty());
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-
-		const auto& subscribers = result->second->subscribers;
-		for (auto& onEvent : subscribers)
-			onEvent();
-	}
+	void runEvent(const string& name);
 	/**
 	 * @brief Runs all ordered events.
 	 * @details Unordered events subscribers are not called.
 	 */
-	void runOrderedEvents()
-	{
-		for (auto event : orderedEvents)
-		{
-			const auto& subscribers = event->subscribers;
-			for (auto& onEvent : subscribers)
-				onEvent();
-		}
-	}
+	void runOrderedEvents();
 
 	/**
 	 * @brief Adds a new event subscriber.
@@ -1041,16 +766,7 @@ public:
 	 * 
 	 * @throw runtime_error if event is not registered.
 	 */
-	void subscribeToEvent(const string& name, const std::function<void()>& onEvent)
-	{
-		assert(!name.empty());
-		assert(onEvent);
-		
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-		result->second->subscribers.push_back(onEvent);
-	}
+	void subscribeToEvent(const string& name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber.
 	 * 
@@ -1059,26 +775,7 @@ public:
 	 * 
 	 * @throw runtime_error if event is not registered, or not subscribed.
 	 */
-	void unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
-	{
-		assert(!name.empty());
-		assert(onEvent);
-		
-		auto result = events.find(name);
-		if (result == events.end())
-			throw runtime_error("Event is not registered. (name: " + name + ")");
-
-		auto& subscribers = result->second->subscribers;
-		for (auto i = subscribers.begin(); i != subscribers.end(); i++)
-		{
-			if (i->target_type() != onEvent.target_type())
-				continue;
-			subscribers.erase(i);
-			return;
-		}
-		
-		throw runtime_error("Event subscriber not found. (name: " + name + ")");
-	}
+	void unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent);
 
 	/**
 	 * @brief Adds a new event subscriber if not exist.
@@ -1088,18 +785,7 @@ public:
 	 * 
 	 * @return True if subscribed to the event, otherwise false.
 	 */
-	bool trySubscribeToEvent(const string& name, const std::function<void()>& onEvent)
-	{
-		assert(!name.empty());
-		assert(onEvent);
-		
-		auto result = events.find(name);
-		if (result == events.end())
-			return false;
-
-		result->second->subscribers.push_back(onEvent);
-		return true;
-	}
+	bool trySubscribeToEvent(const string& name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber if exist.
 	 * 
@@ -1108,26 +794,7 @@ public:
 	 * 
 	 * @throw True if unsubscribed from the event, otherwise false.
 	 */
-	bool tryUnsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
-	{
-		assert(!name.empty());
-		assert(onEvent);
-		
-		auto result = events.find(name);
-		if (result == events.end())
-			return false;
-
-		auto& subscribers = result->second->subscribers;
-		for (auto i = subscribers.begin(); i != subscribers.end(); i++)
-		{
-			if (i->target_type() != onEvent.target_type())
-				continue;
-			subscribers.erase(i);
-			return true;
-		}
-		
-		return false;
-	}
+	bool tryUnsubscribeFromEvent(const string& name, const std::function<void()>& onEvent);
 
 	/*******************************************************************************************************************
 	 * @brief Returns all manager systems.
@@ -1167,54 +834,24 @@ public:
 	 * @brief Initializes all created systems.
 	 * @throw runtime_error if manager is already initialized.
 	 */
-	void initialize()
-	{
-		if (initialized)
-			throw runtime_error("Manager is already initialized.");
-
-		runEvent("PreInit");
-		runEvent("Init");
-		runEvent("PostInit");
-		initialized = true;
-	}
+	void initialize();
 
 	/**
 	 * @brief Runs ordered events and disposes destroyed resources on each tick.
 	 * @throw runtime_error if manager is not initialized.
 	 */
-	void update()
-	{
-		if (!initialized)
-			throw runtime_error("Manager is not initialized.");
-
-		runOrderedEvents();
-
-		entities.dispose();
-		for (const auto& pair : systems)
-		{
-			auto system = pair.second;
-			system->disposeComponents();
-		}
-	}
+	void update();
 
 	/**
 	 * @brief Enters update loop. Executes @ref update() on each tick.
 	 * @throw runtime_error if manager is not initialized.
 	 */
-	void start()
-	{
-		if (!initialized)
-			throw runtime_error("Manager is not initialized.");
-
-		running = true;
-		while (running) update();
-	}
-
+	void start();
 	/**
 	 * @brief Stops update loop.
 	 * @details Used to stop the update loop from some system.
 	 */
-	void stop() { running = false; }
+	void stop() noexcept { running = false; }
 };
 
 /***********************************************************************************************************************
@@ -1231,14 +868,14 @@ class DoNotDestroySystem : public System
 protected:
 	LinearPool<DoNotDestroyComponent, false> components;
 
-	DoNotDestroySystem(Manager* manager) : System(manager) { }
+	DoNotDestroySystem(Manager* manager);
 
-	type_index getComponentType() const override { return typeid(DoNotDestroyComponent); }
-	ID<Component> createComponent(ID<Entity> entity) override { return ID<Component>(components.create()); }
-	void destroyComponent(ID<Component> instance) override { components.destroy(ID<DoNotDestroyComponent>(instance)); }
-	View<Component> getComponent(ID<Component> instance) override {
-		return View<Component>(components.get(ID<DoNotDestroyComponent>(instance))); }
-	void disposeComponents() override { components.dispose(); }
+	const string& getComponentName() const override;
+	type_index getComponentType() const override;
+	ID<Component> createComponent(ID<Entity> entity) override;
+	void destroyComponent(ID<Component> instance) override;
+	View<Component> getComponent(ID<Component> instance) override;
+	void disposeComponents() override;
 
 	friend class ecsm::Manager;
 };
