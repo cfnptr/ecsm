@@ -38,7 +38,9 @@ class PhysicsSystem final : public System
     }
     ~PhysicsSystem() final
     {
-        UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
+		auto manager = getManager();
+		if (manager->isRunning())
+        	UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 
     void update()
@@ -46,12 +48,27 @@ class PhysicsSystem final : public System
         // Process components...
     }
 
-    string_view getComponentName() const final { return "RigidBody"; }
-    type_index getComponentType() const final { return typeid(RigidBodyComponent); }
-    ID<Component> createComponent(ID<Entity> entity) final { return ID<Component>(components.create()); }
-    void destroyComponent(ID<Component> instance) final { components.destroy(ID<RigidBodyComponent>(instance)); }
+    const string& getComponentName() const final
+	{
+		static const string name = "Rigid Body";
+		return name;
+	}
+    type_index getComponentType() const final
+	{
+		return typeid(RigidBodyComponent);
+	}
+    ID<Component> createComponent(ID<Entity> entity) final
+	{
+		return ID<Component>(components.create());
+	}
+    void destroyComponent(ID<Component> instance) final
+	{
+		components.destroy(ID<RigidBodyComponent>(instance));
+	}
     View<Component> getComponent(ID<Component> instance) final
-    { return View<Component>(components.get(ID<RigidBodyComponent>(instance))); }
+    {
+		return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
+	}
     void disposeComponents() final { components.dispose(); }
 
     friend class ecsm::Manager;
@@ -97,6 +114,13 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 |-------------------|---------------------------|---------------|
 | ECSM_BUILD_SHARED | Build ECSM shared library | `ON`          |
 | ECSM_BUILD_TESTS  | Build ECSM library tests  | `ON`          |
+
+### CMake targets
+
+| Name        | Description          | Windows | macOS    | Linux |
+|-------------|----------------------|---------|----------|-------|
+| ecsm-static | Static ECSM library  | `.lib`  | `.a`     | `.a`  |
+| ecsm-shared | Dynamic ECSM library | `.dll`  | `.dylib` | `.so` |
 
 ## Cloning ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
 
