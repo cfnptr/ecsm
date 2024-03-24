@@ -244,12 +244,15 @@ public:
 	using Events = map<string, Event*>;
 	using OrderedEvents = vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
+	using GarbageComponent = pair<type_index, ID<Entity>>;
+	using GarbageComponents = vector<GarbageComponent>;
 private:
 	Systems systems;
 	ComponentTypes componentTypes;
 	Events events;
 	OrderedEvents orderedEvents;
 	EntityPool entities;
+	GarbageComponents garbageComponents;
 	bool initialized = false;
 	bool running = false;
 
@@ -485,7 +488,6 @@ public:
 	 * @throw runtime_error if component is not found.
 	 */
 	void remove(ID<Entity> entity, type_index componentType);
-
 	/**
 	 * @brief Removes component from the entity.
 	 * @details Component data destruction is handled by the @ref System.

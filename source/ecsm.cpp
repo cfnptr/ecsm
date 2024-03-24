@@ -193,8 +193,20 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 			"entity:" + to_string(*entity) + ")");
 	}
 
+	#if ECSM_DEEP_ID_TRACKING
+	for (auto& pair : garbageComponents)
+	{
+		if (pair.second == entity && pair.first == componentType)
+		{
+			throw runtime_error("Already removed component. ("
+				"name: " + typeToString(componentType) + 
+				"entity: " + to_string(*entity) + ")");
+		}
+	}
+	#endif
+
 	auto pair = iterator->second;
-	components.erase(iterator);
+	garbageComponents.emplace_back(make_pair(componentType, entity));
 	pair.first->destroyComponent(pair.second);
 }
 
@@ -438,7 +450,16 @@ void Manager::update()
 
 	runOrderedEvents();
 
+	for (auto& pair : garbageComponents)
+	{
+		auto entity = entities.get(pair.second);
+		auto result = entity->components.erase(pair.first);
+		assert(result == 1); // Corrupted entity component destruction order.
+	}
+	garbageComponents.clear();
+
 	entities.dispose();
+
 	for (const auto& pair : systems)
 	{
 		auto system = pair.second;
