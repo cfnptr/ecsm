@@ -475,7 +475,7 @@ DoNotDestroySystem::DoNotDestroySystem(Manager* manager) : System(manager) { }
 
 const string& DoNotDestroySystem::getComponentName() const
 {
-	static const string name = "Do NotDestroy";
+	static const string name = "Do Not Destroy";
 	return name;
 }
 type_index DoNotDestroySystem::getComponentType() const
