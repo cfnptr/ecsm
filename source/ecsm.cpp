@@ -193,20 +193,15 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 			"entity:" + to_string(*entity) + ")");
 	}
 
-	#if ECSM_DEEP_ID_TRACKING
-	for (auto& pair : garbageComponents)
+	auto result = garbageComponents.emplace(make_pair(componentType, entity));
+	if (!result.second)
 	{
-		if (pair.second == entity && pair.first == componentType)
-		{
-			throw runtime_error("Already removed component. ("
-				"name: " + typeToString(componentType) + 
-				"entity: " + to_string(*entity) + ")");
-		}
+		throw runtime_error("Already removed component. ("
+			"name: " + typeToString(componentType) + 
+			"entity: " + to_string(*entity) + ")");
 	}
-	#endif
 
 	auto pair = iterator->second;
-	garbageComponents.emplace_back(make_pair(componentType, entity));
 	pair.first->destroyComponent(pair.second);
 }
 

@@ -20,6 +20,7 @@
 #pragma once
 #include "linear-pool.hpp"
 
+#include <set>
 #include <map>
 #include <string>
 #include <typeinfo>
@@ -245,7 +246,7 @@ public:
 	using OrderedEvents = vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
 	using GarbageComponent = pair<type_index, ID<Entity>>;
-	using GarbageComponents = vector<GarbageComponent>;
+	using GarbageComponents = set<GarbageComponent>;
 private:
 	Systems systems;
 	ComponentTypes componentTypes;
@@ -515,7 +516,9 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
-		return components.find(componentType) != components.end();
+		
+		return components.find(componentType) != components.end() &&
+			garbageComponents.find(make_pair(componentType, entity)) == garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if entity has target component.
@@ -585,6 +588,7 @@ public:
 		auto result = components.find(componentType);
 		if (result == components.end())
 			return {};
+
 		auto pair = result->second;
 		return pair.first->getComponent(pair.second);
 	}
