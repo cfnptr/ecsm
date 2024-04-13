@@ -29,7 +29,8 @@ var NAVTREE =
     [ "Usage example", "index.html#usage-example", null ],
     [ "Supported operating systems", "index.html#supported-operating-systems", null ],
     [ "Build requirements", "index.html#build-requirements", [
-      [ "CMake options", "index.html#cmake-options", null ]
+      [ "CMake options", "index.html#cmake-options", null ],
+      [ "CMake targets", "index.html#cmake-targets", null ]
     ] ],
     [ "Cloning", "index.html#cloning-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
     [ "Build instructions", "md__b_u_i_l_d_i_n_g.html", [

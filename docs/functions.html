@@ -82,6 +82,7 @@ $(function(){initNavTree('functions.html',''); initResizable(); });
 <li>get()&#160;:&#160;<a class="el" href="classecsm_1_1_linear_pool.html#ac8ab4e1c28d4a095f7569db4a6795807">LinearPool&lt; T, DestroyItems &gt;</a>, <a class="el" href="classecsm_1_1_manager.html#ac502bcb4db81f1a5ba7cb33e4602c7a0">Manager</a></li>
 <li>getComponent()&#160;:&#160;<a class="el" href="classecsm_1_1_do_not_destroy_system.html#a09648fafd1c95e62c2030c6349b3c1ca">DoNotDestroySystem</a>, <a class="el" href="classecsm_1_1_system.html#afa19be9a00b0a94fd6528d20b0393f80">System</a></li>
 <li>getComponentCount()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#abbf6c87cc9064ad60d1bb85bf5fec845">Manager</a></li>
+<li>getComponentName()&#160;:&#160;<a class="el" href="classecsm_1_1_do_not_destroy_system.html#ab49a5ceb3e8b52b0d8dee8536065bf78">DoNotDestroySystem</a>, <a class="el" href="classecsm_1_1_system.html#a035f83bca4f7420f2a7e2ecffa1ecc36">System</a></li>
 <li>getComponents()&#160;:&#160;<a class="el" href="classecsm_1_1_entity.html#a3efcbf8f7b239131ff254dc305436d7d">Entity</a></li>
 <li>getComponentType()&#160;:&#160;<a class="el" href="classecsm_1_1_do_not_destroy_system.html#a15f685a091c911eaa1286d7a5b0d3236">DoNotDestroySystem</a>, <a class="el" href="classecsm_1_1_system.html#a1029e9005d4b9a469cc4b21f39521c24">System</a></li>
 <li>getComponentTypes()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#aca4005e9bb71f1f630ba0fc7348a466d">Manager</a></li>
@@ -109,6 +110,7 @@ $(function(){initNavTree('functions.html',''); initResizable(); });
 <h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
 <li>ID()&#160;:&#160;<a class="el" href="structecsm_1_1_i_d.html#ac722d9cdc6c688d5aa78756ffe913a6c">ID&lt; T &gt;</a></li>
 <li>initialize()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a25a40b6614565f755233080a384c35f1">Manager</a></li>
+<li>isEventHasSubscribers()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a3e8cb11a850f85d22a9f28ad749e7a05">Manager</a></li>
 <li>isEventOrdered()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#af10d236567021c469ba3e0c4dc3044a9">Manager</a></li>
 <li>isInitialized()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a5cfb8987393c5e966e68649412ae2f93">Manager</a></li>
 <li>isRunning()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#ab30f9ed09c146fe86ecc5594b87938dd">Manager</a></li>
@@ -143,15 +145,19 @@ $(function(){initNavTree('functions.html',''); initResizable(); });
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>start()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a60de64d75454385b23995437f1d72669">Manager</a></li>
-<li>stop()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a8c528baf37154d347366083f0f816846">Manager</a></li>
+<li>stop()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#aba28ee97ffe6d508e26f534ec7e62f8f">Manager</a></li>
 <li>subscribeToEvent()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a763cd18baaf66b9378899779bba80076">Manager</a></li>
 <li>System()&#160;:&#160;<a class="el" href="classecsm_1_1_system.html#a92f03fa4e4bf66e47fdeb5d79cd7221d">System</a></li>
 </ul>
 
 
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>tryDestroySystem()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a3912a2eb176fc3af724206cf4135a6dd">Manager</a></li>
 <li>tryGet()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#a60aeba0775209dcb5791f8de5f1eaf14">Manager</a></li>
 <li>tryGetID()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#ad5511b7cd20631ddffa23cdd8a310219">Manager</a></li>
+<li>trySubscribeToEvent()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#ad7b80a06a4bae091ddb84f57988064d8">Manager</a></li>
+<li>tryUnregisterEvent()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#ad920b2450cd017dca7acbd2a067a0136">Manager</a></li>
+<li>tryUnsubscribeFromEvent()&#160;:&#160;<a class="el" href="classecsm_1_1_manager.html#ac86ed6249e3027670fc1822567d324c7">Manager</a></li>
 </ul>
 
 
@@ -177,7 +183,7 @@ $(function(){initNavTree('functions.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Apr 13 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -90,6 +90,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>OrderedEvents</b> = 
 <tr class="memitem:a9fdb94a14bbeee89a2d51f0e4a5cbb44" id="r_a9fdb94a14bbeee89a2d51f0e4a5cbb44"><td class="memItemLeft" align="right" valign="top"><a id="a9fdb94a14bbeee89a2d51f0e4a5cbb44" name="a9fdb94a14bbeee89a2d51f0e4a5cbb44"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>EntityPool</b> = <a class="el" href="classecsm_1_1_linear_pool.html">LinearPool</a>&lt;<a class="el" href="classecsm_1_1_entity.html">Entity</a>&gt;</td></tr>
 <tr class="separator:a9fdb94a14bbeee89a2d51f0e4a5cbb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d38b17c7804d03e20dd15c664dc08b" id="r_a81d38b17c7804d03e20dd15c664dc08b"><td class="memItemLeft" align="right" valign="top"><a id="a81d38b17c7804d03e20dd15c664dc08b" name="a81d38b17c7804d03e20dd15c664dc08b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>GarbageComponent</b> = <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/pair.html">pair</a>&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>, <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt;<a class="el" href="classecsm_1_1_entity.html">Entity</a>&gt;&gt;</td></tr>
+<tr class="separator:a81d38b17c7804d03e20dd15c664dc08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c7b3de351775489057d7981075b7fc2" id="r_a8c7b3de351775489057d7981075b7fc2"><td class="memItemLeft" align="right" valign="top"><a id="a8c7b3de351775489057d7981075b7fc2" name="a8c7b3de351775489057d7981075b7fc2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>GarbageComponents</b> = <a class="elRef" href="https://en.cppreference.com/w/cpp/container/set.html">set</a>&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/utility/pair.html">GarbageComponent</a>&gt;</td></tr>
+<tr class="separator:a8c7b3de351775489057d7981075b7fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -112,6 +118,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afa983543eb596d414193b3ea52676583"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afa983543eb596d414193b3ea52676583">destroySystem</a> ()</td></tr>
 <tr class="memdesc:afa983543eb596d414193b3ea52676583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system.  <br /></td></tr>
 <tr class="separator:afa983543eb596d414193b3ea52676583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3912a2eb176fc3af724206cf4135a6dd" id="r_a3912a2eb176fc3af724206cf4135a6dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3912a2eb176fc3af724206cf4135a6dd">tryDestroySystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> type)</td></tr>
+<tr class="memdesc:a3912a2eb176fc3af724206cf4135a6dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system if exist.  <br /></td></tr>
+<tr class="separator:a3912a2eb176fc3af724206cf4135a6dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795d367d6163959fc68566cdde7536a1" id="r_a795d367d6163959fc68566cdde7536a1"><td class="memTemplParams" colspan="2">template&lt;class T  = System&gt; </td></tr>
+<tr class="memitem:a795d367d6163959fc68566cdde7536a1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a795d367d6163959fc68566cdde7536a1">tryDestroySystem</a> ()</td></tr>
+<tr class="memdesc:a795d367d6163959fc68566cdde7536a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system if exist.  <br /></td></tr>
+<tr class="separator:a795d367d6163959fc68566cdde7536a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecd8815b3ac80a2e2f47b877f5f17d0a" id="r_aecd8815b3ac80a2e2f47b877f5f17d0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecd8815b3ac80a2e2f47b877f5f17d0a">has</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> type) const noexcept</td></tr>
 <tr class="memdesc:aecd8815b3ac80a2e2f47b877f5f17d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if system is created.  <br /></td></tr>
 <tr class="separator:aecd8815b3ac80a2e2f47b877f5f17d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +219,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4870f68962b62fdf179660bd65ff5870" id="r_a4870f68962b62fdf179660bd65ff5870"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4870f68962b62fdf179660bd65ff5870">unregisterEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name)</td></tr>
 <tr class="memdesc:a4870f68962b62fdf179660bd65ff5870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters existing event.  <br /></td></tr>
 <tr class="separator:a4870f68962b62fdf179660bd65ff5870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad920b2450cd017dca7acbd2a067a0136" id="r_ad920b2450cd017dca7acbd2a067a0136"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad920b2450cd017dca7acbd2a067a0136">tryUnregisterEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name)</td></tr>
+<tr class="memdesc:ad920b2450cd017dca7acbd2a067a0136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters event if exist.  <br /></td></tr>
+<tr class="separator:ad920b2450cd017dca7acbd2a067a0136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5666b02f6d13a9107444cafdbd0aaea" id="r_ae5666b02f6d13a9107444cafdbd0aaea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5666b02f6d13a9107444cafdbd0aaea">hasEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name) const noexcept</td></tr>
 <tr class="memdesc:ae5666b02f6d13a9107444cafdbd0aaea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if event is registered.  <br /></td></tr>
 <tr class="separator:ae5666b02f6d13a9107444cafdbd0aaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,6 +231,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac90b0f3fd52e4e6f3c80ce37aa613bb3" id="r_ac90b0f3fd52e4e6f3c80ce37aa613bb3"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">Event::Subscribers</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac90b0f3fd52e4e6f3c80ce37aa613bb3">getEventSubscribers</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name) const</td></tr>
 <tr class="memdesc:ac90b0f3fd52e4e6f3c80ce37aa613bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all event subscribers.  <br /></td></tr>
 <tr class="separator:ac90b0f3fd52e4e6f3c80ce37aa613bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e8cb11a850f85d22a9f28ad749e7a05" id="r_a3e8cb11a850f85d22a9f28ad749e7a05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e8cb11a850f85d22a9f28ad749e7a05">isEventHasSubscribers</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name) const</td></tr>
+<tr class="memdesc:a3e8cb11a850f85d22a9f28ad749e7a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if event has subscribers.  <br /></td></tr>
+<tr class="separator:a3e8cb11a850f85d22a9f28ad749e7a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc69fbbfb5c75ba9c3c2c308a906328d" id="r_afc69fbbfb5c75ba9c3c2c308a906328d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc69fbbfb5c75ba9c3c2c308a906328d">runEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name)</td></tr>
 <tr class="memdesc:afc69fbbfb5c75ba9c3c2c308a906328d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all event subscribers.  <br /></td></tr>
 <tr class="separator:afc69fbbfb5c75ba9c3c2c308a906328d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,6 +246,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a61f60bb7d92f64b96fa0811c6b8a3fca" id="r_a61f60bb7d92f64b96fa0811c6b8a3fca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61f60bb7d92f64b96fa0811c6b8a3fca">unsubscribeFromEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name, const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;onEvent)</td></tr>
 <tr class="memdesc:a61f60bb7d92f64b96fa0811c6b8a3fca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes existing event subscriber.  <br /></td></tr>
 <tr class="separator:a61f60bb7d92f64b96fa0811c6b8a3fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7b80a06a4bae091ddb84f57988064d8" id="r_ad7b80a06a4bae091ddb84f57988064d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7b80a06a4bae091ddb84f57988064d8">trySubscribeToEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name, const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;onEvent)</td></tr>
+<tr class="memdesc:ad7b80a06a4bae091ddb84f57988064d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new event subscriber if not exist.  <br /></td></tr>
+<tr class="separator:ad7b80a06a4bae091ddb84f57988064d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac86ed6249e3027670fc1822567d324c7" id="r_ac86ed6249e3027670fc1822567d324c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac86ed6249e3027670fc1822567d324c7">tryUnsubscribeFromEvent</a> (const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;name, const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;onEvent)</td></tr>
+<tr class="memdesc:ac86ed6249e3027670fc1822567d324c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes existing event subscriber if exist.  <br /></td></tr>
+<tr class="separator:ac86ed6249e3027670fc1822567d324c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a642ee20321726831578850ca3a509685" id="r_a642ee20321726831578850ca3a509685"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">Systems</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a642ee20321726831578850ca3a509685">getSystems</a> () const noexcept</td></tr>
 <tr class="memdesc:a642ee20321726831578850ca3a509685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager systems.  <br /></td></tr>
 <tr class="separator:a642ee20321726831578850ca3a509685"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,13 +284,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b> () cons
 <tr class="memitem:a60de64d75454385b23995437f1d72669" id="r_a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
 <tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enters update loop. Executes <a class="el" href="#ac5c54df7ed3b930268c8d7752c101725">update()</a> on each tick.  <br /></td></tr>
 <tr class="separator:a60de64d75454385b23995437f1d72669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c528baf37154d347366083f0f816846" id="r_a8c528baf37154d347366083f0f816846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c528baf37154d347366083f0f816846">stop</a> ()</td></tr>
-<tr class="memdesc:a8c528baf37154d347366083f0f816846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops update loop.  <br /></td></tr>
-<tr class="separator:a8c528baf37154d347366083f0f816846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba28ee97ffe6d508e26f534ec7e62f8f" id="r_aba28ee97ffe6d508e26f534ec7e62f8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba28ee97ffe6d508e26f534ec7e62f8f">stop</a> () noexcept</td></tr>
+<tr class="memdesc:aba28ee97ffe6d508e26f534ec7e62f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops update loop.  <br /></td></tr>
+<tr class="separator:aba28ee97ffe6d508e26f534ec7e62f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Systems and entities coordinator. </p>
-<p><a class="el" href="classecsm_1_1_manager.html" title="Systems and entities coordinator.">Manager</a> serves as a central coordinating object responsible for overseeing various aspects of the system. It manages entity-related tasks such as creation, destruction, and component assignment. Additionally, it handles the storage and retrieval of components, facilitates system initialization, configuration and supports event handling for communication and reaction to changes. </p>
+<p><a class="el" href="classecsm_1_1_manager.html" title="Systems and entities coordinator.">Manager</a> serves as a central coordinating object responsible for overseeing various aspects of the system. It manages entity-related tasks such as creation, destruction, and component assignment. Additionally, it handles the storage and retrieval of components, facilitates system initialization, configuration and supports event handling for communication and reaction to changes.</p>
+<ul>
+<li>PreInit event or phase is the earliest stage in the initialization process. It occurs before most of the system's or component's initialization logic runs. This phase is typically used for preliminary setup tasks that need to occur before the main initialization.</li>
+<li>Init event or phase is the main stage of initialization. During this phase, components and systems perform their core setup tasks. This includes initializing internal data structures, loading resources, or setting up dependencies with other components or systems.</li>
+<li>PostInit event or phase happens after the main initialization logic. This stage is used for tasks that must occur after all components and systems have been initialized. It's particularly useful for setup steps that require all other components to be in a ready state or for cross-component communications and linking. </li>
+</ul>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a48f021b26d5ab8bffa3c87709d0cf618" name="a48f021b26d5ab8bffa3c87709d0cf618"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a48f021b26d5ab8bffa3c87709d0cf618">&#9670;&#160;</a></span>createSystem()</h2>
@@ -321,9 +351,6 @@ template&lt;class T  = System, typename... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void destroySystem </td>
@@ -332,11 +359,6 @@ template&lt;class T  = System, typename... Args&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Terminates and destroys system. </p>
@@ -393,6 +415,68 @@ template&lt;class T  = System&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a3912a2eb176fc3af724206cf4135a6dd" name="a3912a2eb176fc3af724206cf4135a6dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3912a2eb176fc3af724206cf4135a6dd">&#9670;&#160;</a></span>tryDestroySystem() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryDestroySystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Terminates and destroys system if exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>target system typeid() </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is destroyed, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="a795d367d6163959fc68566cdde7536a1" name="a795d367d6163959fc68566cdde7536a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a795d367d6163959fc68566cdde7536a1">&#9670;&#160;</a></span>tryDestroySystem() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T  = System&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryDestroySystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Terminates and destroys system if exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target system type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is destroyed, otherwise false. </dd></dl>
 
 </div>
 </div>
@@ -714,9 +798,6 @@ template&lt;class T  = System&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; add </td>
@@ -729,11 +810,6 @@ template&lt;class T  = System&gt; </div>
           <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Adds a new component to the entity. </p>
@@ -810,9 +886,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void remove </td>
@@ -825,11 +898,6 @@ template&lt;class T  = Component&gt; </div>
           <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Removes component from the entity. </p>
@@ -1363,9 +1431,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void registerEvent </td>
@@ -1374,11 +1439,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Registers a new unordered event. </p>
@@ -1402,9 +1462,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void registerEventBefore </td>
@@ -1417,11 +1474,6 @@ template&lt;class T  = Component&gt; </div>
           <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>beforeEvent</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Registers a new ordered event before another. </p>
@@ -1446,9 +1498,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void registerEventAfter </td>
@@ -1461,11 +1510,6 @@ template&lt;class T  = Component&gt; </div>
           <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>afterEvent</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Registers a new ordered event after another. </p>
@@ -1490,9 +1534,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void unregisterEvent </td>
@@ -1501,11 +1542,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Unregisters existing event. </p>
@@ -1521,6 +1557,32 @@ template&lt;class T  = Component&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad920b2450cd017dca7acbd2a067a0136" name="ad920b2450cd017dca7acbd2a067a0136"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad920b2450cd017dca7acbd2a067a0136">&#9670;&#160;</a></span>tryUnregisterEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryUnregisterEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unregisters event if exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if event is unregistered, otherwise false. </dd></dl>
 
 </div>
 </div>
@@ -1562,9 +1624,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool isEventOrdered </td>
@@ -1573,17 +1632,18 @@ template&lt;class T  = Component&gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true if event is ordered. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if event is not registered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1595,9 +1655,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">Event::Subscribers</a> &amp; getEventSubscribers </td>
@@ -1606,17 +1663,49 @@ template&lt;class T  = Component&gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns all event subscribers. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if event is not registered. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3e8cb11a850f85d22a9f28ad749e7a05" name="a3e8cb11a850f85d22a9f28ad749e7a05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e8cb11a850f85d22a9f28ad749e7a05">&#9670;&#160;</a></span>isEventHasSubscribers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isEventHasSubscribers </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if event has subscribers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if event is not registered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1628,9 +1717,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void runEvent </td>
@@ -1639,17 +1725,18 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Calls all event subscribers. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if event is not registered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1661,9 +1748,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void runOrderedEvents </td>
@@ -1672,11 +1756,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Runs all ordered events. </p>
@@ -1689,9 +1768,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void subscribeToEvent </td>
@@ -1704,11 +1780,6 @@ template&lt;class T  = Component&gt; </div>
           <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>onEvent</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Adds a new event subscriber. </p>
@@ -1733,9 +1804,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void unsubscribeFromEvent </td>
@@ -1748,11 +1816,6 @@ template&lt;class T  = Component&gt; </div>
           <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>onEvent</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Removes existing event subscriber. </p>
@@ -1766,6 +1829,73 @@ template&lt;class T  = Component&gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">runtime_error</td><td>if event is not registered, or not subscribed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad7b80a06a4bae091ddb84f57988064d8" name="ad7b80a06a4bae091ddb84f57988064d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7b80a06a4bae091ddb84f57988064d8">&#9670;&#160;</a></span>trySubscribeToEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool trySubscribeToEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>onEvent</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a new event subscriber if not exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">onEvent</td><td>on event function callback</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if subscribed to the event, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="ac86ed6249e3027670fc1822567d324c7" name="ac86ed6249e3027670fc1822567d324c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac86ed6249e3027670fc1822567d324c7">&#9670;&#160;</a></span>tryUnsubscribeFromEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryUnsubscribeFromEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>onEvent</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes existing event subscriber if exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>target event name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">onEvent</td><td>on event function callback</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">True</td><td>if unsubscribed from the event, otherwise false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1917,9 +2047,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void initialize </td>
@@ -1928,11 +2055,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Initializes all created systems. </p>
@@ -1950,9 +2072,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void update </td>
@@ -1961,11 +2080,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Runs ordered events and disposes destroyed resources on each tick. </p>
@@ -1983,9 +2097,6 @@ template&lt;class T  = Component&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void start </td>
@@ -1994,11 +2105,6 @@ template&lt;class T  = Component&gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Enters update loop. Executes <a class="el" href="#ac5c54df7ed3b930268c8d7752c101725">update()</a> on each tick. </p>
@@ -2011,8 +2117,8 @@ template&lt;class T  = Component&gt; </div>
 
 </div>
 </div>
-<a id="a8c528baf37154d347366083f0f816846" name="a8c528baf37154d347366083f0f816846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c528baf37154d347366083f0f816846">&#9670;&#160;</a></span>stop()</h2>
+<a id="aba28ee97ffe6d508e26f534ec7e62f8f" name="aba28ee97ffe6d508e26f534ec7e62f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba28ee97ffe6d508e26f534ec7e62f8f">&#9670;&#160;</a></span>stop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2029,7 +2135,7 @@ template&lt;class T  = Component&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2045,7 +2151,7 @@ template&lt;class T  = Component&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_manager.html">Manager</a></li>
-    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Apr 13 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -82,6 +82,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a32081f9d5ce872b8e748ef7ce0a3ae5c" id="r_a32081f9d5ce872b8e748ef7ce0a3ae5c"><td class="memItemLeft" align="right" valign="top"><a id="a32081f9d5ce872b8e748ef7ce0a3ae5c" name="a32081f9d5ce872b8e748ef7ce0a3ae5c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DoNotDestroySystem</b> (<a class="el" href="classecsm_1_1_manager.html">Manager</a> *manager)</td></tr>
 <tr class="separator:a32081f9d5ce872b8e748ef7ce0a3ae5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab49a5ceb3e8b52b0d8dee8536065bf78" id="r_ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49a5ceb3e8b52b0d8dee8536065bf78">getComponentName</a> () const override</td></tr>
+<tr class="memdesc:ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
+<tr class="separator:ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15f685a091c911eaa1286d7a5b0d3236" id="r_a15f685a091c911eaa1286d7a5b0d3236"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15f685a091c911eaa1286d7a5b0d3236">getComponentType</a> () const override</td></tr>
 <tr class="memdesc:a15f685a091c911eaa1286d7a5b0d3236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:a15f685a091c911eaa1286d7a5b0d3236"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,6 +116,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles entities that should not be destroyed. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab49a5ceb3e8b52b0d8dee8536065bf78" name="ab49a5ceb3e8b52b0d8dee8536065bf78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab49a5ceb3e8b52b0d8dee8536065bf78">&#9670;&#160;</a></span>getComponentName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp; getComponentName </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specific component name of the system. </p>
+<dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classecsm_1_1_system.html#a035f83bca4f7420f2a7e2ecffa1ecc36">System</a>.</p>
+
+</div>
+</div>
 <a id="a15f685a091c911eaa1286d7a5b0d3236" name="a15f685a091c911eaa1286d7a5b0d3236"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a15f685a091c911eaa1286d7a5b0d3236">&#9670;&#160;</a></span>getComponentType()</h2>
 
@@ -131,13 +164,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Returns specific component typeid() of the system. </p>
-<dl class="section note"><dt>Note</dt><dd>Override it to define custom component of the system. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classecsm_1_1_system.html#a1029e9005d4b9a469cc4b21f39521c24">System</a>.</p>
 
@@ -161,7 +194,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -191,7 +224,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -221,7 +254,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -251,7 +284,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -325,7 +358,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_do_not_destroy_system.html">DoNotDestroySystem</a></li>
-    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Apr 13 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

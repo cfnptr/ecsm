@@ -75,6 +75,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4d58952b394ae7ea9cb08ffdfa58ff4" id="r_ac4d58952b394ae7ea9cb08ffdfa58ff4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classecsm_1_1_manager.html">Manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4d58952b394ae7ea9cb08ffdfa58ff4">getManager</a> () const noexcept</td></tr>
 <tr class="memdesc:ac4d58952b394ae7ea9cb08ffdfa58ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns constant manager instance of the system.  <br /></td></tr>
 <tr class="separator:ac4d58952b394ae7ea9cb08ffdfa58ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035f83bca4f7420f2a7e2ecffa1ecc36" id="r_a035f83bca4f7420f2a7e2ecffa1ecc36"><td class="memItemLeft" align="right" valign="top">virtual const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a035f83bca4f7420f2a7e2ecffa1ecc36">getComponentName</a> () const</td></tr>
+<tr class="memdesc:a035f83bca4f7420f2a7e2ecffa1ecc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
+<tr class="separator:a035f83bca4f7420f2a7e2ecffa1ecc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1029e9005d4b9a469cc4b21f39521c24" id="r_a1029e9005d4b9a469cc4b21f39521c24"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1029e9005d4b9a469cc4b21f39521c24">getComponentType</a> () const</td></tr>
 <tr class="memdesc:a1029e9005d4b9a469cc4b21f39521c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:a1029e9005d4b9a469cc4b21f39521c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -85,10 +88,10 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a92f03fa4e4bf66e47fdeb5d79cd7221d" id="r_a92f03fa4e4bf66e47fdeb5d79cd7221d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92f03fa4e4bf66e47fdeb5d79cd7221d">System</a> (<a class="el" href="classecsm_1_1_manager.html">Manager</a> *manager)</td></tr>
-<tr class="memdesc:a92f03fa4e4bf66e47fdeb5d79cd7221d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new system.  <br /></td></tr>
+<tr class="memdesc:a92f03fa4e4bf66e47fdeb5d79cd7221d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new system instance.  <br /></td></tr>
 <tr class="separator:a92f03fa4e4bf66e47fdeb5d79cd7221d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75d73261228a8127f188edb3aa46fc21" id="r_a75d73261228a8127f188edb3aa46fc21"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75d73261228a8127f188edb3aa46fc21">~System</a> ()=default</td></tr>
-<tr class="memdesc:a75d73261228a8127f188edb3aa46fc21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys system.  <br /></td></tr>
+<tr class="memdesc:a75d73261228a8127f188edb3aa46fc21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys system instance.  <br /></td></tr>
 <tr class="separator:a75d73261228a8127f188edb3aa46fc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f198a7d88eb55f6f07b36fdec8f997" id="r_a20f198a7d88eb55f6f07b36fdec8f997"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20f198a7d88eb55f6f07b36fdec8f997">createComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity)</td></tr>
 <tr class="memdesc:a20f198a7d88eb55f6f07b36fdec8f997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new component instance for the entity.  <br /></td></tr>
@@ -131,18 +134,19 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a new system. </p>
+<p>Creates a new system instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">manager</td><td>valid manager instance </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to create systems. </dd></dl>
 
 </div>
 </div>
@@ -169,7 +173,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 </table>
 </div><div class="memdoc">
 
-<p>Destroys system. </p>
+<p>Destroys system instance. </p>
 <dl class="section warning"><dt>Warning</dt><dd>Override it to destroy unmanaged resources. </dd></dl>
 
 </div>
@@ -193,7 +197,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -223,7 +227,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -253,7 +257,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -321,6 +325,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 
 </div>
 </div>
+<a id="a035f83bca4f7420f2a7e2ecffa1ecc36" name="a035f83bca4f7420f2a7e2ecffa1ecc36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a035f83bca4f7420f2a7e2ecffa1ecc36">&#9670;&#160;</a></span>getComponentName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp; getComponentName </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specific component name of the system. </p>
+<dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ab49a5ceb3e8b52b0d8dee8536065bf78">DoNotDestroySystem</a>.</p>
+
+</div>
+</div>
 <a id="a1029e9005d4b9a469cc4b21f39521c24" name="a1029e9005d4b9a469cc4b21f39521c24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1029e9005d4b9a469cc4b21f39521c24">&#9670;&#160;</a></span>getComponentType()</h2>
 
@@ -339,13 +373,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Returns specific component typeid() of the system. </p>
-<dl class="section note"><dt>Note</dt><dd>Override it to define custom component of the system. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#a15f685a091c911eaa1286d7a5b0d3236">DoNotDestroySystem</a>.</p>
 
@@ -369,7 +403,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -387,7 +421,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_system.html">System</a></li>
-    <li class="footer">Generated on Sun Feb 11 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Apr 13 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
