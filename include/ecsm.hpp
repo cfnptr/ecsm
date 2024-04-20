@@ -693,6 +693,13 @@ public:
 	 */
 	void registerEvent(const string& name);
 	/**
+	 * @brief Registers a new unordered event if not exist.
+	 * @param[in] name target event name
+	 * @return True if event is registered, otherwise false.
+	 */
+	bool tryRegisterEvent(const string& name);
+
+	/**
 	 * @brief Registers a new ordered event before another.
 	 * 
 	 * @param[in] newEvent target event name

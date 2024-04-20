@@ -212,6 +212,12 @@ void Manager::registerEvent(const string& name)
 	if (!events.emplace(name, new Event(name, false)).second)
 		throw runtime_error("Event is already registered. (name: " + name + ")");
 }
+bool Manager::tryRegisterEvent(const string& name)
+{
+	assert(!name.empty());
+	return events.emplace(name, new Event(name, false)).second;
+}
+
 void Manager::registerEventBefore(const string& newEvent, const string& beforeEvent)
 {
 	assert(!newEvent.empty());
