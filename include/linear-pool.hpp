@@ -62,11 +62,7 @@ public:
 	 * @param id item identifier in the linear pool
 	 */
 	template<class U>
-	explicit ID(ID<U> id) noexcept : index(*id)
-	#ifdef ECSM_DEEP_ID_TRACKING
-		, version(id.getVersion())
-	#endif
-	{ }
+	explicit ID(ID<U> id) noexcept : index(*id) { }
 
 	/**
 	 * @brief Returns item index + 1 in the linear pool.
@@ -98,13 +94,6 @@ public:
 	 * @brief Returns true if item is not null.
 	 */
 	operator bool() const noexcept { return index; }
-
-#ifdef ECSM_DEEP_ID_TRACKING
-private:
-	uint64_t version = 0;
-public:
-	uint64_t getVersion() const noexcept { return version; }
-#endif
 };
 
 /***********************************************************************************************************************
@@ -345,10 +334,6 @@ class LinearPool
 	uint64_t version = 0;
 	bool isChanging = false;
 	#endif
-
-	#ifdef ECSM_DEEP_ID_TRACKING
-	vector<uint64_t> itemVersions;
-	#endif
 public:
 	LinearPool() { items = new T[1]; }
 
@@ -408,10 +393,6 @@ public:
 			isChanging = false;
 			#endif
 
-			#ifdef ECSM_DEEP_ID_TRACKING
-			freeItem.version = ++itemVersions[*freeItem - 1];
-			#endif
-
 			return freeItem;
 		}
 		
@@ -426,7 +407,6 @@ public:
 		}
 
 		items[occupancy] = T(std::forward<Args>(args)...);
-		auto id = ID<T>(++occupancy);
 
 		#ifndef NDEBUG
 		isAllocated.push_back(true);
@@ -434,12 +414,7 @@ public:
 		version++;
 		#endif
 
-		#ifdef ECSM_DEEP_ID_TRACKING
-		id.version = 1;
-		itemVersions.push_back(1);
-		#endif
-
-		return id;
+		return ID<T>(++occupancy);
 	}
 
 	/**
@@ -462,10 +437,6 @@ public:
 		version++; // Protects from the use after free.
 		#endif
 
-		#ifdef ECSM_DEEP_ID_TRACKING
-		assert(instance.version == itemVersions[*instance - 1]);
-		#endif
-
 		garbageItems.push_back(instance);
 
 		#ifndef NDEBUG
@@ -485,9 +456,6 @@ public:
 		assert(instance);
 		assert(*instance - 1 < occupancy);
 		assert(isAllocated[*instance - 1]);
-		#ifdef ECSM_DEEP_ID_TRACKING
-		assert(instance.version == itemVersions[*instance - 1]);
-		#endif
 		#ifndef NDEBUG
 		return View(&items[*instance - 1], version);
 		#else

@@ -92,8 +92,6 @@ void ecsmExample()
 }
 ```
 
-Use ```#define ECSM_DEEP_ID_TRACKING``` to detect and debug pool memory corruptions and errors.
-
 ## Supported operating systems
 
 * Windows

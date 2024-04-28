@@ -371,7 +371,7 @@ void Manager::subscribeToEvent(const string& name, const std::function<void()>& 
 {
 	assert(!name.empty());
 	assert(onEvent);
-		
+
 	auto result = events.find(name);
 	if (result == events.end())
 		throw runtime_error("Event is not registered. (name: " + name + ")");
@@ -381,7 +381,7 @@ void Manager::unsubscribeFromEvent(const string& name, const std::function<void(
 {
 	assert(!name.empty());
 	assert(onEvent);
-		
+
 	auto result = events.find(name);
 	if (result == events.end())
 		throw runtime_error("Event is not registered. (name: " + name + ")");
@@ -394,7 +394,7 @@ void Manager::unsubscribeFromEvent(const string& name, const std::function<void(
 		subscribers.erase(i);
 		return;
 	}
-		
+
 	throw runtime_error("Event subscriber not found. (name: " + name + ")");
 }
 
@@ -403,7 +403,7 @@ bool Manager::trySubscribeToEvent(const string& name, const std::function<void()
 {
 	assert(!name.empty());
 	assert(onEvent);
-		
+
 	auto result = events.find(name);
 	if (result == events.end())
 		return false;
@@ -415,7 +415,7 @@ bool Manager::tryUnsubscribeFromEvent(const string& name, const std::function<vo
 {
 	assert(!name.empty());
 	assert(onEvent);
-		
+
 	auto result = events.find(name);
 	if (result == events.end())
 		return false;
@@ -428,7 +428,7 @@ bool Manager::tryUnsubscribeFromEvent(const string& name, const std::function<vo
 		subscribers.erase(i);
 		return true;
 	}
-		
+
 	return false;
 }
 
