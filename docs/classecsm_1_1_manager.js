@@ -1,7 +1,7 @@
 var classecsm_1_1_manager =
 [
     [ "Event", "structecsm_1_1_manager_1_1_event.html", null ],
-    [ "Manager", "classecsm_1_1_manager.html#a8fae1352a98517c1ecb0a6e7396e3f06", null ],
+    [ "Manager", "classecsm_1_1_manager.html#a8039b895c266344ffee774ef7cc56d53", null ],
     [ "~Manager", "classecsm_1_1_manager.html#a829d7114e3ed38c555af0fb4e974a6f6", null ],
     [ "createSystem", "classecsm_1_1_manager.html#a48f021b26d5ab8bffa3c87709d0cf618", null ],
     [ "destroySystem", "classecsm_1_1_manager.html#a548340e29237339ec817dd30c4ef4528", null ],
@@ -33,6 +33,7 @@ var classecsm_1_1_manager =
     [ "tryGetID", "classecsm_1_1_manager.html#a688a30302fa6b1f37b385028037bbb23", null ],
     [ "getComponentCount", "classecsm_1_1_manager.html#abbf6c87cc9064ad60d1bb85bf5fec845", null ],
     [ "registerEvent", "classecsm_1_1_manager.html#a04115aae46e042b4a2e249f984b594f4", null ],
+    [ "tryRegisterEvent", "classecsm_1_1_manager.html#a87e12f5e5d4bed4c55aa4a55c1f2c577", null ],
     [ "registerEventBefore", "classecsm_1_1_manager.html#a8d0b962d1e9f8c7ba6a22669c31735c4", null ],
     [ "registerEventAfter", "classecsm_1_1_manager.html#ace44854f37cf642a236bc9e583e6c261", null ],
     [ "unregisterEvent", "classecsm_1_1_manager.html#a4870f68962b62fdf179660bd65ff5870", null ],

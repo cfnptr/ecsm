@@ -160,7 +160,7 @@ public:
 	T* operator->()
 	{
 		#ifndef NDEBUG
-		if (version != *poolVersion)
+		if (poolVersion && version != *poolVersion)
 			throw runtime_error("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
@@ -171,7 +171,7 @@ public:
 	const T* operator->() const
 	{
 		#ifndef NDEBUG
-		if (version != *poolVersion)
+		if (poolVersion && version != *poolVersion)
 			throw runtime_error("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
@@ -183,7 +183,7 @@ public:
 	T* operator*()
 	{
 		#ifndef NDEBUG
-		if (version != *poolVersion)
+		if (poolVersion && version != *poolVersion)
 			throw runtime_error("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
@@ -194,7 +194,7 @@ public:
 	const T* operator*() const
 	{
 		#ifndef NDEBUG
-		if (version != *poolVersion)
+		if (poolVersion && version != *poolVersion)
 			throw runtime_error("Item has been invalidated by the previous calls.");
 		#endif
 		return item;

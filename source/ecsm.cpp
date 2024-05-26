@@ -17,12 +17,6 @@
 using namespace ecsm;
 
 //**********************************************************************************************************************
-System::System(Manager* manager)
-{
-	assert(manager);
-	this->manager = manager;
-}
-
 ID<Component> System::createComponent(ID<Entity> entity)
 {
 	throw runtime_error("System has no components.");
@@ -59,7 +53,9 @@ bool Entity::destroy()
 }
 
 //**********************************************************************************************************************
-Manager::Manager()
+Manager* Manager::instance = nullptr;
+
+Manager::Manager(bool useSingleton)
 {
 	auto name = "PreInit"; events.emplace(name, new Event(name));
 	name = "Init"; events.emplace(name, new Event(name));
@@ -69,6 +65,13 @@ Manager::Manager()
 	name = "Deinit"; events.emplace(name, new Event(name));
 	name = "PostDeinit"; events.emplace(name, new Event(name));
 	orderedEvents.push_back(events["Update"]);
+
+	if (useSingleton)
+	{
+		if (instance)
+			throw runtime_error("Manager singleton instance is already set.");
+		instance = this;
+	}
 }
 Manager::~Manager()
 {
@@ -93,6 +96,9 @@ Manager::~Manager()
 	#ifndef NDEBUG
 	isChanging = false;
 	#endif
+
+	if (instance == this)
+		instance = nullptr;
 }
 
 //**********************************************************************************************************************
@@ -476,8 +482,6 @@ void Manager::start()
 }
 
 //**********************************************************************************************************************
-DoNotDestroySystem::DoNotDestroySystem(Manager* manager) : System(manager) { }
-
 const string& DoNotDestroySystem::getComponentName() const
 {
 	static const string name = "Do Not Destroy";

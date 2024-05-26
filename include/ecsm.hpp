@@ -109,17 +109,7 @@ public:
  */
 class System
 {
-	Manager* manager = nullptr;
-	
-	friend class Entity;
-	friend class Manager;
 protected:
-	/**
-	 * @brief Creates a new system instance.
-	 * @param[in] manager valid manager instance
-	 * @note You should use @ref Manager to create systems.
-	 */
-	System(Manager* manager);
 	/**
 	 * @brief Destroys system instance.
 	 * @warning Override it to destroy unmanaged resources.
@@ -141,18 +131,10 @@ protected:
 	 * @details You should use @ref Manager to get components of the entity.
 	 */
 	virtual View<Component> getComponent(ID<Component> instance);
-public:
-	/**
-	 * @brief Returns manager instance of the system.
-	 * @details You can use it inside the system to get manager instance.
-	 */
-	Manager* getManager() noexcept { return manager; }
-	/**
-	 * @brief Returns constant manager instance of the system.
-	 * @details You can use it inside the system to get manager instance.
-	 */
-	const Manager* getManager() const noexcept { return manager; }
 
+	friend class Entity;
+	friend class Manager;
+public:
 	/**
 	 * @brief Returns specific component name of the system.
 	 * @note Override it to define a custom component of the system.
@@ -261,14 +243,18 @@ private:
 	bool isChanging = false;
 	#endif
 
+	static Manager* instance;
+
 	Manager(Manager&&) = default;
 	Manager(const Manager&) = default;
 	Manager& operator=(const Manager&) = default;
 public:
 	/**
 	 * @brief Initializes manager.
+	 * @param useSingleton set manager singleton instance
+	 * @throw runtime_error if manager singleton instance is already set.
 	 */
-	Manager();
+	Manager(bool useSingleton = true);
 	/**
 	 * @brief Terminates and destroys all manager systems.
 	 */
@@ -297,7 +283,7 @@ public:
 		isChanging = true;
 		#endif
 
-		auto system = new T(this, std::forward<Args>(args)...);
+		auto system = new T(std::forward<Args>(args)...);
 
 		auto componentType = system->getComponentType();
 		if (componentType != typeid(Component))
@@ -865,6 +851,12 @@ public:
 	 * @details Used to stop the update loop from some system.
 	 */
 	void stop() noexcept { running = false; }
+
+	/**
+	 * @brief Returns manager singleton instance.
+	 * @note You should set "useSingleton" on manager instance creation.
+	 */
+	static Manager* getInstance() noexcept { return instance; }
 };
 
 /***********************************************************************************************************************
@@ -880,8 +872,6 @@ class DoNotDestroySystem : public System
 {
 protected:
 	LinearPool<DoNotDestroyComponent, false> components;
-
-	DoNotDestroySystem(Manager* manager);
 
 	const string& getComponentName() const override;
 	type_index getComponentType() const override;
