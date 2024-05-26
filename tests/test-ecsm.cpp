@@ -25,15 +25,16 @@ class TestSystem final : public System
 {
 	LinearPool<TestComponent, false> components;
 
-	TestSystem(Manager* manager) : System(manager)
+	TestSystem()
 	{
+		auto manager = Manager::getInstance();
 		SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
 		SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
 	~TestSystem() final
 	{
-		auto manager = getManager();
+		auto manager = Manager::getInstance();
 		if (manager->isRunning())
 		{
 			UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
