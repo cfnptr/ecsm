@@ -330,7 +330,6 @@ class LinearPool
 	vector<ID<T>> garbageItems;
 
 	#ifndef NDEBUG
-	vector<bool> isAllocated;
 	uint64_t version = 0;
 	bool isChanging = false;
 	#endif
@@ -389,7 +388,6 @@ public:
 			item = T(std::forward<Args>(args)...);
 
 			#ifndef NDEBUG
-			isAllocated[*freeItem - 1] = true;
 			isChanging = false;
 			#endif
 
@@ -409,7 +407,6 @@ public:
 		items[occupancy] = T(std::forward<Args>(args)...);
 
 		#ifndef NDEBUG
-		isAllocated.push_back(true);
 		isChanging = false;
 		version++;
 		#endif
@@ -455,13 +452,13 @@ public:
 	{
 		assert(instance);
 		assert(*instance - 1 < occupancy);
-		assert(isAllocated[*instance - 1]);
 		#ifndef NDEBUG
 		return View(&items[*instance - 1], version);
 		#else
 		return View(&items[*instance - 1]);
 		#endif
 	}
+
 	/**
 	 * @brief Returns @ref ID of the item pointer.
 	 * 
@@ -538,7 +535,6 @@ public:
 		garbageItems = {};
 
 		#ifndef NDEBUG
-		isAllocated = {};
 		version = 0;
 		isChanging = false;
 		#endif
@@ -564,10 +560,7 @@ public:
 				auto index = *item - 1;
 				if (!items[index].destroy())
 					continue;
-
-				#ifndef NDEBUG
-				isAllocated[index] = false;
-				#endif					
+			
 				items[index] = T();
 				freeItems.push(item);
 				garbageItems.erase(garbageItems.begin() + i);
@@ -578,9 +571,6 @@ public:
 			for (auto item : garbageItems)
 			{
 				auto index = *item - 1;
-				#ifndef NDEBUG
-				isAllocated[index] = false;
-				#endif
 				items[index] = T();
 				freeItems.push(item);
 			}

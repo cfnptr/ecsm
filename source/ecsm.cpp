@@ -81,8 +81,7 @@ Manager::~Manager()
 	}
 
 	#ifndef NDEBUG
-	if (isChanging)
-		abort(); // Destruction of the systems inside other create/destroy is not allowed.
+	assert(!isChanging); // Destruction of the systems inside other create/destroy is not allowed.
 	isChanging = true;
 	#endif
 
