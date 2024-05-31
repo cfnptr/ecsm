@@ -33,6 +33,7 @@ var NAVTREE =
       [ "CMake targets", "index.html#cmake-targets", null ]
     ] ],
     [ "Cloning", "index.html#cloning-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
+    [ "Building", "index.html#building-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
     [ "Build instructions", "md__b_u_i_l_d_i_n_g.html", [
       [ "Operating Systems", "md__b_u_i_l_d_i_n_g.html#operating-systems", null ],
       [ "Windows (10/11)", "md__b_u_i_l_d_i_n_g.html#windows-1011", [
@@ -40,11 +41,11 @@ var NAVTREE =
         [ "Install Git", "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-git", null ],
         [ "Install CMake", "md__b_u_i_l_d_i_n_g.html#autotoc_md3-install-cmake", null ]
       ] ],
-      [ "Ubuntu (22.04 LTS)", "md__b_u_i_l_d_i_n_g.html#ubuntu-2204-lts", [
+      [ "Ubuntu (22.04/24.04)", "md__b_u_i_l_d_i_n_g.html#ubuntu-22042404", [
         [ "Install Visual Studio Code (Or any other IDE)", "md__b_u_i_l_d_i_n_g.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
         [ "Install required packages", "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-required-packages", null ]
       ] ],
-      [ "macOS (Ventura 13)", "md__b_u_i_l_d_i_n_g.html#macos-ventura-13", [
+      [ "macOS (13/14)", "md__b_u_i_l_d_i_n_g.html#macos-1314", [
         [ "Install Xcode (Or any other IDE)", "md__b_u_i_l_d_i_n_g.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
         [ "Install required packages", "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-required-packages-1", null ]
       ] ],

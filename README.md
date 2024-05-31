@@ -125,3 +125,8 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 ```
 git clone https://github.com/cfnptr/ecsm
 ```
+
+## Building ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
+
+* Windows: ```./scripts/build-release.bat```
+* macOS / Ubuntu: ```./scripts/build-release.sh```
