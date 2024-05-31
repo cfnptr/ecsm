@@ -120,7 +120,7 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 | ecsm-static | Static ECSM library  | `.lib`  | `.a`     | `.a`  |
 | ecsm-shared | Dynamic ECSM library | `.dll`  | `.dylib` | `.so` |
 
-## Cloning ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
+## Cloning
 
 ```
 git clone https://github.com/cfnptr/ecsm
