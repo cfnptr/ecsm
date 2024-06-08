@@ -873,14 +873,15 @@ class DoNotDestroySystem : public System
 protected:
 	LinearPool<DoNotDestroyComponent, false> components;
 
-	const string& getComponentName() const override;
-	type_index getComponentType() const override;
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
 	View<Component> getComponent(ID<Component> instance) override;
-	void disposeComponents() override;
 
 	friend class ecsm::Manager;
+public:
+	const string& getComponentName() const override;
+	type_index getComponentType() const override;
+	void disposeComponents() override;
 };
 
 } // namespace ecsm

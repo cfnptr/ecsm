@@ -482,15 +482,6 @@ void Manager::start()
 }
 
 //**********************************************************************************************************************
-const string& DoNotDestroySystem::getComponentName() const
-{
-	static const string name = "Do Not Destroy";
-	return name;
-}
-type_index DoNotDestroySystem::getComponentType() const
-{
-	return typeid(DoNotDestroyComponent);
-}
 ID<Component> DoNotDestroySystem::createComponent(ID<Entity> entity)
 {
 	return ID<Component>(components.create());
@@ -502,5 +493,15 @@ void DoNotDestroySystem::destroyComponent(ID<Component> instance)
 View<Component> DoNotDestroySystem::getComponent(ID<Component> instance)
 {
 	return View<Component>(components.get(ID<DoNotDestroyComponent>(instance)));
+}
+
+const string& DoNotDestroySystem::getComponentName() const
+{
+	static const string name = "Do Not Destroy";
+	return name;
+}
+type_index DoNotDestroySystem::getComponentType() const
+{
+	return typeid(DoNotDestroyComponent);
 }
 void DoNotDestroySystem::disposeComponents() { components.dispose(); }

@@ -43,15 +43,6 @@ class TestSystem final : public System
 		}
 	}
 
-	const string& getComponentName() const final
-	{
-		static const string name = "Test";
-		return name;
-	}
-	type_index getComponentType() const final
-	{
-		return typeid(TestComponent);
-	}
 	ID<Component> createComponent(ID<Entity> entity) final
 	{
 		return ID<Component>(components.create());
@@ -64,7 +55,6 @@ class TestSystem final : public System
 	{
 		return View<Component>(components.get(ID<TestComponent>(instance)));
 	}
-	void disposeComponents() final { components.dispose(); }
 
 	void init()
 	{
@@ -84,6 +74,17 @@ public:
 	int updateCounter = 0;
 	int postUpdateCounter = 0;
 	bool isInitialized = false;
+
+	const string& getComponentName() const final
+	{
+		static const string name = "Test";
+		return name;
+	}
+	type_index getComponentType() const final
+	{
+		return typeid(TestComponent);
+	}
+	void disposeComponents() final { components.dispose(); }
 };
 
 //**********************************************************************************************************************

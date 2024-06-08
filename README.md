@@ -43,20 +43,6 @@ class PhysicsSystem final : public System
             UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 
-    void update()
-    {
-        // Process components...
-    }
-
-    const string& getComponentName() const final
-    {
-        static const string name = "Rigid Body";
-        return name;
-    }
-    type_index getComponentType() const final
-    {
-        return typeid(RigidBodyComponent);
-    }
     ID<Component> createComponent(ID<Entity> entity) final
     {
         return ID<Component>(components.create());
@@ -69,9 +55,24 @@ class PhysicsSystem final : public System
     {
         return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
     }
-    void disposeComponents() final { components.dispose(); }
+
+    void update()
+    {
+        // Process components...
+    }
 
     friend class ecsm::Manager;
+public:
+    const string& getComponentName() const final
+    {
+        static const string name = "Rigid Body";
+        return name;
+    }
+    type_index getComponentType() const final
+    {
+        return typeid(RigidBodyComponent);
+    }
+    void disposeComponents() final { components.dispose(); }
 };
 
 void ecsmExample()
