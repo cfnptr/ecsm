@@ -57,13 +57,13 @@ Manager* Manager::instance = nullptr;
 
 Manager::Manager(bool useSingleton)
 {
-	auto name = "PreInit"; events.emplace(name, new Event(name));
-	name = "Init"; events.emplace(name, new Event(name));
-	name = "PostInit"; events.emplace(name, new Event(name));
-	name = "Update"; events.emplace(name, new Event(name));
-	name = "PreDeinit"; events.emplace(name, new Event(name));
-	name = "Deinit"; events.emplace(name, new Event(name));
-	name = "PostDeinit"; events.emplace(name, new Event(name));
+	auto name = "PreInit"; events.emplace(std::move(name), new Event(name));
+	name = "Init"; events.emplace(std::move(name), new Event(name));
+	name = "PostInit"; events.emplace(std::move(name), new Event(name));
+	name = "Update"; events.emplace(std::move(name), new Event(name));
+	name = "PreDeinit"; events.emplace(std::move(name), new Event(name));
+	name = "Deinit"; events.emplace(std::move(name), new Event(name));
+	name = "PostDeinit"; events.emplace(std::move(name), new Event(name));
 	orderedEvents.push_back(events["Update"]);
 
 	if (useSingleton)
