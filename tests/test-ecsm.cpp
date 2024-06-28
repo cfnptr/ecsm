@@ -51,9 +51,12 @@ class TestSystem final : public System
 	{
 		components.destroy(ID<TestComponent>(instance));
 	}
-	View<Component> getComponent(ID<Component> instance) final
+	void copyComponent(ID<Component> source, ID<Component> destination) final
 	{
-		return View<Component>(components.get(ID<TestComponent>(instance)));
+		const auto sourceView = components.get(ID<TestComponent>(source));
+		auto destinationView = components.get(ID<TestComponent>(destination));
+		destinationView->ID = sourceView->ID;
+		destinationView->someData = sourceView->someData;
 	}
 
 	void init()
@@ -63,6 +66,18 @@ class TestSystem final : public System
 	void update()
 	{
 		updateCounter++;
+
+		auto componentData = components.getData();
+		auto occupancy = components.getOccupancy();
+
+		for (uint32_t i = 0; i < occupancy; i++)
+		{
+			auto& component = componentData[i];
+			if (component.ID == 0) // Skip unallocated components
+				continue;
+
+			component.ID++;
+		}
 	}
 	void postUpdate()
 	{
@@ -84,67 +99,149 @@ public:
 	{
 		return typeid(TestComponent);
 	}
-	void disposeComponents() final { components.dispose(); }
+	View<Component> getComponent(ID<Component> instance) final
+	{
+		return View<Component>(components.get(ID<TestComponent>(instance)));
+	}
+	void disposeComponents() final
+	{
+		components.dispose();
+	}
 };
 
 //**********************************************************************************************************************
-int main()
+static void testCommonFlow()
 {
 	Manager manager;
 
 	manager.registerEventAfter("PostUpdate", "Update");
 
 	if (manager.has<TestSystem>())
-		throw runtime_error("Found bad test system.");
+		throw runtime_error("Test system is not yet created.");
 
 	manager.createSystem<TestSystem>();
 
 	if (!manager.has<TestSystem>())
-		throw runtime_error("No added test system.");
-	
+		throw runtime_error("No created test system found.");
+
 	auto system = manager.get<TestSystem>();
 
 	if (system->isInitialized != false)
-		throw runtime_error("Test system is initialized.");
+		throw runtime_error("Test system is already initialized.");
 
 	manager.initialize();
-	
+
 	if (system->isInitialized != true)
 		throw runtime_error("Test system is not initialized.");
 
-	auto baseSystem = (System*)system;
+	auto baseSystem = dynamic_cast<System*>(system);
+
 	if (baseSystem->getComponentName() != "Test")
-		throw runtime_error("Bad system component name.");
+		throw runtime_error("Bad test system component name.");
+	if (baseSystem->getComponentType() != typeid(TestComponent))
+		throw runtime_error("Bad test system component type.");
 
 	auto testEntity = manager.createEntity();
 
 	if (manager.has<TestComponent>(testEntity))
-		throw runtime_error("Found bad test component.");
+		throw runtime_error("Test component is not yet created.");
 
 	auto testComponent = manager.add<TestComponent>(testEntity);
 	testComponent->ID = 1;
 	testComponent->someData = 123.456f;
 
 	if (!manager.has<TestComponent>(testEntity))
-		throw runtime_error("No added test component.");
+		throw runtime_error("No created test component found.");
 
 	testComponent = manager.get<TestComponent>(testEntity);
 
 	if (testComponent->ID != 1 || testComponent->someData != 123.456f)
-		throw runtime_error("Bad test component data.");
+		throw runtime_error("Bad test component data before update.");
 
 	if (system->updateCounter != 0 || system->postUpdateCounter != 0)
-		throw runtime_error("Bad test system data.");
+		throw runtime_error("Bad test system data before update.");
 
 	manager.update();
 
 	if (system->updateCounter != 1 || system->postUpdateCounter != 2)
-		throw runtime_error("Bad test system data.");
+		throw runtime_error("Bad test system data after update.");
+
+	testComponent = manager.get<TestComponent>(testEntity);
+
+	if (testComponent->ID != 2)
+		throw runtime_error("Bad test component data after update.");
 
 	manager.remove<TestComponent>(testEntity);
 
 	if (manager.has<TestComponent>(testEntity))
-		throw runtime_error("Found bad test component.");
+		throw runtime_error("Test component is not destroyed.");
+
+	manager.destroySystem<TestSystem>();
+
+	if (manager.has<TestSystem>())
+		throw runtime_error("Test system is not destroyed.");
 
 	manager.unregisterEvent("PostUpdate");
+}
+
+//**********************************************************************************************************************
+static void testEntityAllocation()
+{
+	auto manager = new Manager();
+	manager->registerEventAfter("PostUpdate", "Update");
+	manager->createSystem<TestSystem>();
+
+	const uint32_t entityCount = 123;
+	ID<Entity> thirdEntity = {};
+
+	for (uint32_t i = 0; i < entityCount; i++)
+	{
+		auto entity = manager->createEntity();
+		auto testComponent = manager->add<TestComponent>(entity);
+		testComponent->ID = i;
+		testComponent->someData = rand();
+
+		if (i == 2)
+			thirdEntity = entity;
+	}
+
+	auto testComponent = manager->get<TestComponent>(thirdEntity);
+
+	if (testComponent->ID != 2)
+		throw runtime_error("Bad test component ID.");
+
+	manager->destroy(thirdEntity);
+	delete manager;
+}
+
+//**********************************************************************************************************************
+static void testComponentCopy()
+{
+	auto manager = new Manager();
+	manager->registerEventAfter("PostUpdate", "Update");
+	manager->createSystem<TestSystem>();
+
+	auto firstEntity = manager->createEntity();
+	auto secondEntity = manager->createEntity();
+	auto firstComponent = manager->add<TestComponent>(firstEntity);
+	firstComponent->ID = 12345;
+	auto secondComponent = manager->add<TestComponent>(secondEntity);
+	secondComponent->ID = 54321;
+
+	manager->copy<TestComponent>(firstEntity, secondEntity);
+
+	secondComponent = manager->get<TestComponent>(secondEntity);
+	if (secondComponent->ID != 12345)
+		throw runtime_error("Bad second test component ID.");
+
+	delete manager;
+}
+
+//**********************************************************************************************************************
+int main()
+{
+	testCommonFlow();
+	testEntityAllocation();
+	testComponentCopy();
+	// TODO: test Ref<> and other manager functions
 }

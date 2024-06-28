@@ -32,7 +32,7 @@ var NAVTREE =
       [ "CMake options", "index.html#cmake-options", null ],
       [ "CMake targets", "index.html#cmake-targets", null ]
     ] ],
-    [ "Cloning", "index.html#cloning-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
+    [ "Cloning", "index.html#cloning", null ],
     [ "Building", "index.html#building-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
     [ "Build instructions", "md__b_u_i_l_d_i_n_g.html", [
       [ "Operating Systems", "md__b_u_i_l_d_i_n_g.html#operating-systems", null ],

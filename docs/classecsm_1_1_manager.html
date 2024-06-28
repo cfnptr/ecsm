@@ -174,6 +174,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a24234410165eb665d5b8e3516f7f74ad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a24234410165eb665d5b8e3516f7f74ad">remove</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity)</td></tr>
 <tr class="memdesc:a24234410165eb665d5b8e3516f7f74ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes component from the entity.  <br /></td></tr>
 <tr class="separator:a24234410165eb665d5b8e3516f7f74ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac948b954e47acd3aa0deafb63777e8ed" id="r_ac948b954e47acd3aa0deafb63777e8ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac948b954e47acd3aa0deafb63777e8ed">copy</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; source, <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; destination, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> componentType)</td></tr>
+<tr class="memdesc:ac948b954e47acd3aa0deafb63777e8ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source entity to destination.  <br /></td></tr>
+<tr class="separator:ac948b954e47acd3aa0deafb63777e8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57bb9c027d24036d301067568f20b6a5" id="r_a57bb9c027d24036d301067568f20b6a5"><td class="memTemplParams" colspan="2">template&lt;class T  = Component&gt; </td></tr>
+<tr class="memitem:a57bb9c027d24036d301067568f20b6a5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a57bb9c027d24036d301067568f20b6a5">copy</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; source, <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; destination)</td></tr>
+<tr class="memdesc:a57bb9c027d24036d301067568f20b6a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source entity to destination.  <br /></td></tr>
+<tr class="separator:a57bb9c027d24036d301067568f20b6a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab64351c27cb6b33f9164fec1a4e0c8e1" id="r_ab64351c27cb6b33f9164fec1a4e0c8e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab64351c27cb6b33f9164fec1a4e0c8e1">duplicate</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity)</td></tr>
+<tr class="memdesc:ab64351c27cb6b33f9164fec1a4e0c8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a duplicate of specified entity.  <br /></td></tr>
+<tr class="separator:ab64351c27cb6b33f9164fec1a4e0c8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1562eaca9fc08e894f8cf1d09964bed6" id="r_a1562eaca9fc08e894f8cf1d09964bed6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1562eaca9fc08e894f8cf1d09964bed6">has</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a> componentType) const noexcept</td></tr>
 <tr class="memdesc:a1562eaca9fc08e894f8cf1d09964bed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if entity has target component.  <br /></td></tr>
 <tr class="separator:a1562eaca9fc08e894f8cf1d09964bed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1006,6 +1016,127 @@ template&lt;class T  = Component&gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">runtime_error</td><td>if component is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac948b954e47acd3aa0deafb63777e8ed" name="ac948b954e47acd3aa0deafb63777e8ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac948b954e47acd3aa0deafb63777e8ed">&#9670;&#160;</a></span>copy() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>source</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies component data from source entity to destination. </p>
+<p>See the <a class="el" href="#a57bb9c027d24036d301067568f20b6a5">copy&lt;T&gt;(ID&lt;Entity&gt; source, ID&lt;Entity&gt; destination)</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>copy from entity instance </td></tr>
+    <tr><td class="paramname">destination</td><td>copy to entity instance </td></tr>
+    <tr><td class="paramname">componentType</td><td>target component typeid()</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if source or destination component is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a57bb9c027d24036d301067568f20b6a5" name="a57bb9c027d24036d301067568f20b6a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57bb9c027d24036d301067568f20b6a5">&#9670;&#160;</a></span>copy() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T  = Component&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>source</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies component data from source entity to destination. </p>
+<p><a class="el" href="structecsm_1_1_component.html" title="Base component structure.">Component</a> data copying is handled by the <a class="el" href="classecsm_1_1_system.html">System</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>copy from entity instance </td></tr>
+    <tr><td class="paramname">destination</td><td>copy to entity instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target component type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">runtime_error</td><td>if source or destination component is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab64351c27cb6b33f9164fec1a4e0c8e1" name="ab64351c27cb6b33f9164fec1a4e0c8e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab64351c27cb6b33f9164fec1a4e0c8e1">&#9670;&#160;</a></span>duplicate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; duplicate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a duplicate of specified entity. </p>
+<p><a class="el" href="structecsm_1_1_component.html" title="Base component structure.">Component</a> data copying is handled by the <a class="el" href="classecsm_1_1_system.html">System</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>target entity instance to duplicate from </td></tr>
   </table>
   </dd>
 </dl>
@@ -2251,7 +2382,7 @@ template&lt;class T  = Component&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_manager.html">Manager</a></li>
-    <li class="footer">Generated on Fri May 31 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+    <li class="footer">Generated on Fri Jun 28 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
 </body>

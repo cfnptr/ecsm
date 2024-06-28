@@ -25,10 +25,11 @@ void System::destroyComponent(ID<Component> instance)
 {
 	throw runtime_error("System has no components.");
 }
-View<Component> System::getComponent(ID<Component> instance)
+void System::copyComponent(ID<Component> source, ID<Component> destination)
 {
 	throw runtime_error("System has no components.");
 }
+
 const string& System::getComponentName() const
 {
 	static const string name = "";
@@ -38,7 +39,14 @@ type_index System::getComponentType() const
 {
 	return typeid(Component);
 }
-void System::disposeComponents() { }
+View<Component> System::getComponent(ID<Component> instance)
+{
+	return {};
+}
+void System::disposeComponents()
+{
+	return;
+}
 
 //**********************************************************************************************************************
 bool Entity::destroy()
@@ -111,7 +119,7 @@ void Manager::destroySystem(type_index type)
 	#endif
 
 	auto result = systems.find(type);
-	if (result != systems.end())
+	if (result == systems.end())
 		throw runtime_error("System is not created. (name: " + typeToString(type) + ")");
 
 	if (running)
@@ -172,9 +180,9 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	auto system = result->second;
 	auto component = system->createComponent(entity);
 	auto componentView = system->getComponent(component);
-	auto entityView = entities.get(entity);
 	componentView->entity = entity;
 
+	auto entityView = entities.get(entity);
 	if (!entityView->components.emplace(componentType, make_pair(system, component)).second)
 	{
 		throw runtime_error("Component is already added to the entity. ("
@@ -188,7 +196,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 { 
 	assert(entity);
 	auto entityView = entities.get(entity);
-	auto& components = entityView->components;
+	const auto& components = entityView->components;
 	auto iterator = components.find(componentType);
 
 	if (iterator == components.end())
@@ -205,9 +213,57 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 			"name: " + typeToString(componentType) + 
 			"entity: " + to_string(*entity) + ")");
 	}
+}
+void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index componentType)
+{
+	assert(source);
+	assert(destination);
 
-	auto pair = iterator->second;
-	pair.first->destroyComponent(pair.second);
+	const auto sourceView = entities.get(source);
+	auto destinationView = entities.get(destination);
+	auto sourceIter = sourceView->components.find(componentType);
+	auto destinationIter = destinationView->components.find(componentType);
+
+	if (sourceIter == sourceView->components.end())
+	{
+		throw runtime_error("Source component is not added. ("
+			"name: " + typeToString(componentType) +
+			"entity:" + to_string(*source) + ")");
+	}
+	if (destinationIter == destinationView->components.end())
+	{
+		throw runtime_error("Destination component is not added. ("
+			"name: " + typeToString(componentType) +
+			"entity:" + to_string(*destination) + ")");
+	}
+
+	sourceIter->second.first->copyComponent(sourceIter->second.second, destinationIter->second.second);
+}
+ID<Entity> Manager::duplicate(ID<Entity> entity)
+{
+	auto duplicateEntity = entities.create();
+	auto entityView = entities.get(entity);
+	const auto& components = entityView->components;
+
+	for (const auto& pair : components)
+	{
+		auto system = pair.second.first;
+		auto component = system->createComponent(duplicateEntity);
+		auto componentView = system->getComponent(component);
+		componentView->entity = duplicateEntity;
+
+		system->copyComponent(pair.second.second, component);
+
+		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
+		if (!duplicateView->components.emplace(pair.first, make_pair(system, component)).second)
+		{
+			throw runtime_error("Component is already added to the entity. ("
+				"name: " + typeToString(pair.first) +
+				"entity:" + to_string(*entity) + ")");
+		}
+	}
+
+	return duplicateEntity;
 }
 
 //**********************************************************************************************************************
@@ -358,7 +414,7 @@ void Manager::runEvent(const string& name)
 		throw runtime_error("Event is not registered. (name: " + name + ")");
 
 	const auto& subscribers = result->second->subscribers;
-	for (auto& onEvent : subscribers)
+	for (const auto& onEvent : subscribers)
 		onEvent();
 }
 void Manager::runOrderedEvents()
@@ -366,7 +422,7 @@ void Manager::runOrderedEvents()
 	for (auto event : orderedEvents)
 	{
 		const auto& subscribers = event->subscribers;
-		for (auto& onEvent : subscribers)
+		for (const auto& onEvent : subscribers)
 			onEvent();
 	}
 }
@@ -456,21 +512,22 @@ void Manager::update()
 
 	runOrderedEvents();
 
-	for (auto& pair : garbageComponents)
+	for (const auto& garbagePair : garbageComponents)
 	{
-		auto entity = entities.get(pair.second);
-		auto result = entity->components.erase(pair.first);
-		assert(result == 1); // Corrupted entity component destruction order.
+		auto entityView = entities.get(garbagePair.second);
+		auto& components = entityView->components;
+		auto iterator = components.find(garbagePair.first);
+		assert(iterator != components.end()); // Corrupted entity component destruction order.
+		auto pair = iterator->second;
+		pair.first->destroyComponent(pair.second);
+		auto result = components.erase(iterator);
 	}
 	garbageComponents.clear();
 
 	entities.dispose();
 
 	for (const auto& pair : systems)
-	{
-		auto system = pair.second;
-		system->disposeComponents();
-	}
+		pair.second->disposeComponents();
 }
 void Manager::start()
 {
@@ -490,9 +547,9 @@ void DoNotDestroySystem::destroyComponent(ID<Component> instance)
 { 
 	components.destroy(ID<DoNotDestroyComponent>(instance));
 }
-View<Component> DoNotDestroySystem::getComponent(ID<Component> instance)
+void DoNotDestroySystem::copyComponent(ID<Component> source, ID<Component> destination)
 {
-	return View<Component>(components.get(ID<DoNotDestroyComponent>(instance)));
+	return;
 }
 
 const string& DoNotDestroySystem::getComponentName() const
@@ -504,4 +561,43 @@ type_index DoNotDestroySystem::getComponentType() const
 {
 	return typeid(DoNotDestroyComponent);
 }
-void DoNotDestroySystem::disposeComponents() { components.dispose(); }
+View<Component> DoNotDestroySystem::getComponent(ID<Component> instance)
+{
+	return View<Component>(components.get(ID<DoNotDestroyComponent>(instance)));
+}
+void DoNotDestroySystem::disposeComponents()
+{
+	components.dispose();
+}
+
+//**********************************************************************************************************************
+ID<Component> DoNotDuplicateSystem::createComponent(ID<Entity> entity)
+{
+	return ID<Component>(components.create());
+}
+void DoNotDuplicateSystem::destroyComponent(ID<Component> instance)
+{
+	components.destroy(ID<DoNotDuplicateComponent>(instance));
+}
+void DoNotDuplicateSystem::copyComponent(ID<Component> source, ID<Component> destination)
+{
+	return;
+}
+
+const string& DoNotDuplicateSystem::getComponentName() const
+{
+	static const string name = "Do Not Duplicate";
+	return name;
+}
+type_index DoNotDuplicateSystem::getComponentType() const
+{
+	return typeid(DoNotDuplicateComponent);
+}
+View<Component> DoNotDuplicateSystem::getComponent(ID<Component> instance)
+{
+	return View<Component>(components.get(ID<DoNotDuplicateComponent>(instance)));
+}
+void DoNotDuplicateSystem::disposeComponents()
+{
+	components.dispose();
+}

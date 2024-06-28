@@ -55,6 +55,12 @@ class PhysicsSystem final : public System
     {
         return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
     }
+    void copyComponent(ID<Component> source, ID<Component> destination) final
+    {
+        const auto sourceView = components.get(ID<RigidBodyComponent>(source));
+        auto destinationView = components.get(ID<RigidBodyComponent>(destination));
+        destinationView->size = sourceView->size;
+    }
 
     void update()
     {
@@ -72,7 +78,10 @@ public:
     {
         return typeid(RigidBodyComponent);
     }
-    void disposeComponents() final { components.dispose(); }
+    void disposeComponents() final
+    {
+        components.dispose();
+    }
 };
 
 void ecsmExample()

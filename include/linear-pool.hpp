@@ -226,7 +226,7 @@ private:
 	ID<T> item = {};
 public:
 	Ref() = default;
-	Ref(ID<T> item)
+	explicit Ref(ID<T> item)
 	{
 		if (item)
 			counter = new atomic<int64_t>(1);
@@ -236,55 +236,64 @@ public:
 	{
 		if (!item)
 			return;
-
 		auto count = counter->fetch_sub(1);
-		assert(count >= 1);
-		if (count > 1)
-			return;
-		delete counter;
+		if (count == 1)
+			delete counter;
 	}
 
-	Ref(const Ref& ref)
+	Ref(const Ref& ref) noexcept
 	{
-    	if (!ref.counter)
+    	if (!ref.item)
 			return;
-		counter = ref.counter;
-		counter->fetch_add(1);
-		item = ref.item;
-	}
-	Ref& operator=(const Ref& ref)
-	{
-		if (item)
-		{
-			auto count = counter->fetch_sub(1);
-			assert(count >= 1);
-			if (count <= 1)
-				delete counter;
-		}
-
+		ref.counter->fetch_add(1);
 		counter = ref.counter;
 		item = ref.item;
-		if (counter)
-			counter->fetch_add(1);
-		return *this;
 	}
-
-	Ref(Ref&& ref)
+	Ref(Ref&& ref) noexcept
 	{
 		counter = ref.counter;
 		item = ref.item;
 		ref.counter = nullptr;
 		ref.item = ID<T>();
+	}
+
+	Ref& operator=(const Ref& ref) noexcept
+	{
+		if (this != &ref)
+		{
+			if (item)
+			{
+				auto count = counter->fetch_sub(1);
+				if (count == 1)
+					delete counter;
+			}
+
+			if (ref.item)
+				ref.counter->fetch_add(1);
+			counter = ref.counter;
+			item = ref.item;
+		}
+		return *this;
 	}
 	Ref& operator=(Ref&& ref) noexcept
 	{
-		counter = ref.counter;
-		item = ref.item;
-		ref.counter = nullptr;
-		ref.item = ID<T>();
+		if (this != &ref)
+		{
+			if (item)
+			{
+				auto count = counter->fetch_sub(1);
+				if (count == 1)
+					delete counter;
+			}
+
+			counter = ref.counter;
+			item = ref.item;
+			ref.counter = nullptr;
+			ref.item = ID<T>();
+		}
 		return *this;
 	}
-	
+
 	/**
 	 * @brief Returns item @ref ID.
 	 */

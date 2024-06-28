@@ -39,6 +39,7 @@ class Entity;
 struct Component;
 class System;
 class Manager;
+class SystemExt;
 
 /**
  * @brief Returns @ref type_index string representation.
@@ -119,21 +120,25 @@ protected:
 	/**
 	 * @brief Creates a new component instance for the entity.
 	 * @details You should use @ref Manager to add components to the entity.
+	 * @note Override it to define a custom component of the system.
 	 */
 	virtual ID<Component> createComponent(ID<Entity> entity);
 	/**
 	 * @brief Destroys component instance.
 	 * @details You should use @ref Manager to remove components from the entity.
+	 * @note Override it to define a custom component of the system.
 	 */
 	virtual void destroyComponent(ID<Component> instance);
 	/**
-	 * @brief Returns specific component @ref View.
-	 * @details You should use @ref Manager to get components of the entity.
+	 * @brief Copies component data from source to destination.
+	 * @details You should use @ref Manager to copy component data of entities.
+	 * @note Override it to define a custom component of the system.
 	 */
-	virtual View<Component> getComponent(ID<Component> instance);
+	virtual void copyComponent(ID<Component> source, ID<Component> destination);
 
 	friend class Entity;
 	friend class Manager;
+	friend class SystemExt;
 public:
 	/**
 	 * @brief Returns specific component name of the system.
@@ -145,6 +150,11 @@ public:
 	 * @note Override it to define a custom component of the system.
 	 */
 	virtual type_index getComponentType() const;
+	/**
+	 * @brief Returns specific component @ref View.
+	 * @note Override it to define a custom component of the system.
+	 */
+	virtual View<Component> getComponent(ID<Component> instance);
 	/**
 	 * @brief Actually destroys components.
 	 * @details Components are not destroyed immediately, only after the dispose call.
@@ -491,6 +501,41 @@ public:
 		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		remove(entity, typeid(T));
 	}
+
+	/*******************************************************************************************************************
+	 * @brief Copies component data from source entity to destination.
+	 * @details See the @ref copy<T>(ID<Entity> source, ID<Entity> destination).
+	 *
+	 * @param source copy from entity instance
+	 * @param destination copy to entity instance
+	 * @param componentType target component typeid()
+	 *
+	 * @throw runtime_error if source or destination component is not found.
+	 */
+	void copy(ID<Entity> source, ID<Entity> destination, type_index componentType);
+	/**
+	 * @brief Copies component data from source entity to destination.
+	 * @details Component data copying is handled by the @ref System.
+	 *
+	 * @param source copy from entity instance
+	 * @param destination copy to entity instance
+	 * @tparam T target component type
+	 *
+	 * @throw runtime_error if source or destination component is not found.
+	 */
+	template<class T = Component>
+	void copy(ID<Entity> source, ID<Entity> destination)
+	{
+		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		copy(source, destination, typeid(T));
+	}
+
+	/**
+	 * @brief Creates a duplicate of specified entity.
+	 * @details Component data copying is handled by the @ref System.
+	 * @param entity target entity instance to duplicate from
+	 */
+	ID<Entity> duplicate(ID<Entity> entity);
 
 	/*******************************************************************************************************************
 	 * @brief Returns true if entity has target component.
@@ -875,12 +920,71 @@ protected:
 
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
-	View<Component> getComponent(ID<Component> instance) override;
+	void copyComponent(ID<Component> source, ID<Component> destination) override;
 
 	friend class ecsm::Manager;
 public:
+	/**
+	 * @brief Returns specific component name of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
 	const string& getComponentName() const override;
+	/**
+	 * @brief Returns specific component typeid() of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
 	type_index getComponentType() const override;
+	/**
+	 * @brief Returns specific component @ref View.
+	 * @note Override it to define a custom component of the system.
+	 */
+	View<Component> getComponent(ID<Component> instance) override;
+	/**
+	 * @brief Actually destroys components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeComponents() override;
+};
+
+/***********************************************************************************************************************
+ * @brief Component indicating that this entity should not be duplicated.
+ * @details Useful in cases when we need to mark important entities like main camera.
+ */
+struct DoNotDuplicateComponent : public Component { };
+
+/**
+ * @brief Handles entities that should not be duplicated.
+ */
+class DoNotDuplicateSystem : public System
+{
+protected:
+	LinearPool<DoNotDuplicateComponent, false> components;
+
+	ID<Component> createComponent(ID<Entity> entity) override;
+	void destroyComponent(ID<Component> instance) override;
+	void copyComponent(ID<Component> source, ID<Component> destination) override;
+
+	friend class ecsm::Manager;
+public:
+	/**
+	 * @brief Returns specific component name of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
+	const string& getComponentName() const override;
+	/**
+	 * @brief Returns specific component typeid() of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
+	type_index getComponentType() const override;
+	/**
+	 * @brief Returns specific component @ref View.
+	 * @note Override it to define a custom component of the system.
+	 */
+	View<Component> getComponent(ID<Component> instance) override;
+	/**
+	 * @brief Actually destroys components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
 	void disposeComponents() override;
 };
 

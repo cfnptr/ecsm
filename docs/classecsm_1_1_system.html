@@ -80,6 +80,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1029e9005d4b9a469cc4b21f39521c24" id="r_a1029e9005d4b9a469cc4b21f39521c24"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1029e9005d4b9a469cc4b21f39521c24">getComponentType</a> () const</td></tr>
 <tr class="memdesc:a1029e9005d4b9a469cc4b21f39521c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:a1029e9005d4b9a469cc4b21f39521c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa19be9a00b0a94fd6528d20b0393f80" id="r_afa19be9a00b0a94fd6528d20b0393f80"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa19be9a00b0a94fd6528d20b0393f80">getComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance)</td></tr>
+<tr class="memdesc:afa19be9a00b0a94fd6528d20b0393f80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component <a class="el" href="structecsm_1_1_view.html">View</a>.  <br /></td></tr>
+<tr class="separator:afa19be9a00b0a94fd6528d20b0393f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad10850018caf219d629f145a07e4835b" id="r_ad10850018caf219d629f145a07e4835b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad10850018caf219d629f145a07e4835b">disposeComponents</a> ()</td></tr>
 <tr class="memdesc:ad10850018caf219d629f145a07e4835b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually destroys components.  <br /></td></tr>
 <tr class="separator:ad10850018caf219d629f145a07e4835b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -95,9 +98,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a17987f74255606e05dfe807900b72e84" id="r_a17987f74255606e05dfe807900b72e84"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17987f74255606e05dfe807900b72e84">destroyComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance)</td></tr>
 <tr class="memdesc:a17987f74255606e05dfe807900b72e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys component instance.  <br /></td></tr>
 <tr class="separator:a17987f74255606e05dfe807900b72e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa19be9a00b0a94fd6528d20b0393f80" id="r_afa19be9a00b0a94fd6528d20b0393f80"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa19be9a00b0a94fd6528d20b0393f80">getComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance)</td></tr>
-<tr class="memdesc:afa19be9a00b0a94fd6528d20b0393f80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component <a class="el" href="structecsm_1_1_view.html">View</a>.  <br /></td></tr>
-<tr class="separator:afa19be9a00b0a94fd6528d20b0393f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2376f95715cec4f404da3085dfdd3c" id="r_ada2376f95715cec4f404da3085dfdd3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada2376f95715cec4f404da3085dfdd3c">copyComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; source, <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; destination)</td></tr>
+<tr class="memdesc:ada2376f95715cec4f404da3085dfdd3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source to destination.  <br /></td></tr>
+<tr class="separator:ada2376f95715cec4f404da3085dfdd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -107,6 +110,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
 <tr class="memitem:adddd5c43ff870a047aa66db4edf82a7e" id="r_adddd5c43ff870a047aa66db4edf82a7e"><td class="memItemLeft" align="right" valign="top"><a id="adddd5c43ff870a047aa66db4edf82a7e" name="adddd5c43ff870a047aa66db4edf82a7e"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr>
 <tr class="separator:adddd5c43ff870a047aa66db4edf82a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b09e9e8f229c2d2ec8e8e66c3886c76" id="r_a9b09e9e8f229c2d2ec8e8e66c3886c76"><td class="memItemLeft" align="right" valign="top"><a id="a9b09e9e8f229c2d2ec8e8e66c3886c76" name="a9b09e9e8f229c2d2ec8e8e66c3886c76"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SystemExt</b></td></tr>
+<tr class="separator:a9b09e9e8f229c2d2ec8e8e66c3886c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base system class. </p>
@@ -165,9 +171,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 </div><div class="memdoc">
 
 <p>Creates a new component instance for the entity. </p>
-<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to add components to the entity. </p>
+<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to add components to the entity. </p><dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#aa37ec66feb512fdef66a275d6564d07a">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#aa37ec66feb512fdef66a275d6564d07a">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#aa37ec66feb512fdef66a275d6564d07a">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -195,14 +201,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 </div><div class="memdoc">
 
 <p>Destroys component instance. </p>
-<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to remove components from the entity. </p>
+<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to remove components from the entity. </p><dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#aa9cc7ca25f3e4129b2a9103eef8e4268">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#aa9cc7ca25f3e4129b2a9103eef8e4268">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#aa9cc7ca25f3e4129b2a9103eef8e4268">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
-<a id="afa19be9a00b0a94fd6528d20b0393f80" name="afa19be9a00b0a94fd6528d20b0393f80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa19be9a00b0a94fd6528d20b0393f80">&#9670;&#160;</a></span>getComponent()</h2>
+<a id="ada2376f95715cec4f404da3085dfdd3c" name="ada2376f95715cec4f404da3085dfdd3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2376f95715cec4f404da3085dfdd3c">&#9670;&#160;</a></span>copyComponent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,10 +217,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; getComponent </td>
+          <td class="memname">virtual void copyComponent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>instance</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>source</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -224,10 +234,10 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 </table>
 </div><div class="memdoc">
 
-<p>Returns specific component <a class="el" href="structecsm_1_1_view.html">View</a>. </p>
-<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to get components of the entity. </p>
+<p>Copies component data from source to destination. </p>
+<p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to copy component data of entities. </p><dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#a09648fafd1c95e62c2030c6349b3c1ca">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ab53878515f8139aee1e415f9b71b53e6">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#ab53878515f8139aee1e415f9b71b53e6">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -257,7 +267,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 <p>Returns specific component name of the system. </p>
 <dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ab49a5ceb3e8b52b0d8dee8536065bf78">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ab49a5ceb3e8b52b0d8dee8536065bf78">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#ab49a5ceb3e8b52b0d8dee8536065bf78">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -287,7 +297,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 <p>Returns specific component typeid() of the system. </p>
 <dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#a15f685a091c911eaa1286d7a5b0d3236">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#a15f685a091c911eaa1286d7a5b0d3236">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#a15f685a091c911eaa1286d7a5b0d3236">DoNotDuplicateSystem</a>.</p>
+
+</div>
+</div>
+<a id="afa19be9a00b0a94fd6528d20b0393f80" name="afa19be9a00b0a94fd6528d20b0393f80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa19be9a00b0a94fd6528d20b0393f80">&#9670;&#160;</a></span>getComponent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; getComponent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>instance</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specific component <a class="el" href="structecsm_1_1_view.html">View</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#a09648fafd1c95e62c2030c6349b3c1ca">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#a09648fafd1c95e62c2030c6349b3c1ca">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -317,7 +357,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 <p>Actually destroys components. </p>
 <p>Components are not destroyed immediately, only after the dispose call. </p>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ae3591fbf7d6547e79124a65da45ea2a7">DoNotDestroySystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1_do_not_destroy_system.html#ae3591fbf7d6547e79124a65da45ea2a7">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1_do_not_duplicate_system.html#ae3591fbf7d6547e79124a65da45ea2a7">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -327,7 +367,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Manager</b></td></tr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_system.html">System</a></li>
-    <li class="footer">Generated on Fri May 31 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+    <li class="footer">Generated on Fri Jun 28 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
 </body>
