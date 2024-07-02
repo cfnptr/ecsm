@@ -316,6 +316,15 @@ public:
 			return 0;
 		return counter->load();
 	}
+	/**
+	 * @brief Returns true if this is last item reference.
+	 */
+	bool isLastRef() const noexcept
+	{
+		if (!item)
+			return false;
+		return counter->load() == 1;
+	}
 };
 
 /***********************************************************************************************************************
