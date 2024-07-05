@@ -79,21 +79,22 @@ public:
 	 * @brief Returns true if this identifier is equal to the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator==(ID<T> v) const noexcept { return index == v.index; }
+	bool operator==(ID v) const noexcept { return index == v.index; }
 	/**
 	 * @brief Returns true if this identifier is not equal to the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator!=(ID<T> v) const noexcept { return index != v.index; }
+	bool operator!=(ID v) const noexcept { return index != v.index; }
 	/**
 	 * @brief Returns true if this identifier is less than the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator<(ID<T> v) const noexcept { return index < v.index; }
+	bool operator<(ID v) const noexcept { return index < v.index; }
+
 	/**
 	 * @brief Returns true if item is not null.
 	 */
-	operator bool() const noexcept { return index; }
+	explicit operator bool() const noexcept { return index; }
 };
 
 /***********************************************************************************************************************
@@ -148,11 +149,6 @@ public:
 		, poolVersion(view.getPoolVersion()), version(view.getVersion())
 	#endif
 	{ }
-	
-	/**
-	 * @brief Returns true if item is not null.
-	 */
-	operator bool() const noexcept { return item; }
 
 	/**
 	 * @brief Item data accessor.
@@ -200,6 +196,11 @@ public:
 		return item;
 	}
 
+	/**
+	 * @brief Returns true if item view is not null.
+	 */
+	explicit operator bool() const noexcept { return item; }
+
 #ifndef NDEBUG
 private:
 	const uint64_t* poolVersion = nullptr;
@@ -226,12 +227,21 @@ private:
 	ID<T> item = {};
 public:
 	Ref() = default;
+
+	/**
+	 * @brief Creates a new item reference. (Allocates counter)
+	 * @param item target item instance
+	 * @tparam T type of the item in the linear pool
+	 */
 	explicit Ref(ID<T> item)
 	{
 		if (item)
 			counter = new atomic<int64_t>(1);
 		this->item = item;
 	}
+	/**
+	 * @brief Destroys item reference. (Decrements or deallocates counter)
+	 */
 	~Ref()
 	{
 		if (!item)
@@ -295,19 +305,6 @@ public:
 	}
 
 	/**
-	 * @brief Returns item @ref ID.
-	 */
-	operator ID<T>() const noexcept { return item; }
-	/**
-	 * @brief Returns true if item is not null.
-	 */
-	operator bool() const noexcept { return item; }
-	/**
-	 * @brief Returns item index + 1 in the linear pool.
-	 */
-	uint32_t operator*() const noexcept { return *item; }
-
-	/**
 	 * @brief Returns current item reference count.
 	 */
 	int64_t getRefCount() const noexcept
@@ -325,7 +322,70 @@ public:
 			return false;
 		return counter->load() == 1;
 	}
+
+	/**
+	 * @brief Returns true if this reference item is equal to the v reference item.
+	 * @param v other reference value
+	 */
+	bool operator==(const Ref& v) const noexcept { return item == v.item; }
+	/**
+	 * @brief Returns true if this reference item is not equal to the v reference item.
+	 * @param v other reference value
+	 */
+	bool operator!=(const Ref& v) const noexcept { return item != v.item; }
+	/**
+	 * @brief Returns true if this reference item is less than the v reference item.
+	 * @param v other reference value
+	 */
+	bool operator<(const Ref& v) const noexcept { return item < v.item; }
+
+	/**
+	 * @brief Returns reference item @ref ID.
+	 * @tparam T type of the item in the linear pool
+	 */
+	explicit operator ID<T>() const noexcept { return item; }
+	/**
+	 * @brief Returns true if reference item is not null.
+	 */
+	explicit operator bool() const noexcept { return (bool)item; }
+	/**
+	 * @brief Returns reference item index + 1 in the linear pool.
+	 */
+	uint32_t operator*() const noexcept { return *item; }
 };
+
+/**
+ * @brief Returns true if reference item is equal to the v identifier.
+ * @param r reference value
+ * @param i identifier value
+ * @tparam T type of the item in the linear pool
+ */
+template<typename T>
+static bool operator==(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) == i; }
+/**
+ * @brief Returns true if r reference item is not equal to the i identifier.
+ * @param r reference value
+ * @param i identifier value
+ * @tparam T type of the item in the linear pool
+ */
+template<typename T>
+static bool operator!=(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) != i; }
+/**
+ * @brief Returns true if r reference item is less than the i identifier.
+ * @param r reference value
+ * @param i identifier value
+ * @tparam T type of the item in the linear pool
+ */
+template<typename T>
+static bool operator<(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) < i; }
+/**
+ * @brief Returns true if i identifier is less than the r reference item.
+ * @param i identifier value
+ * @param r reference value
+ * @tparam T type of the item in the linear pool
+ */
+template<typename T>
+static bool operator<(ID<T> i, const Ref<T>& r) noexcept { return i < ID<T>(r); }
 
 /***********************************************************************************************************************
  * @brief Item array with linear memory block.
@@ -467,6 +527,23 @@ public:
 	 * @tparam T type of the item in the linear pool
 	 */
 	View<T> get(ID<T> instance) const noexcept
+	{
+		assert(instance);
+		assert(*instance - 1 < occupancy);
+		#ifndef NDEBUG
+		return View(&items[*instance - 1], version);
+		#else
+		return View(&items[*instance - 1]);
+		#endif
+	}
+	/**
+	 * @brief Returns @ref View of the item in the linear pool.
+	 * @warning Do not store views, use them only in place. Because item memory can be reallocated later.
+	 * 
+	 * @param instance item identifier in the pool
+	 * @tparam T type of the item in the linear pool
+	 */
+	View<T> get(const Ref<T>& instance) const noexcept
 	{
 		assert(instance);
 		assert(*instance - 1 < occupancy);
