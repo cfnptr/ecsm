@@ -55,10 +55,10 @@ class PhysicsSystem final : public System
     {
         return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
     }
-    void copyComponent(ID<Component> source, ID<Component> destination) final
+    void copyComponent(View<Component> source, View<Component> destination) final
     {
-        const auto sourceView = components.get(ID<RigidBodyComponent>(source));
-        auto destinationView = components.get(ID<RigidBodyComponent>(destination));
+        const auto sourceView = View<RigidBodyComponent>(source);
+        auto destinationView = View<RigidBodyComponent>(destination);
         destinationView->size = sourceView->size;
     }
 

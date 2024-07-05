@@ -51,10 +51,10 @@ class TestSystem final : public System
 	{
 		components.destroy(ID<TestComponent>(instance));
 	}
-	void copyComponent(ID<Component> source, ID<Component> destination) final
+	void copyComponent(View<Component> source, View<Component> destination) final
 	{
-		const auto sourceView = components.get(ID<TestComponent>(source));
-		auto destinationView = components.get(ID<TestComponent>(destination));
+		const auto sourceView = View<TestComponent>(source);
+		auto destinationView = View<TestComponent>(destination);
 		destinationView->ID = sourceView->ID;
 		destinationView->someData = sourceView->someData;
 	}

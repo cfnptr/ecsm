@@ -134,7 +134,7 @@ protected:
 	 * @details You should use @ref Manager to copy component data of entities.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual void copyComponent(ID<Component> source, ID<Component> destination);
+	virtual void copyComponent(View<Component> source, View<Component> destination);
 
 	friend class Entity;
 	friend class Manager;
@@ -920,7 +920,7 @@ protected:
 
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
-	void copyComponent(ID<Component> source, ID<Component> destination) override;
+	void copyComponent(View<Component> source, View<Component> destination) override;
 
 	friend class ecsm::Manager;
 public:
@@ -962,7 +962,7 @@ protected:
 
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
-	void copyComponent(ID<Component> source, ID<Component> destination) override;
+	void copyComponent(View<Component> source, View<Component> destination) override;
 
 	friend class ecsm::Manager;
 public:

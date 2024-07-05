@@ -25,7 +25,7 @@ void System::destroyComponent(ID<Component> instance)
 {
 	throw runtime_error("System has no components.");
 }
-void System::copyComponent(ID<Component> source, ID<Component> destination)
+void System::copyComponent(View<Component> source, View<Component> destination)
 {
 	throw runtime_error("System has no components.");
 }
@@ -237,7 +237,10 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index compone
 			"entity:" + to_string(*destination) + ")");
 	}
 
-	sourceIter->second.first->copyComponent(sourceIter->second.second, destinationIter->second.second);
+	auto system = sourceIter->second.first;
+	auto sourceComponent = system->getComponent(sourceIter->second.second);
+	auto destinationComponent = system->getComponent(destinationIter->second.second);
+	system->copyComponent(sourceComponent, destinationComponent);
 }
 ID<Entity> Manager::duplicate(ID<Entity> entity)
 {
@@ -248,14 +251,15 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 	for (const auto& pair : components)
 	{
 		auto system = pair.second.first;
-		auto component = system->createComponent(duplicateEntity);
-		auto componentView = system->getComponent(component);
-		componentView->entity = duplicateEntity;
+		auto duplicateComponent = system->createComponent(duplicateEntity);
+		auto sourceView = system->getComponent(pair.second.second);
+		auto destinationView = system->getComponent(duplicateComponent);
+		destinationView->entity = duplicateEntity;
 
-		system->copyComponent(pair.second.second, component);
+		system->copyComponent(sourceView, destinationView);
 
 		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
-		if (!duplicateView->components.emplace(pair.first, make_pair(system, component)).second)
+		if (!duplicateView->components.emplace(pair.first, make_pair(system, duplicateComponent)).second)
 		{
 			throw runtime_error("Component is already added to the entity. ("
 				"name: " + typeToString(pair.first) +
@@ -547,7 +551,7 @@ void DoNotDestroySystem::destroyComponent(ID<Component> instance)
 { 
 	components.destroy(ID<DoNotDestroyComponent>(instance));
 }
-void DoNotDestroySystem::copyComponent(ID<Component> source, ID<Component> destination)
+void DoNotDestroySystem::copyComponent(View<Component> source, View<Component> destination)
 {
 	return;
 }
@@ -579,7 +583,7 @@ void DoNotDuplicateSystem::destroyComponent(ID<Component> instance)
 {
 	components.destroy(ID<DoNotDuplicateComponent>(instance));
 }
-void DoNotDuplicateSystem::copyComponent(ID<Component> source, ID<Component> destination)
+void DoNotDuplicateSystem::copyComponent(View<Component> source, View<Component> destination)
 {
 	return;
 }
