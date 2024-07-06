@@ -921,29 +921,12 @@ protected:
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
 	void copyComponent(View<Component> source, View<Component> destination) override;
+	const string& getComponentName() const override;
+	type_index getComponentType() const override;
+	View<Component> getComponent(ID<Component> instance) override;
+	void disposeComponents() override;
 
 	friend class ecsm::Manager;
-public:
-	/**
-	 * @brief Returns specific component name of the system.
-	 * @note Override it to define a custom component of the system.
-	 */
-	const string& getComponentName() const override;
-	/**
-	 * @brief Returns specific component typeid() of the system.
-	 * @note Override it to define a custom component of the system.
-	 */
-	type_index getComponentType() const override;
-	/**
-	 * @brief Returns specific component @ref View.
-	 * @note Override it to define a custom component of the system.
-	 */
-	View<Component> getComponent(ID<Component> instance) override;
-	/**
-	 * @brief Actually destroys components.
-	 * @details Components are not destroyed immediately, only after the dispose call.
-	 */
-	void disposeComponents() override;
 };
 
 /***********************************************************************************************************************
@@ -963,29 +946,12 @@ protected:
 	ID<Component> createComponent(ID<Entity> entity) override;
 	void destroyComponent(ID<Component> instance) override;
 	void copyComponent(View<Component> source, View<Component> destination) override;
+	const string& getComponentName() const override;
+	type_index getComponentType() const override;
+	View<Component> getComponent(ID<Component> instance) override;
+	void disposeComponents() override;
 
 	friend class ecsm::Manager;
-public:
-	/**
-	 * @brief Returns specific component name of the system.
-	 * @note Override it to define a custom component of the system.
-	 */
-	const string& getComponentName() const override;
-	/**
-	 * @brief Returns specific component typeid() of the system.
-	 * @note Override it to define a custom component of the system.
-	 */
-	type_index getComponentType() const override;
-	/**
-	 * @brief Returns specific component @ref View.
-	 * @note Override it to define a custom component of the system.
-	 */
-	View<Component> getComponent(ID<Component> instance) override;
-	/**
-	 * @brief Actually destroys components.
-	 * @details Components are not destroyed immediately, only after the dispose call.
-	 */
-	void disposeComponents() override;
 };
 
 } // namespace ecsm

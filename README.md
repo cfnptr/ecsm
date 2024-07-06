@@ -61,14 +61,6 @@ class PhysicsSystem final : public System
         auto destinationView = View<RigidBodyComponent>(destination);
         destinationView->size = sourceView->size;
     }
-
-    void update()
-    {
-        // Process components...
-    }
-
-    friend class ecsm::Manager;
-public:
     const string& getComponentName() const final
     {
         static const string name = "Rigid Body";
@@ -82,6 +74,13 @@ public:
     {
         components.dispose();
     }
+
+    void update()
+    {
+        // Process components...
+    }
+
+    friend class ecsm::Manager;
 };
 
 void ecsmExample()

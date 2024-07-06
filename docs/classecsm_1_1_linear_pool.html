@@ -86,6 +86,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8ab4e1c28d4a095f7569db4a6795807" id="r_ac8ab4e1c28d4a095f7569db4a6795807"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8ab4e1c28d4a095f7569db4a6795807">get</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; T &gt; instance) const noexcept</td></tr>
 <tr class="memdesc:ac8ab4e1c28d4a095f7569db4a6795807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structecsm_1_1_view.html">View</a> of the item in the linear pool.  <br /></td></tr>
 <tr class="separator:ac8ab4e1c28d4a095f7569db4a6795807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa80db1b21ef1ae9493ba8e033603de38" id="r_aa80db1b21ef1ae9493ba8e033603de38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa80db1b21ef1ae9493ba8e033603de38">get</a> (const <a class="el" href="structecsm_1_1_ref.html">Ref</a>&lt; T &gt; &amp;instance) const noexcept</td></tr>
+<tr class="memdesc:aa80db1b21ef1ae9493ba8e033603de38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structecsm_1_1_view.html">View</a> of the item in the linear pool.  <br /></td></tr>
+<tr class="separator:aa80db1b21ef1ae9493ba8e033603de38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aa5dd07d1bda23de49fabad2f77b069" id="r_a0aa5dd07d1bda23de49fabad2f77b069"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0aa5dd07d1bda23de49fabad2f77b069">getID</a> (const T *instance) const noexcept</td></tr>
 <tr class="memdesc:a0aa5dd07d1bda23de49fabad2f77b069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structecsm_1_1_i_d.html">ID</a> of the item pointer.  <br /></td></tr>
 <tr class="separator:a0aa5dd07d1bda23de49fabad2f77b069"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,7 +205,7 @@ template&lt;class T , bool DestroyItems&gt; </div>
 </div>
 </div>
 <a id="ac8ab4e1c28d4a095f7569db4a6795807" name="ac8ab4e1c28d4a095f7569db4a6795807"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8ab4e1c28d4a095f7569db4a6795807">&#9670;&#160;</a></span>get()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8ab4e1c28d4a095f7569db4a6795807">&#9670;&#160;</a></span>get() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,6 +219,48 @@ template&lt;class T , bool DestroyItems&gt; </div>
           <td class="memname"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; T &gt; get </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>instance</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <a class="el" href="structecsm_1_1_view.html">View</a> of the item in the linear pool. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Do not store views, use them only in place. Because item memory can be reallocated later.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">instance</td><td>item identifier in the pool </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>type of the item in the linear pool </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa80db1b21ef1ae9493ba8e033603de38" name="aa80db1b21ef1ae9493ba8e033603de38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa80db1b21ef1ae9493ba8e033603de38">&#9670;&#160;</a></span>get() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool DestroyItems&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; T &gt; get </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structecsm_1_1_ref.html">Ref</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>instance</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -488,7 +533,7 @@ template&lt;class T , bool DestroyItems&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_linear_pool.html">LinearPool</a></li>
-    <li class="footer">Generated on Fri Jun 28 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
 </body>

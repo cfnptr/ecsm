@@ -59,7 +59,6 @@ $(function(){initNavTree('classecsm_1_1_do_not_destroy_system.html',''); initRes
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -73,8 +72,17 @@ $(function(){initNavTree('classecsm_1_1_do_not_destroy_system.html',''); initRes
 
 <p><code>#include &lt;ecsm.hpp&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aa37ec66feb512fdef66a275d6564d07a" id="r_aa37ec66feb512fdef66a275d6564d07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa37ec66feb512fdef66a275d6564d07a">createComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity) override</td></tr>
+<tr class="memdesc:aa37ec66feb512fdef66a275d6564d07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new component instance for the entity.  <br /></td></tr>
+<tr class="separator:aa37ec66feb512fdef66a275d6564d07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9cc7ca25f3e4129b2a9103eef8e4268" id="r_aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9cc7ca25f3e4129b2a9103eef8e4268">destroyComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance) override</td></tr>
+<tr class="memdesc:aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys component instance.  <br /></td></tr>
+<tr class="separator:aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d749644c37af26044c032347280894" id="r_a32d749644c37af26044c032347280894"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32d749644c37af26044c032347280894">copyComponent</a> (<a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; source, <a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; destination) override</td></tr>
+<tr class="memdesc:a32d749644c37af26044c032347280894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source to destination.  <br /></td></tr>
+<tr class="separator:a32d749644c37af26044c032347280894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab49a5ceb3e8b52b0d8dee8536065bf78" id="r_ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49a5ceb3e8b52b0d8dee8536065bf78">getComponentName</a> () const override</td></tr>
 <tr class="memdesc:ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
 <tr class="separator:ab49a5ceb3e8b52b0d8dee8536065bf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -87,18 +95,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3591fbf7d6547e79124a65da45ea2a7" id="r_ae3591fbf7d6547e79124a65da45ea2a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3591fbf7d6547e79124a65da45ea2a7">disposeComponents</a> () override</td></tr>
 <tr class="memdesc:ae3591fbf7d6547e79124a65da45ea2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually destroys components.  <br /></td></tr>
 <tr class="separator:ae3591fbf7d6547e79124a65da45ea2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa37ec66feb512fdef66a275d6564d07a" id="r_aa37ec66feb512fdef66a275d6564d07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa37ec66feb512fdef66a275d6564d07a">createComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="classecsm_1_1_entity.html">Entity</a> &gt; entity) override</td></tr>
-<tr class="memdesc:aa37ec66feb512fdef66a275d6564d07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new component instance for the entity.  <br /></td></tr>
-<tr class="separator:aa37ec66feb512fdef66a275d6564d07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9cc7ca25f3e4129b2a9103eef8e4268" id="r_aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9cc7ca25f3e4129b2a9103eef8e4268">destroyComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; instance) override</td></tr>
-<tr class="memdesc:aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys component instance.  <br /></td></tr>
-<tr class="separator:aa9cc7ca25f3e4129b2a9103eef8e4268"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53878515f8139aee1e415f9b71b53e6" id="r_ab53878515f8139aee1e415f9b71b53e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab53878515f8139aee1e415f9b71b53e6">copyComponent</a> (<a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; source, <a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt; destination) override</td></tr>
-<tr class="memdesc:ab53878515f8139aee1e415f9b71b53e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source to destination.  <br /></td></tr>
-<tr class="separator:ab53878515f8139aee1e415f9b71b53e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -175,8 +171,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 
 </div>
 </div>
-<a id="ab53878515f8139aee1e415f9b71b53e6" name="ab53878515f8139aee1e415f9b71b53e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab53878515f8139aee1e415f9b71b53e6">&#9670;&#160;</a></span>copyComponent()</h2>
+<a id="a32d749644c37af26044c032347280894" name="a32d749644c37af26044c032347280894"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d749644c37af26044c032347280894">&#9670;&#160;</a></span>copyComponent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,12 +183,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
         <tr>
           <td class="memname">void copyComponent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>source</em></span>, </td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>source</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structecsm_1_1_i_d.html">ID</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1_view.html">View</a>&lt; <a class="el" href="structecsm_1_1_component.html">Component</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -205,7 +201,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 <p>Copies component data from source to destination. </p>
 <p>You should use <a class="el" href="classecsm_1_1_manager.html">Manager</a> to copy component data of entities. </p><dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classecsm_1_1_system.html#ada2376f95715cec4f404da3085dfdd3c">System</a>.</p>
+<p>Reimplemented from <a class="el" href="classecsm_1_1_system.html#a9e626eba166eb282a4e0e002c5f40bcd">System</a>.</p>
 
 </div>
 </div>
@@ -227,7 +223,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -257,7 +253,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -287,7 +283,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -317,7 +313,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -335,7 +331,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_do_not_destroy_system.html">DoNotDestroySystem</a></li>
-    <li class="footer">Generated on Fri Jun 28 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+    <li class="footer">Generated on Sat Jul 6 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
 </body>
