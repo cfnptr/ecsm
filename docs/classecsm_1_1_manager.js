@@ -53,6 +53,7 @@ var classecsm_1_1_manager =
     [ "tryUnsubscribeFromEvent", "classecsm_1_1_manager.html#ac86ed6249e3027670fc1822567d324c7", null ],
     [ "getSystems", "classecsm_1_1_manager.html#a642ee20321726831578850ca3a509685", null ],
     [ "getComponentTypes", "classecsm_1_1_manager.html#aca4005e9bb71f1f630ba0fc7348a466d", null ],
+    [ "getComponentNames", "classecsm_1_1_manager.html#ac6891b664097750afddef82d9113fedf", null ],
     [ "getEvents", "classecsm_1_1_manager.html#a2fd56df79cd9c1e1d0489080a57b692d", null ],
     [ "getOrderedEvents", "classecsm_1_1_manager.html#a7d23598b00cfbee955b3fec21c41ead4", null ],
     [ "getEntities", "classecsm_1_1_manager.html#a0191b4c0ed9efd020092a680731c2a4f", null ],

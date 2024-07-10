@@ -87,6 +87,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>Systems</b> = <a cla
 <tr class="memitem:a4d5f8670aa77a403336a95fda32e9368" id="r_a4d5f8670aa77a403336a95fda32e9368"><td class="memItemLeft" align="right" valign="top"><a id="a4d5f8670aa77a403336a95fda32e9368" name="a4d5f8670aa77a403336a95fda32e9368"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentTypes</b> = <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">map</a>&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">type_index</a>, <a class="el" href="classecsm_1_1_system.html">System</a>*&gt;</td></tr>
 <tr class="separator:a4d5f8670aa77a403336a95fda32e9368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafc16add19d817909e66a7bc57a7c0ad" id="r_aafc16add19d817909e66a7bc57a7c0ad"><td class="memItemLeft" align="right" valign="top"><a id="aafc16add19d817909e66a7bc57a7c0ad" name="aafc16add19d817909e66a7bc57a7c0ad"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentNames</b> = <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">map</a>&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a>, <a class="el" href="classecsm_1_1_system.html">System</a>*&gt;</td></tr>
+<tr class="separator:aafc16add19d817909e66a7bc57a7c0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95056760eb4a2803c26314a7710fa105" id="r_a95056760eb4a2803c26314a7710fa105"><td class="memItemLeft" align="right" valign="top"><a id="a95056760eb4a2803c26314a7710fa105" name="a95056760eb4a2803c26314a7710fa105"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Events</b> = <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">map</a>&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">string</a>, <a class="el" href="structecsm_1_1_manager_1_1_event.html">Event</a>*&gt;</td></tr>
 <tr class="separator:a95056760eb4a2803c26314a7710fa105"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,6 +279,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aca4005e9bb71f1f630ba0fc7348a466d" id="r_aca4005e9bb71f1f630ba0fc7348a466d"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">ComponentTypes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca4005e9bb71f1f630ba0fc7348a466d">getComponentTypes</a> () const noexcept</td></tr>
 <tr class="memdesc:aca4005e9bb71f1f630ba0fc7348a466d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager component types.  <br /></td></tr>
 <tr class="separator:aca4005e9bb71f1f630ba0fc7348a466d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6891b664097750afddef82d9113fedf" id="r_ac6891b664097750afddef82d9113fedf"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">ComponentNames</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6891b664097750afddef82d9113fedf">getComponentNames</a> () const noexcept</td></tr>
+<tr class="memdesc:ac6891b664097750afddef82d9113fedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager component names.  <br /></td></tr>
+<tr class="separator:ac6891b664097750afddef82d9113fedf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fd56df79cd9c1e1d0489080a57b692d" id="r_a2fd56df79cd9c1e1d0489080a57b692d"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">Events</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd56df79cd9c1e1d0489080a57b692d">getEvents</a> () const noexcept</td></tr>
 <tr class="memdesc:a2fd56df79cd9c1e1d0489080a57b692d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager events.  <br /></td></tr>
 <tr class="separator:a2fd56df79cd9c1e1d0489080a57b692d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2161,6 +2167,34 @@ template&lt;class T  = Component&gt; </div>
 
 </div>
 </div>
+<a id="ac6891b664097750afddef82d9113fedf" name="ac6891b664097750afddef82d9113fedf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6891b664097750afddef82d9113fedf">&#9670;&#160;</a></span>getComponentNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/map.html">ComponentNames</a> &amp; getComponentNames </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns all manager component names. </p>
+<dl class="section note"><dt>Note</dt><dd>Use manager functions to access components. </dd></dl>
+
+</div>
+</div>
 <a id="a2fd56df79cd9c1e1d0489080a57b692d" name="a2fd56df79cd9c1e1d0489080a57b692d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fd56df79cd9c1e1d0489080a57b692d">&#9670;&#160;</a></span>getEvents()</h2>
 
@@ -2382,7 +2416,7 @@ template&lt;class T  = Component&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1_manager.html">Manager</a></li>
-    <li class="footer">Generated on Sat Jul 6 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+    <li class="footer">Generated on Wed Jul 10 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
 </body>

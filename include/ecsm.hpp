@@ -234,6 +234,7 @@ public:
 
 	using Systems = map<type_index, System*>;
 	using ComponentTypes = map<type_index, System*>;
+	using ComponentNames = map<string, System*>;
 	using Events = map<string, Event*>;
 	using OrderedEvents = vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
@@ -242,9 +243,10 @@ public:
 private:
 	Systems systems;
 	ComponentTypes componentTypes;
+	ComponentNames componentNames;
+	EntityPool entities;
 	Events events;
 	OrderedEvents orderedEvents;
-	EntityPool entities;
 	GarbageComponents garbageComponents;
 	bool initialized = false;
 	bool running = false;
@@ -301,7 +303,18 @@ public:
 			if (!componentTypes.emplace(componentType, system).second)
 			{
 				throw runtime_error("Component is already registered by the other system. ("
-					"otherComponent: " + typeToString(componentType) + ", "
+					"componentType: " + typeToString(componentType) + ", "
+					"thisSystem: " + typeToString(typeid(T)) + ")");
+			}
+		}
+
+		const auto& componentName = system->getComponentName();
+		if (!componentName.empty())
+		{
+			if (!componentNames.emplace(componentName, system).second)
+			{
+				throw runtime_error("Component name is already registered by the other system. ("
+					"componentName: " + componentName + ", "
 					"thisSystem: " + typeToString(typeid(T)) + ")");
 			}
 		}
@@ -386,7 +399,7 @@ public:
 	{
 		auto result = systems.find(type);
 		if (result == systems.end())
-			throw runtime_error("System is not created. (name: " + typeToString(type) + ")");
+			throw runtime_error("System is not created. (type: " + typeToString(type) + ")");
 		return result->second;
 	}
 	/**
@@ -582,7 +595,7 @@ public:
 		if (result == entityView->components.end())
 		{
 			throw runtime_error("Component is not added. ("
-				"name: " + typeToString(componentType) +
+				"type: " + typeToString(componentType) +
 				"entity:" + to_string(*entity) + ")");
 		}
 
@@ -655,7 +668,7 @@ public:
 		if (result == entityView->components.end())
 		{
 			throw runtime_error("Component is not added. ("
-				"name: " + typeToString(componentType) +
+				"type: " + typeToString(componentType) +
 				"entity:" + to_string(*entity) + ")");
 		}
 
@@ -850,6 +863,11 @@ public:
 	 * @note Use manager functions to access components.
 	 */
 	const ComponentTypes& getComponentTypes() const noexcept { return componentTypes; }
+	/**
+	 * @brief Returns all manager component names.
+	 * @note Use manager functions to access components.
+	 */
+	const ComponentNames& getComponentNames() const noexcept { return componentNames; }
 	/**
 	 * @brief Returns all manager events.
 	 * @note Use manager functions to access events.

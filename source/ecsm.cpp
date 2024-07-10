@@ -118,9 +118,9 @@ void Manager::destroySystem(type_index type)
 	isChanging = true;
 	#endif
 
-	auto result = systems.find(type);
-	if (result == systems.end())
-		throw runtime_error("System is not created. (name: " + typeToString(type) + ")");
+	auto searchResult = systems.find(type);
+	if (searchResult == systems.end())
+		throw runtime_error("System is not created. (type: " + typeToString(type) + ")");
 
 	if (running)
 	{
@@ -129,8 +129,33 @@ void Manager::destroySystem(type_index type)
 		runEvent("PostDeinit");
 	}
 
-	auto system = result->second;
-	systems.erase(result);
+	auto system = searchResult->second;
+	systems.erase(searchResult);
+	
+	const auto& componentName = system->getComponentName();
+	if (!componentName.empty())
+	{
+		auto eraseResult = componentNames.erase(componentName);
+		if (eraseResult != 1)
+		{
+			throw runtime_error("Failed to erase system component name. ("
+				"componentName: " + componentName + ", "
+				"systemType: " + typeToString(type) + ")");
+		}
+	}
+
+	auto componentType = system->getComponentType();
+	if (componentType != typeid(Component))
+	{
+		auto eraseResult = componentTypes.erase(componentType);
+		if (eraseResult != 1)
+		{
+			throw runtime_error("Failed to erase system component type. ("
+				"componentType: " + typeToString(componentType) + ", "
+				"systemType: " + typeToString(type) + ")");
+		}
+	}
+
 	delete system;
 
 	#ifndef NDEBUG
@@ -173,7 +198,7 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	if (result == componentTypes.end())
 	{
 		throw runtime_error("Component is not registered by any system. ("
-			"name: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
 
@@ -186,7 +211,7 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	if (!entityView->components.emplace(componentType, make_pair(system, component)).second)
 	{
 		throw runtime_error("Component is already added to the entity. ("
-			"name: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
 
@@ -202,7 +227,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 	if (iterator == components.end())
 	{
 		throw runtime_error("Component is not added. ("
-			"name: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
 
@@ -210,7 +235,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 	if (!result.second)
 	{
 		throw runtime_error("Already removed component. ("
-			"name: " + typeToString(componentType) + 
+			"type: " + typeToString(componentType) + 
 			"entity: " + to_string(*entity) + ")");
 	}
 }
@@ -227,13 +252,13 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index compone
 	if (sourceIter == sourceView->components.end())
 	{
 		throw runtime_error("Source component is not added. ("
-			"name: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*source) + ")");
 	}
 	if (destinationIter == destinationView->components.end())
 	{
 		throw runtime_error("Destination component is not added. ("
-			"name: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*destination) + ")");
 	}
 
@@ -262,7 +287,7 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 		if (!duplicateView->components.emplace(pair.first, make_pair(system, duplicateComponent)).second)
 		{
 			throw runtime_error("Component is already added to the entity. ("
-				"name: " + typeToString(pair.first) +
+				"type: " + typeToString(pair.first) +
 				"entity:" + to_string(*entity) + ")");
 		}
 	}
