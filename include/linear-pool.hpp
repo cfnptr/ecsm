@@ -246,16 +246,18 @@ public:
 	{
 		if (!item)
 			return;
-		auto count = counter->fetch_sub(1);
-		if (count == 1)
+		if (counter->fetch_sub(1, memory_order_release) == 1)
+		{
+			atomic_thread_fence(memory_order_acquire);
 			delete counter;
+		}
 	}
 
 	Ref(const Ref& ref) noexcept
 	{
     	if (!ref.item)
 			return;
-		ref.counter->fetch_add(1);
+		ref.counter->fetch_add(1, memory_order_relaxed);
 		counter = ref.counter;
 		item = ref.item;
 	}
@@ -271,15 +273,14 @@ public:
 	{
 		if (this != &ref)
 		{
-			if (item)
+			if (item && counter->fetch_sub(1, memory_order_release) == 1)
 			{
-				auto count = counter->fetch_sub(1);
-				if (count == 1)
-					delete counter;
+				atomic_thread_fence(memory_order_acquire);
+				delete counter;
 			}
 
 			if (ref.item)
-				ref.counter->fetch_add(1);
+				ref.counter->fetch_add(1, memory_order_relaxed);
 			counter = ref.counter;
 			item = ref.item;
 		}
@@ -289,11 +290,10 @@ public:
 	{
 		if (this != &ref)
 		{
-			if (item)
+			if (item && counter->fetch_sub(1, memory_order_release) == 1)
 			{
-				auto count = counter->fetch_sub(1);
-				if (count == 1)
-					delete counter;
+				atomic_thread_fence(memory_order_acquire);
+				delete counter;
 			}
 
 			counter = ref.counter;
@@ -311,7 +311,7 @@ public:
 	{
 		if (!item)
 			return 0;
-		return counter->load();
+		return counter->load(memory_order_relaxed);
 	}
 	/**
 	 * @brief Returns true if this is last item reference.
@@ -320,7 +320,7 @@ public:
 	{
 		if (!item)
 			return false;
-		return counter->load() == 1;
+		return counter->load(memory_order_relaxed) == 1;
 	}
 
 	/**

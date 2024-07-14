@@ -560,9 +560,7 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
-		
-		return components.find(componentType) != components.end() &&
-			garbageComponents.find(make_pair(componentType, entity)) == garbageComponents.end();
+		return components.find(componentType) != components.end();
 	}
 	/**
 	 * @brief Returns true if entity has target component.
