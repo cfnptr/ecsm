@@ -540,23 +540,9 @@ void Manager::update()
 		throw runtime_error("Manager is not initialized.");
 
 	runOrderedEvents();
-
-	for (const auto& garbagePair : garbageComponents)
-	{
-		auto entityView = entities.get(garbagePair.second);
-		auto& components = entityView->components;
-		auto iterator = components.find(garbagePair.first);
-		assert(iterator != components.end()); // Corrupted entity component destruction order.
-		auto pair = iterator->second;
-		pair.first->destroyComponent(pair.second);
-		auto result = components.erase(iterator);
-	}
-	garbageComponents.clear();
-
-	entities.dispose();
-
-	for (const auto& pair : systems)
-		pair.second->disposeComponents();
+	disposeGarbageComponents();
+	disposeSystemComponents();
+	disposeEntities();
 }
 void Manager::start()
 {
@@ -565,6 +551,21 @@ void Manager::start()
 
 	running = true;
 	while (running) update();
+}
+
+void Manager::disposeGarbageComponents()
+{
+	for (const auto& garbagePair : garbageComponents)
+	{
+		auto entityView = entities.get(garbagePair.second);
+		auto& components = entityView->components;
+		auto iterator = components.find(garbagePair.first);
+		assert(iterator != components.end()); // Corrupted entity component destruction order.
+		auto pair = iterator->second;
+		pair.first->destroyComponent(pair.second);
+		components.erase(iterator);
+	}
+	garbageComponents.clear();
 }
 
 //**********************************************************************************************************************

@@ -560,7 +560,8 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
-		return components.find(componentType) != components.end();
+		return components.find(componentType) != components.end() &&
+			garbageComponents.find(make_pair(componentType, entity)) == garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if entity has target component.
@@ -912,6 +913,26 @@ public:
 	 * @details Used to stop the update loop from some system.
 	 */
 	void stop() noexcept { running = false; }
+
+	/*******************************************************************************************************************
+	 * @brief Actually destroys garbage components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeGarbageComponents();
+	/**
+	 * @brief Actually destroys system components and internal resources.
+	 * @details Systen components are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeSystemComponents()
+	{
+		for (const auto& pair : systems)
+			pair.second->disposeComponents();
+	}
+	/**
+	 * @brief Actually destroys entities.
+	 * @details Entities are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeEntities() { entities.dispose(); }
 
 	/**
 	 * @brief Returns manager singleton instance.

@@ -19,11 +19,19 @@ struct TestComponent final : public Component
 {
 	int ID = 0;
 	float someData = 0.0f;
+	int* counter = nullptr;
+
+	bool destroy()
+	{
+		if (counter)
+			*counter = *counter - 1;
+		return true;
+	}
 };
 
 class TestSystem final : public System
 {
-	LinearPool<TestComponent, false> components;
+	LinearPool<TestComponent> components;
 
 	TestSystem()
 	{
@@ -152,6 +160,8 @@ static void testCommonFlow()
 
 	if (!manager.has<TestComponent>(testEntity))
 		throw runtime_error("No created test component found.");
+	if (testComponent->getEntity() != testEntity)
+		throw runtime_error("Bad test component entity instance.");
 
 	testComponent = manager.get<TestComponent>(testEntity);
 
@@ -170,11 +180,26 @@ static void testCommonFlow()
 
 	if (testComponent->ID != 2)
 		throw runtime_error("Bad test component data after update.");
+	if (testComponent->getEntity() != testEntity)
+		throw runtime_error("Bad test component entity instance after update.");
 
 	manager.remove<TestComponent>(testEntity);
 
 	if (manager.has<TestComponent>(testEntity))
 		throw runtime_error("Test component is not destroyed.");
+
+	// Note: after destruction component is still accessible until dispose call.
+	testComponent = manager.get<TestComponent>(testEntity);
+	if (testComponent->ID != 2)
+		throw runtime_error("Bad test component data after destroy.");
+
+	auto componentMemory = *testComponent;
+	manager.disposeGarbageComponents();
+	manager.disposeSystemComponents();
+	manager.disposeEntities();
+
+	if (componentMemory->ID != 0) // WARNING! You should't do this, it's just safety check!
+		throw runtime_error("Bad test component data after dispose.");
 
 	manager.destroySystem<TestSystem>();
 
@@ -238,10 +263,41 @@ static void testComponentCopy()
 }
 
 //**********************************************************************************************************************
+static void testDisposeFlow()
+{
+	auto manager = new Manager();
+	manager->registerEventAfter("PostUpdate", "Update");
+	manager->createSystem<TestSystem>();
+
+	int stackCounter = 1;
+	auto entity = manager->createEntity();
+	auto component = manager->add<TestComponent>(entity);
+	component->someData = 13.37f;
+	component->counter = &stackCounter;
+
+	manager->remove<TestComponent>(entity);
+
+	component = manager->get<TestComponent>(entity);
+	if (component->someData != 13.37f)
+		throw runtime_error("Bad test component ID after remove.");
+	if (stackCounter != 1)
+		throw runtime_error("Bad stack counter after component remove.");
+
+	manager->disposeGarbageComponents();
+	manager->disposeSystemComponents();
+
+	if (stackCounter != 0)
+		throw runtime_error("Bad stack counter after component dispose.");
+
+	delete manager;
+}
+
+//**********************************************************************************************************************
 int main()
 {
 	testCommonFlow();
 	testEntityAllocation();
 	testComponentCopy();
+	testDisposeFlow();
 	// TODO: test Ref<> and other manager functions
 }
