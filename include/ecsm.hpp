@@ -22,6 +22,7 @@
 
 #include <set>
 #include <map>
+#include <mutex>
 #include <string>
 #include <typeinfo>
 #include <typeindex>
@@ -248,6 +249,7 @@ private:
 	Events events;
 	OrderedEvents orderedEvents;
 	GarbageComponents garbageComponents;
+	mutex locker;
 	bool initialized = false;
 	bool running = false;
 
@@ -515,6 +517,37 @@ public:
 		remove(entity, typeid(T));
 	}
 
+	/**
+	 * @brief Returns true if target entity component was removed and is in the garbage pool.
+	 * @details See the @ref remove<T>(ID<Entity> entity).
+	 * @note Components are not destroyed immediately, only after the dispose call.
+	 *
+	 * @param entity entity instance
+	 * @param componentType target component typeid()
+	 *
+	 * @throw runtime_error if component is not found.
+	 */
+	bool isGarbage(ID<Entity> entity, type_index componentType) const noexcept
+	{
+		return garbageComponents.find(make_pair(componentType, entity)) != garbageComponents.end();
+	}
+	/**
+	 * @brief Returns true if target entity component was removed and is in the garbage pool.
+	 * @details See the @ref remove<T>(ID<Entity> entity).
+	 * @note Components are not destroyed immediately, only after the dispose call.
+	 *
+	 * @param entity entity instance
+	 * @tparam T target component type
+	 *
+	 * @throw runtime_error if component is not found.
+	 */
+	template<class T = Component>
+	bool isGarbage(ID<Entity> entity) const noexcept
+	{
+		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		return isGarbage(entity, typeid(T));
+	}
+
 	/*******************************************************************************************************************
 	 * @brief Copies component data from source entity to destination.
 	 * @details See the @ref copy<T>(ID<Entity> source, ID<Entity> destination).
@@ -552,6 +585,7 @@ public:
 
 	/*******************************************************************************************************************
 	 * @brief Returns true if entity has target component.
+	 * @note It also checks for component in the garbage pool.
 	 *
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
@@ -560,11 +594,12 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
-		return components.find(componentType) != components.end() &&
-			garbageComponents.find(make_pair(componentType, entity)) == garbageComponents.end();
+		return components.find(componentType) != components.end() && garbageComponents.find(
+			make_pair(componentType, entity)) == garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if entity has target component.
+	 * @note It also checks for component in the garbage pool.
 	 *
 	 * @param entity entity instance
 	 * @tparam T target component type
@@ -618,8 +653,9 @@ public:
 	}
 
 	/**
-	 * @brief Returns component data accessor if added, otherwise null. (@ref View)
+	 * @brief Returns component data accessor if exist, otherwise null. (@ref View)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
 	 * 
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
@@ -628,16 +664,21 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
+		
 		auto result = components.find(componentType);
-		if (result == components.end())
+		if (result == components.end() || garbageComponents.find(
+			make_pair(componentType, entity)) != garbageComponents.end())
+		{
 			return {};
+		}
 
 		auto pair = result->second;
 		return pair.first->getComponent(pair.second);
 	}
 	/**
-	 * @brief Returns component data accessor if added, otherwise null. (@ref View)
+	 * @brief Returns component data accessor if exist, otherwise null. (@ref View)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
 	 * 
 	 * @param entity entity instance
 	 * @tparam T target component type
@@ -691,6 +732,7 @@ public:
 
 	/*******************************************************************************************************************
 	 * @brief Returns entity component @ref ID if added, otherwise null.
+	 * @note It also checks for component in the garbage pool.
 	 * @details See the tryGetID<T>(ID<Entity> entity).
 	 *
 	 * @param entity entity instance
@@ -700,9 +742,14 @@ public:
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
+
 		auto result = components.find(componentType);
-		if (result == components.end())
+		if (result == components.end() || garbageComponents.find(
+			make_pair(componentType, entity)) != garbageComponents.end())
+		{
 			return {};
+		}
+
 		auto pair = result->second;
 		return pair.second;
 	}
@@ -883,6 +930,11 @@ public:
 	 */
 	const EntityPool& getEntities() const noexcept { return entities; }
 	/**
+	 * @brief Returns manager garbage components pool.
+	 * @note Use manager functions to check if component is garbage.
+	 */
+	const GarbageComponents& getGarbageComponents() const noexcept { return garbageComponents; }
+	/**
 	 * @brief Returns true if manager is initialized.
 	 */
 	bool isInitialized() const noexcept { return initialized; }
@@ -933,6 +985,22 @@ public:
 	 * @details Entities are not destroyed immediately, only after the dispose call.
 	 */
 	void disposeEntities() { entities.dispose(); }
+
+	/*******************************************************************************************************************
+	 * @brief Locks manager for synchronous access. (MT-Safe)
+	 * @note Use it if you want to access manager from multiple threads asynchronously.
+	 */
+	void lock() { locker.lock(); }
+	/**
+	 * @brief Tries to locks manager for synchronous access. (MT-Safe)
+	 * @note Use it if you want to access manager from multiple threads asynchronously.
+	 */
+	bool tryLock() noexcept { return locker.try_lock(); }
+	/**
+	 * @brief Unlock manager after synchronous access. (MT-Safe)
+	 * @note Always unlock manager after synchronous access!
+	 */
+	void unlock() noexcept { locker.unlock(); }
 
 	/**
 	 * @brief Returns manager singleton instance.

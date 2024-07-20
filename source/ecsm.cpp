@@ -541,8 +541,8 @@ void Manager::update()
 
 	runOrderedEvents();
 	disposeGarbageComponents();
-	disposeSystemComponents();
 	disposeEntities();
+	disposeSystemComponents();
 }
 void Manager::start()
 {
