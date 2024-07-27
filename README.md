@@ -94,8 +94,8 @@ void ecsmExample()
     manager.initialize();
 
     auto rigidBody = manager.createEntity();
-    auto rigidBodyComponent = manager.add<RigidBodyComponent>(rigidBody);
-    rigidBodyComponent->size = 1.0f;
+    auto rigidBodyView = manager.add<RigidBodyComponent>(rigidBody);
+    rigidBodyView->size = 1.0f;
 
     manager.start();
 }

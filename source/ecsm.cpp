@@ -83,13 +83,14 @@ Manager::Manager(bool useSingleton)
 }
 Manager::~Manager()
 {
-	entities.clear(false);
 	if (initialized)
 	{
 		runEvent("PreDeinit");
 		runEvent("Deinit");
 		runEvent("PostDeinit");
 	}
+
+	entities.clear(false);
 
 	#ifndef NDEBUG
 	assert(!isChanging); // Destruction of the systems inside other create/destroy is not allowed.

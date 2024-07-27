@@ -80,11 +80,11 @@ class TestSystem final : public System
 
 		for (uint32_t i = 0; i < occupancy; i++)
 		{
-			auto& component = componentData[i];
-			if (component.ID == 0) // Skip unallocated components
+			auto componentView = &componentData[i];
+			if (componentView->ID == 0) // Skip unallocated components
 				continue;
 
-			component.ID++;
+			componentView->ID++;
 		}
 	}
 	void postUpdate()
@@ -154,18 +154,18 @@ static void testCommonFlow()
 	if (manager.has<TestComponent>(testEntity))
 		throw runtime_error("Test component is not yet created.");
 
-	auto testComponent = manager.add<TestComponent>(testEntity);
-	testComponent->ID = 1;
-	testComponent->someData = 123.456f;
+	auto testView = manager.add<TestComponent>(testEntity);
+	testView->ID = 1;
+	testView->someData = 123.456f;
 
 	if (!manager.has<TestComponent>(testEntity))
 		throw runtime_error("No created test component found.");
-	if (testComponent->getEntity() != testEntity)
+	if (testView->getEntity() != testEntity)
 		throw runtime_error("Bad test component entity instance.");
 
-	testComponent = manager.get<TestComponent>(testEntity);
+	testView = manager.get<TestComponent>(testEntity);
 
-	if (testComponent->ID != 1 || testComponent->someData != 123.456f)
+	if (testView->ID != 1 || testView->someData != 123.456f)
 		throw runtime_error("Bad test component data before update.");
 
 	if (system->updateCounter != 0 || system->postUpdateCounter != 0)
@@ -176,11 +176,11 @@ static void testCommonFlow()
 	if (system->updateCounter != 1 || system->postUpdateCounter != 2)
 		throw runtime_error("Bad test system data after update.");
 
-	testComponent = manager.get<TestComponent>(testEntity);
+	testView = manager.get<TestComponent>(testEntity);
 
-	if (testComponent->ID != 2)
+	if (testView->ID != 2)
 		throw runtime_error("Bad test component data after update.");
-	if (testComponent->getEntity() != testEntity)
+	if (testView->getEntity() != testEntity)
 		throw runtime_error("Bad test component entity instance after update.");
 
 	manager.remove<TestComponent>(testEntity);
@@ -189,11 +189,11 @@ static void testCommonFlow()
 		throw runtime_error("Test component is not destroyed.");
 
 	// Note: after destruction component is still accessible until dispose call.
-	testComponent = manager.get<TestComponent>(testEntity);
-	if (testComponent->ID != 2)
+	testView = manager.get<TestComponent>(testEntity);
+	if (testView->ID != 2)
 		throw runtime_error("Bad test component data after destroy.");
 
-	auto componentMemory = *testComponent;
+	auto componentMemory = *testView;
 	manager.disposeGarbageComponents();
 	manager.disposeSystemComponents();
 	manager.disposeEntities();
@@ -222,17 +222,17 @@ static void testEntityAllocation()
 	for (uint32_t i = 0; i < entityCount; i++)
 	{
 		auto entity = manager->createEntity();
-		auto testComponent = manager->add<TestComponent>(entity);
-		testComponent->ID = i;
-		testComponent->someData = rand();
+		auto testView = manager->add<TestComponent>(entity);
+		testView->ID = i;
+		testView->someData = rand();
 
 		if (i == 2)
 			thirdEntity = entity;
 	}
 
-	auto testComponent = manager->get<TestComponent>(thirdEntity);
+	auto testView = manager->get<TestComponent>(thirdEntity);
 
-	if (testComponent->ID != 2)
+	if (testView->ID != 2)
 		throw runtime_error("Bad test component ID.");
 
 	manager->destroy(thirdEntity);
@@ -248,15 +248,15 @@ static void testComponentCopy()
 
 	auto firstEntity = manager->createEntity();
 	auto secondEntity = manager->createEntity();
-	auto firstComponent = manager->add<TestComponent>(firstEntity);
-	firstComponent->ID = 12345;
-	auto secondComponent = manager->add<TestComponent>(secondEntity);
-	secondComponent->ID = 54321;
+	auto firstTestView = manager->add<TestComponent>(firstEntity);
+	firstTestView->ID = 12345;
+	auto secondTestView = manager->add<TestComponent>(secondEntity);
+	secondTestView->ID = 54321;
 
 	manager->copy<TestComponent>(firstEntity, secondEntity);
 
-	secondComponent = manager->get<TestComponent>(secondEntity);
-	if (secondComponent->ID != 12345)
+	secondTestView = manager->get<TestComponent>(secondEntity);
+	if (secondTestView->ID != 12345)
 		throw runtime_error("Bad second test component ID.");
 
 	delete manager;
@@ -271,14 +271,14 @@ static void testDisposeFlow()
 
 	int stackCounter = 1;
 	auto entity = manager->createEntity();
-	auto component = manager->add<TestComponent>(entity);
-	component->someData = 13.37f;
-	component->counter = &stackCounter;
+	auto componentView = manager->add<TestComponent>(entity);
+	componentView->someData = 13.37f;
+	componentView->counter = &stackCounter;
 
 	manager->remove<TestComponent>(entity);
 
-	component = manager->get<TestComponent>(entity);
-	if (component->someData != 13.37f)
+	componentView = manager->get<TestComponent>(entity);
+	if (componentView->someData != 13.37f)
 		throw runtime_error("Bad test component ID after remove.");
 	if (stackCounter != 1)
 		throw runtime_error("Bad stack counter after component remove.");
