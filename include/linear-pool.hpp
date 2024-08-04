@@ -453,7 +453,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Creation of the item inside other create/destroy/clear is not allowed.");
+			throw runtime_error("Creation of the item inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -505,17 +505,10 @@ public:
 
 		#ifndef NDEBUG
 		assert(*instance - 1 < occupancy);
-		if (isChanging)
-			throw runtime_error("Destruction of the item inside other create/destroy/clear is not allowed.");
-		isChanging = true;
 		version++; // Protects from the use after free.
 		#endif
 
 		garbageItems.push_back(instance);
-
-		#ifndef NDEBUG
-		isChanging = false;
-		#endif
 	}
 
 	/*******************************************************************************************************************
@@ -601,7 +594,7 @@ public:
 		if (destroyItems && !DestroyItems)
 			throw runtime_error("Item does not have destroy function.");
 		if (isChanging)
-			throw runtime_error("Clear of the items inside other create/destroy/clear is not allowed.");
+			throw runtime_error("Clear of the items inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -642,7 +635,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Destruction of the items inside other create/destroy/clear is not allowed.");
+			throw runtime_error("Destruction of the items inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 
