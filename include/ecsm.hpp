@@ -66,20 +66,20 @@ static string typeToString()
 /**
  * @brief Subscribes @ref System function to the event.
  */
-#define SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this))
+#define SUBSCRIBE_TO_EVENT(name, func) Manager::get()->subscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event.
  */
-#define UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this))
+#define UNSUBSCRIBE_FROM_EVENT(name, func) Manager::get()->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
  * @brief Subscribes @ref System function to the event if exist.
  */
-#define TRY_SUBSCRIBE_TO_EVENT(name, func) manager->trySubscribeToEvent(name, std::bind(&func, this))
+#define TRY_SUBSCRIBE_TO_EVENT(name, func) Manager::get()->trySubscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event if exist.
  */
-#define TRY_UNSUBSCRIBE_FROM_EVENT(name, func) manager->tryUnsubscribeFromEvent(name, std::bind(&func, this))
+#define TRY_UNSUBSCRIBE_FROM_EVENT(name, func) Manager::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
 /***********************************************************************************************************************
  * @brief Base component structure.
@@ -1006,7 +1006,7 @@ public:
 	 * @brief Returns manager singleton instance.
 	 * @note You should set "useSingleton" on manager instance creation.
 	 */
-	static Manager* getInstance() noexcept { return instance; }
+	static Manager* get() noexcept { return instance; }
 };
 
 /***********************************************************************************************************************

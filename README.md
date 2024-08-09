@@ -32,14 +32,13 @@ class PhysicsSystem final : public System
 {
     LinearPool<RigidBodyComponent, false> components;
 
-    PhysicsSystem(Manager* manager) : System(manager)
+    PhysicsSystem()
     {
         SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
     }
     ~PhysicsSystem() final
     {
-        auto manager = getManager();
-        if (manager->isRunning())
+        if (Manager::get()->isRunning())
             UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 

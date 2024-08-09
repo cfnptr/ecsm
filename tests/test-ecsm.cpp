@@ -35,15 +35,13 @@ class TestSystem final : public System
 
 	TestSystem()
 	{
-		auto manager = Manager::getInstance();
 		SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
 		SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
 	~TestSystem() final
 	{
-		auto manager = Manager::getInstance();
-		if (manager->isRunning())
+		if (Manager::get()->isRunning())
 		{
 			UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
 			UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
@@ -65,6 +63,23 @@ class TestSystem final : public System
 		auto destinationView = View<TestComponent>(destination);
 		destinationView->ID = sourceView->ID;
 		destinationView->someData = sourceView->someData;
+	}
+	const string& getComponentName() const final
+	{
+		static const string name = "Test";
+		return name;
+	}
+	type_index getComponentType() const final
+	{
+		return typeid(TestComponent);
+	}
+	View<Component> getComponent(ID<Component> instance) final
+	{
+		return View<Component>(components.get(ID<TestComponent>(instance)));
+	}
+	void disposeComponents() final
+	{
+		components.dispose();
 	}
 
 	void init()
@@ -97,24 +112,6 @@ public:
 	int updateCounter = 0;
 	int postUpdateCounter = 0;
 	bool isInitialized = false;
-
-	const string& getComponentName() const final
-	{
-		static const string name = "Test";
-		return name;
-	}
-	type_index getComponentType() const final
-	{
-		return typeid(TestComponent);
-	}
-	View<Component> getComponent(ID<Component> instance) final
-	{
-		return View<Component>(components.get(ID<TestComponent>(instance)));
-	}
-	void disposeComponents() final
-	{
-		components.dispose();
-	}
 };
 
 //**********************************************************************************************************************
