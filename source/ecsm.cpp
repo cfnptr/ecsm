@@ -447,6 +447,18 @@ void Manager::runEvent(const string& name)
 	for (const auto& onEvent : subscribers)
 		onEvent();
 }
+bool Manager::tryRunEvent(const string& name)
+{
+	assert(!name.empty());
+	auto result = events.find(name);
+	if (result == events.end())
+		return false;
+
+	const auto& subscribers = result->second->subscribers;
+	for (const auto& onEvent : subscribers)
+		onEvent();
+	return true;
+}
 void Manager::runOrderedEvents()
 {
 	for (auto event : orderedEvents)

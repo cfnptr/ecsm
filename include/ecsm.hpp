@@ -856,6 +856,12 @@ public:
 	 */
 	void runEvent(const string& name);
 	/**
+	 * @brief Calls all event subscribers if event exist.
+	 * @param[in] name target event name
+	 * @return True if event is found.
+	 */
+	bool tryRunEvent(const string& name);
+	/**
 	 * @brief Runs all ordered events.
 	 * @details Unordered events subscribers are not called.
 	 */
