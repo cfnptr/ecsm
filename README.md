@@ -84,19 +84,20 @@ class PhysicsSystem final : public System
 
 void ecsmExample()
 {
-    ecsm::Manager manager;
-
-    manager.createSystem<PhysicsSystem>();
-    manager.createSystem<GraphicsSystem>(false, 123);
+    auto manager = new ecsm::Manager();
+    manager->createSystem<PhysicsSystem>();
+    manager->createSystem<GraphicsSystem>(false, 123);
     // ...
 
-    manager.initialize();
+    manager->initialize();
 
-    auto rigidBody = manager.createEntity();
-    auto rigidBodyView = manager.add<RigidBodyComponent>(rigidBody);
+    auto rigidBody = manager->createEntity();
+    auto rigidBodyView = manager->add<RigidBodyComponent>(rigidBody);
     rigidBodyView->size = 1.0f;
 
     manager.start();
+
+    delete manager;
 }
 ```
 

@@ -22,7 +22,7 @@ if(TARGET ecsm-static)
 	return()
 endif()
 
-project(ecsm VERSION 0.1.0 LANGUAGES CXX
+project(ecsm VERSION 0.2.0 LANGUAGES CXX
 	DESCRIPTION "Easy to use Entity Component System Manager C++ library"
 	HOMEPAGE_URL "https://github.com/cfnptr/ecsm")
 
