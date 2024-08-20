@@ -259,10 +259,6 @@ private:
 
 	static Manager* instance;
 
-	Manager(Manager&&) = default;
-	Manager(const Manager&) = default;
-	Manager& operator=(const Manager&) = default;
-
 	void createSystem(System* system, type_index type);
 public:
 	/**

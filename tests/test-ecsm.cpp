@@ -182,7 +182,7 @@ static void testCommonFlow()
 
 	manager->remove<TestComponent>(testEntity);
 
-	if (manager.has<TestComponent>(testEntity))
+	if (manager->has<TestComponent>(testEntity))
 		throw runtime_error("Test component is not destroyed.");
 
 	// Note: after destruction component is still accessible until dispose call.
