@@ -110,7 +110,7 @@ Manager::~Manager()
 		instance = nullptr;
 }
 
-void Manager::createSystem(System* system, type_index type)
+void Manager::addSystem(System* system, type_index type)
 {
 	auto componentType = system->getComponentType();
 	if (componentType != typeid(Component))

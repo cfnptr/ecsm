@@ -259,7 +259,7 @@ private:
 
 	static Manager* instance;
 
-	void createSystem(System* system, type_index type);
+	void addSystem(System* system, type_index type);
 public:
 	/**
 	 * @brief Initializes manager.
@@ -296,7 +296,7 @@ public:
 		#endif
 
 		auto system = new T(std::forward<Args>(args)...);
-		createSystem(system, typeid(T));
+		addSystem(system, typeid(T));
 
 		#ifndef NDEBUG
 		isChanging = false;
