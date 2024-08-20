@@ -262,6 +262,8 @@ private:
 	Manager(Manager&&) = default;
 	Manager(const Manager&) = default;
 	Manager& operator=(const Manager&) = default;
+
+	void createSystem(System* system, type_index type);
 public:
 	/**
 	 * @brief Initializes manager.
@@ -298,38 +300,7 @@ public:
 		#endif
 
 		auto system = new T(std::forward<Args>(args)...);
-
-		auto componentType = system->getComponentType();
-		if (componentType != typeid(Component))
-		{
-			if (!componentTypes.emplace(componentType, system).second)
-			{
-				throw runtime_error("Component is already registered by the other system. ("
-					"componentType: " + typeToString(componentType) + ", "
-					"thisSystem: " + typeToString(typeid(T)) + ")");
-			}
-		}
-
-		const auto& componentName = system->getComponentName();
-		if (!componentName.empty())
-		{
-			if (!componentNames.emplace(componentName, system).second)
-			{
-				throw runtime_error("Component name is already registered by the other system. ("
-					"componentName: " + componentName + ", "
-					"thisSystem: " + typeToString(typeid(T)) + ")");
-			}
-		}
-
-		if (!systems.emplace(typeid(T), system).second)
-			throw runtime_error("System is already created. (name: " + typeToString(typeid(T)) + ")");
-
-		if (running)
-		{
-			runEvent("PreInit");
-			runEvent("Init");
-			runEvent("PostInit");
-		}
+		createSystem(system, typeid(T));
 
 		#ifndef NDEBUG
 		isChanging = false;
@@ -981,11 +952,7 @@ public:
 	 * @brief Actually destroys system components and internal resources.
 	 * @details Systen components are not destroyed immediately, only after the dispose call.
 	 */
-	void disposeSystemComponents()
-	{
-		for (const auto& pair : systems)
-			pair.second->disposeComponents();
-	}
+	void disposeSystemComponents();
 	/**
 	 * @brief Actually destroys entities.
 	 * @details Entities are not destroyed immediately, only after the dispose call.

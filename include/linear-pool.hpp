@@ -426,7 +426,7 @@ public:
 		
 		if constexpr (DestroyItems)
 		{
-			if (occupancy - (uint32_t)freeItems.size() > 0)
+			if (occupancy - (uint32_t)freeItems.size() != 0)
 			{
 				for (uint32_t i = 0; i < occupancy; i++)
 					items[i].destroy();
@@ -598,7 +598,7 @@ public:
 		isChanging = true;
 		#endif
 
-		if (occupancy - (uint32_t)freeItems.size() > 0)
+		if (occupancy - (uint32_t)freeItems.size() != 0)
 		{
 			if (destroyItems)
 			{
@@ -610,7 +610,8 @@ public:
 			}
 			else
 			{
-				for (uint32_t i = 0; i < occupancy; i++) items[i] = T();
+				for (uint32_t i = 0; i < occupancy; i++)
+					items[i] = T();
 			}
 		}
 

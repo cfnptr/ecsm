@@ -110,6 +110,41 @@ Manager::~Manager()
 		instance = nullptr;
 }
 
+void Manager::createSystem(System* system, type_index type)
+{
+	auto componentType = system->getComponentType();
+	if (componentType != typeid(Component))
+	{
+		if (!componentTypes.emplace(componentType, system).second)
+		{
+			throw runtime_error("Component is already registered by the other system. ("
+				"componentType: " + typeToString(componentType) + ", "
+				"thisSystem: " + typeToString(type) + ")");
+		}
+	}
+
+	const auto& componentName = system->getComponentName();
+	if (!componentName.empty())
+	{
+		if (!componentNames.emplace(componentName, system).second)
+		{
+			throw runtime_error("Component name is already registered by the other system. ("
+				"componentName: " + componentName + ", "
+				"thisSystem: " + typeToString(type) + ")");
+		}
+	}
+
+	if (!systems.emplace(type, system).second)
+		throw runtime_error("System is already created. (name: " + typeToString(type) + ")");
+
+	if (running)
+	{
+		runEvent("PreInit");
+		runEvent("Init");
+		runEvent("PostInit");
+	}
+}
+
 //**********************************************************************************************************************
 void Manager::destroySystem(type_index type)
 {
@@ -579,6 +614,11 @@ void Manager::disposeGarbageComponents()
 		components.erase(iterator);
 	}
 	garbageComponents.clear();
+}
+void Manager::disposeSystemComponents()
+{
+	for (const auto& pair : systems)
+		pair.second->disposeComponents();
 }
 
 //**********************************************************************************************************************
