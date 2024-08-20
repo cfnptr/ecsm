@@ -117,24 +117,24 @@ public:
 //**********************************************************************************************************************
 static void testCommonFlow()
 {
-	Manager manager;
+	auto manager = new Manager();
 
-	manager.registerEventAfter("PostUpdate", "Update");
+	manager->registerEventAfter("PostUpdate", "Update");
 
-	if (manager.has<TestSystem>())
+	if (manager->has<TestSystem>())
 		throw runtime_error("Test system is not yet created.");
 
-	manager.createSystem<TestSystem>();
+	manager->createSystem<TestSystem>();
 
-	if (!manager.has<TestSystem>())
+	if (!manager->has<TestSystem>())
 		throw runtime_error("No created test system found.");
 
-	auto system = manager.get<TestSystem>();
+	auto system = manager->get<TestSystem>();
 
 	if (system->isInitialized != false)
 		throw runtime_error("Test system is already initialized.");
 
-	manager.initialize();
+	manager->initialize();
 
 	if (system->isInitialized != true)
 		throw runtime_error("Test system is not initialized.");
@@ -146,21 +146,21 @@ static void testCommonFlow()
 	if (baseSystem->getComponentType() != typeid(TestComponent))
 		throw runtime_error("Bad test system component type.");
 
-	auto testEntity = manager.createEntity();
+	auto testEntity = manager->createEntity();
 
-	if (manager.has<TestComponent>(testEntity))
+	if (manager->has<TestComponent>(testEntity))
 		throw runtime_error("Test component is not yet created.");
 
-	auto testView = manager.add<TestComponent>(testEntity);
+	auto testView = manager->add<TestComponent>(testEntity);
 	testView->ID = 1;
 	testView->someData = 123.456f;
 
-	if (!manager.has<TestComponent>(testEntity))
+	if (!manager->has<TestComponent>(testEntity))
 		throw runtime_error("No created test component found.");
 	if (testView->getEntity() != testEntity)
 		throw runtime_error("Bad test component entity instance.");
 
-	testView = manager.get<TestComponent>(testEntity);
+	testView = manager->get<TestComponent>(testEntity);
 
 	if (testView->ID != 1 || testView->someData != 123.456f)
 		throw runtime_error("Bad test component data before update.");
@@ -168,42 +168,43 @@ static void testCommonFlow()
 	if (system->updateCounter != 0 || system->postUpdateCounter != 0)
 		throw runtime_error("Bad test system data before update.");
 
-	manager.update();
+	manager->update();
 
 	if (system->updateCounter != 1 || system->postUpdateCounter != 2)
 		throw runtime_error("Bad test system data after update.");
 
-	testView = manager.get<TestComponent>(testEntity);
+	testView = manager->get<TestComponent>(testEntity);
 
 	if (testView->ID != 2)
 		throw runtime_error("Bad test component data after update.");
 	if (testView->getEntity() != testEntity)
 		throw runtime_error("Bad test component entity instance after update.");
 
-	manager.remove<TestComponent>(testEntity);
+	manager->remove<TestComponent>(testEntity);
 
 	if (manager.has<TestComponent>(testEntity))
 		throw runtime_error("Test component is not destroyed.");
 
 	// Note: after destruction component is still accessible until dispose call.
-	testView = manager.get<TestComponent>(testEntity);
+	testView = manager->get<TestComponent>(testEntity);
 	if (testView->ID != 2)
 		throw runtime_error("Bad test component data after destroy.");
 
 	auto componentMemory = *testView;
-	manager.disposeGarbageComponents();
-	manager.disposeSystemComponents();
-	manager.disposeEntities();
+	manager->disposeGarbageComponents();
+	manager->disposeSystemComponents();
+	manager->disposeEntities();
 
 	if (componentMemory->ID != 0) // WARNING! You should't do this, it's just safety check!
 		throw runtime_error("Bad test component data after dispose.");
 
-	manager.destroySystem<TestSystem>();
+	manager->destroySystem<TestSystem>();
 
-	if (manager.has<TestSystem>())
+	if (manager->has<TestSystem>())
 		throw runtime_error("Test system is not destroyed.");
 
-	manager.unregisterEvent("PostUpdate");
+	manager->unregisterEvent("PostUpdate");
+	delete manager;
 }
 
 //**********************************************************************************************************************
