@@ -360,7 +360,7 @@ public:
 
 	/**
 	 * @brief Returns system instance.
-	 * @warning Do not store system pointer, use them only in place. Because system can be destroyed later.
+	 * @warning Be carefull with system pointer, it can be destroyed later.
 	 * @param type target system typeid()
 	 * @throw runtime_error if system is not found.
 	 */

@@ -86,7 +86,7 @@ void ecsmExample()
 {
     auto manager = new ecsm::Manager();
     manager->createSystem<PhysicsSystem>();
-    manager->createSystem<GraphicsSystem>(false, 123);
+    manager->createSystem<GraphicsSystem>(false, 123); // System arguments
     // ...
 
     manager->initialize();
@@ -95,7 +95,7 @@ void ecsmExample()
     auto rigidBodyView = manager->add<RigidBodyComponent>(rigidBody);
     rigidBodyView->size = 1.0f;
 
-    manager.start();
+    manager->start();
 
     delete manager;
 }
