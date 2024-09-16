@@ -145,124 +145,6 @@ public:
 };
 
 /***********************************************************************************************************************
- * @brief Base system class with components.
- * @details See the @ref System.
- * 
- * @tparam T type of the system component
- * @tparam DestroyComponents system should call destroy() function of the components
- */
-template<class T = Component, bool DestroyComponents = true>
-class ComponentSystem : public System
-{
-protected:
-	/**
-	 * @brief System component pool.
-	 */
-	LinearPool<T, DestroyComponents> components;
-
-	/**
-	 * @brief Creates a new component instance for the entity.
-	 * @details You should use @ref Manager to add components to the entity.
-	 */
-	ID<Component> createComponent(ID<Entity> entity) override
-	{
-		return ID<Component>(components.create());
-	}
-	/**
-	 * @brief Destroys component instance.
-	 * @details You should use @ref Manager to remove components from the entity.
-	 */
-	void destroyComponent(ID<Component> instance) override
-	{
-		components.destroy(ID<T>(instance));
-	}
-	/**
-	 * @brief Copies component data from source to destination.
-	 * @details You should use @ref Manager to copy component data of entities.
-	 */
-	void copyComponent(View<Component> source, View<Component> destination) override
-	{
-		if constexpr (DestroyComponents)
-		{
-			auto destinationView = View<T>(destination);
-			destinationView->destroy();
-		}
-	}
-public:
-	/**
-	 * @brief Returns specific component name of the system.
-	 */
-	const string& getComponentName() const override
-	{
-		static const string name = typeToString(typeid(T));
-		return name;
-	}
-	/**
-	 * @brief Returns specific component typeid() of the system.
-	 * @note Override it to define a custom component of the system.
-	 */
-	type_index getComponentType() const override
-	{
-		return typeid(T);
-	}
-	/**
-	 * @brief Returns specific component @ref View.
-	 */
-	View<Component> getComponent(ID<Component> instance) override
-	{
-		return View<Component>(components.get(ID<T>(instance)));
-	}
-	/**
-	 * @brief Actually destroys system components.
-	 * @details Components are not destroyed immediately, only after the dispose call.
-	 */
-	void disposeComponents() override
-	{
-		components.dispose();
-	}
-
-	/**
-	 * @brief Returns true if entity has specific component.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	bool hasComponent(ID<Entity> entity) const
-	{
-		assert(entity);
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& entityComponents = entityView->getComponents();
-		return entityComponents.find(typeid(T)) != entityComponents.end();
-	}
-	/**
-	 * @brief Returns entity specific component view.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	View<T> getComponent(ID<Entity> entity) const
-	{
-		assert(entity);
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& pair = entityView->getComponents().at(typeid(T));
-		return components.get(ID<T>(pair.second));
-	}
-	/**
-	 * @brief Returns entity specific component view if exist.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	View<T> tryGetComponent(ID<Entity> entity) const
-	{
-		assert(entity);
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& entityComponents = entityView->getComponents();
-		auto result = entityComponents.find(typeid(T));
-		if (result == entityComponents.end())
-			return {};
-		return components.get(ID<T>(result->second.second));
-	}
-};
-
-/***********************************************************************************************************************
  * @brief An object containing components.
  * 
  * @details
@@ -1066,6 +948,124 @@ public:
 	 * @note Always unlock manager after synchronous access!
 	 */
 	void unlock() noexcept { locker.unlock(); }
+};
+
+/***********************************************************************************************************************
+ * @brief Base system class with components.
+ * @details See the @ref System.
+ *
+ * @tparam T type of the system component
+ * @tparam DestroyComponents system should call destroy() function of the components
+ */
+template<class T = Component, bool DestroyComponents = true>
+class ComponentSystem : public System
+{
+protected:
+	/**
+	 * @brief System component pool.
+	 */
+	LinearPool<T, DestroyComponents> components;
+
+	/**
+	 * @brief Creates a new component instance for the entity.
+	 * @details You should use @ref Manager to add components to the entity.
+	 */
+	ID<Component> createComponent(ID<Entity> entity) override
+	{
+		return ID<Component>(components.create());
+	}
+	/**
+	 * @brief Destroys component instance.
+	 * @details You should use @ref Manager to remove components from the entity.
+	 */
+	void destroyComponent(ID<Component> instance) override
+	{
+		components.destroy(ID<T>(instance));
+	}
+	/**
+	 * @brief Copies component data from source to destination.
+	 * @details You should use @ref Manager to copy component data of entities.
+	 */
+	void copyComponent(View<Component> source, View<Component> destination) override
+	{
+		if constexpr (DestroyComponents)
+		{
+			auto destinationView = View<T>(destination);
+			destinationView->destroy();
+		}
+	}
+public:
+	/**
+	 * @brief Returns specific component name of the system.
+	 */
+	const string& getComponentName() const override
+	{
+		static const string name = typeToString(typeid(T));
+		return name;
+	}
+	/**
+	 * @brief Returns specific component typeid() of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
+	type_index getComponentType() const override
+	{
+		return typeid(T);
+	}
+	/**
+	 * @brief Returns specific component @ref View.
+	 */
+	View<Component> getComponent(ID<Component> instance) override
+	{
+		return View<Component>(components.get(ID<T>(instance)));
+	}
+	/**
+	 * @brief Actually destroys system components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeComponents() override
+	{
+		components.dispose();
+	}
+
+	/**
+	 * @brief Returns true if entity has specific component.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	bool hasComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& entityComponents = entityView->getComponents();
+		return entityComponents.find(typeid(T)) != entityComponents.end();
+	}
+	/**
+	 * @brief Returns entity specific component view.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	View<T> getComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& pair = entityView->getComponents().at(typeid(T));
+		return components.get(ID<T>(pair.second));
+	}
+	/**
+	 * @brief Returns entity specific component view if exist.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	View<T> tryGetComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& entityComponents = entityView->getComponents();
+		auto result = entityComponents.find(typeid(T));
+		if (result == entityComponents.end())
+			return {};
+		return components.get(ID<T>(result->second.second));
+	}
 };
 
 /***********************************************************************************************************************

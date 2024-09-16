@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "ecsm.hpp"
+
 using namespace ecsm;
 
 struct TestComponent final : public Component

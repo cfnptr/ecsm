@@ -19,6 +19,7 @@
 
 #pragma once
 #include <string>
+#include <cstring>
 #include <typeindex>
 
 #ifdef __GNUG__
