@@ -50,7 +50,7 @@ public:
 	/**
 	 * @brief Singleton class type.
 	 */
-	typedef Singleton<T> Instance;
+	typedef Singleton<T, UseManager> Instance;
 protected:
 	/**
 	 * @brief Singleton class instance.
@@ -79,6 +79,7 @@ protected:
 				"type: " + typeToString(typeid(T)) + ")");
 		}
 		singletonInstance = (T*)this;
+		return;
 	}
 	/**
 	 * @brief Unsets this class singleton instance.

@@ -97,6 +97,10 @@ public:
 static void testCommonFlow()
 {
 	auto manager = new Manager();
+	auto managerSingleton = Manager::Instance::get();
+
+	if (manager != managerSingleton)
+		throw runtime_error("Different manager and singleton instance.");
 
 	manager->registerEventAfter("PostUpdate", "Update");
 
