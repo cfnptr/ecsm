@@ -15,17 +15,15 @@
 /***********************************************************************************************************************
  * @file
  * @brief Entity Component System Manager classes.
- **********************************************************************************************************************/
+ */
 
 #pragma once
+#include "singleton.hpp"
 #include "linear-pool.hpp"
 
 #include <set>
 #include <map>
 #include <mutex>
-#include <string>
-#include <typeinfo>
-#include <typeindex>
 #include <algorithm>
 #include <functional>
 #include <type_traits>
@@ -43,43 +41,26 @@ class Manager;
 class SystemExt;
 
 /**
- * @brief Returns @ref type_index string representation.
- * @param type target type
- */
-static string typeToString(type_index type)
-{
-	if (strlen(type.name()) > 0)
-		return string(type.name());
-	else
-		return to_string(type.hash_code());
-}
-/**
- * @brief Returns type string representation.
- * @tparam T target type
- */
-template<typename T>
-static string typeToString()
-{
-	return typeToString(typeid(T));
-}
-
-/**
  * @brief Subscribes @ref System function to the event.
  */
-#define SUBSCRIBE_TO_EVENT(name, func) Manager::get()->subscribeToEvent(name, std::bind(&func, this))
+#define ECSM_SUBSCRIBE_TO_EVENT(name, func) \
+	Manager::Instance::get()->subscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event.
  */
-#define UNSUBSCRIBE_FROM_EVENT(name, func) Manager::get()->unsubscribeFromEvent(name, std::bind(&func, this))
+#define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) \
+	Manager::Instance::get()->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
  * @brief Subscribes @ref System function to the event if exist.
  */
-#define TRY_SUBSCRIBE_TO_EVENT(name, func) Manager::get()->trySubscribeToEvent(name, std::bind(&func, this))
+#define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) \
+	Manager::Instance::get()->trySubscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event if exist.
  */
-#define TRY_UNSUBSCRIBE_FROM_EVENT(name, func) Manager::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
+#define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) \
+	Manager::Instance::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
 /***********************************************************************************************************************
  * @brief Base component structure.
@@ -157,10 +138,128 @@ public:
 	 */
 	virtual View<Component> getComponent(ID<Component> instance);
 	/**
-	 * @brief Actually destroys components.
+	 * @brief Actually destroys system components.
 	 * @details Components are not destroyed immediately, only after the dispose call.
 	 */
 	virtual void disposeComponents();
+};
+
+/***********************************************************************************************************************
+ * @brief Base system class with components.
+ * @details See the @ref System.
+ * 
+ * @tparam T type of the system component
+ * @tparam DestroyComponents system should call destroy() function of the components
+ */
+template<class T = Component, bool DestroyComponents = true>
+class ComponentSystem : public System
+{
+protected:
+	/**
+	 * @brief System component pool.
+	 */
+	LinearPool<T, DestroyComponents> components;
+
+	/**
+	 * @brief Creates a new component instance for the entity.
+	 * @details You should use @ref Manager to add components to the entity.
+	 */
+	ID<Component> createComponent(ID<Entity> entity) override
+	{
+		return ID<Component>(components.create());
+	}
+	/**
+	 * @brief Destroys component instance.
+	 * @details You should use @ref Manager to remove components from the entity.
+	 */
+	void destroyComponent(ID<Component> instance) override
+	{
+		components.destroy(ID<T>(instance));
+	}
+	/**
+	 * @brief Copies component data from source to destination.
+	 * @details You should use @ref Manager to copy component data of entities.
+	 */
+	void copyComponent(View<Component> source, View<Component> destination) override
+	{
+		if constexpr (DestroyComponents)
+		{
+			auto destinationView = View<T>(destination);
+			destinationView->destroy();
+		}
+	}
+public:
+	/**
+	 * @brief Returns specific component name of the system.
+	 */
+	const string& getComponentName() const override
+	{
+		static const string name = typeToString(typeid(T));
+		return name;
+	}
+	/**
+	 * @brief Returns specific component typeid() of the system.
+	 * @note Override it to define a custom component of the system.
+	 */
+	type_index getComponentType() const override
+	{
+		return typeid(T);
+	}
+	/**
+	 * @brief Returns specific component @ref View.
+	 */
+	View<Component> getComponent(ID<Component> instance) override
+	{
+		return View<Component>(components.get(ID<T>(instance)));
+	}
+	/**
+	 * @brief Actually destroys system components.
+	 * @details Components are not destroyed immediately, only after the dispose call.
+	 */
+	void disposeComponents() override
+	{
+		components.dispose();
+	}
+
+	/**
+	 * @brief Returns true if entity has specific component.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	bool hasComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& entityComponents = entityView->getComponents();
+		return entityComponents.find(typeid(T)) != entityComponents.end();
+	}
+	/**
+	 * @brief Returns entity specific component view.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	View<T> getComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& pair = entityView->getComponents().at(typeid(T));
+		return components.get(ID<T>(pair.second));
+	}
+	/**
+	 * @brief Returns entity specific component view if exist.
+	 * @param entity target entity with component
+	 * @note This function is faster than the Manager one.
+	 */
+	View<T> tryGetComponent(ID<Entity> entity) const
+	{
+		assert(entity);
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		const auto& entityComponents = entityView->getComponents();
+		auto result = entityComponents.find(typeid(T));
+		if (result == entityComponents.end())
+			return {};
+		return components.get(ID<T>(result->second.second));
+	}
 };
 
 /***********************************************************************************************************************
@@ -212,7 +311,7 @@ public:
  *     It's particularly useful for setup steps that require all other components to 
  *     be in a ready state or for cross-component communications and linking.
  */
-class Manager final
+class Manager final : public Singleton<Manager, false>
 {
 public:
 	/**
@@ -257,18 +356,15 @@ private:
 	bool isChanging = false;
 	#endif
 
-	static Manager* instance;
-
 	void addSystem(System* system, type_index type);
 public:
 	/**
-	 * @brief Initializes manager.
-	 * @param useSingleton set manager singleton instance
-	 * @throw runtime_error if manager singleton instance is already set.
+	 * @brief Creates a new manager instance.
+	 * @param setSingleton set manager singleton instance
 	 */
-	Manager(bool useSingleton = true);
+	Manager(bool setSingleton = true);
 	/**
-	 * @brief Terminates and destroys all manager systems.
+	 * @brief Destroys manager and all components/entities/systems.
 	 */
 	~Manager();
 
@@ -970,12 +1066,6 @@ public:
 	 * @note Always unlock manager after synchronous access!
 	 */
 	void unlock() noexcept { locker.unlock(); }
-
-	/**
-	 * @brief Returns manager singleton instance.
-	 * @note You should set "useSingleton" on manager instance creation.
-	 */
-	static Manager* get() noexcept { return instance; }
 };
 
 /***********************************************************************************************************************
@@ -987,19 +1077,21 @@ struct DoNotDestroyComponent : public Component { };
 /**
  * @brief Handles entities that should not be destroyed.
  */
-class DoNotDestroySystem : public System
+class DoNotDestroySystem : public ComponentSystem<DoNotDestroyComponent, false>, 
+	public Singleton<DoNotDestroySystem>
 {
 protected:
-	LinearPool<DoNotDestroyComponent, false> components;
+	/**
+	 * @brief Creates a new do not duplicate system instance.
+	 * @param setSingleton set system singleton instance
+	 */
+	DoNotDestroySystem(bool setSingleton = true);
+	/**
+	 * @brief Destroy baked transformer system instance.
+	 */
+	~DoNotDestroySystem() final;
 
-	ID<Component> createComponent(ID<Entity> entity) override;
-	void destroyComponent(ID<Component> instance) override;
-	void copyComponent(View<Component> source, View<Component> destination) override;
 	const string& getComponentName() const override;
-	type_index getComponentType() const override;
-	View<Component> getComponent(ID<Component> instance) override;
-	void disposeComponents() override;
-
 	friend class ecsm::Manager;
 };
 
@@ -1012,19 +1104,21 @@ struct DoNotDuplicateComponent : public Component { };
 /**
  * @brief Handles entities that should not be duplicated.
  */
-class DoNotDuplicateSystem : public System
+class DoNotDuplicateSystem : public ComponentSystem<DoNotDuplicateComponent, false>, 
+	public Singleton<DoNotDuplicateSystem>
 {
 protected:
-	LinearPool<DoNotDuplicateComponent, false> components;
+	/**
+	 * @brief Creates a new do not duplicate system instance.
+	 * @param setSingleton set system singleton instance
+	 */
+	DoNotDuplicateSystem(bool setSingleton = true);
+	/**
+	 * @brief Destroy baked transformer system instance.
+	 */
+	~DoNotDuplicateSystem() final;
 
-	ID<Component> createComponent(ID<Entity> entity) override;
-	void destroyComponent(ID<Component> instance) override;
-	void copyComponent(View<Component> source, View<Component> destination) override;
 	const string& getComponentName() const override;
-	type_index getComponentType() const override;
-	View<Component> getComponent(ID<Component> instance) override;
-	void disposeComponents() override;
-
 	friend class ecsm::Manager;
 };
 

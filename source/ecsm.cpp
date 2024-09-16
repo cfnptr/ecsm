@@ -61,9 +61,7 @@ bool Entity::destroy()
 }
 
 //**********************************************************************************************************************
-Manager* Manager::instance = nullptr;
-
-Manager::Manager(bool useSingleton)
+Manager::Manager(bool setSingleton) : Singleton(setSingleton)
 {
 	auto name = "PreInit"; events.emplace(std::move(name), new Event(name));
 	name = "Init"; events.emplace(std::move(name), new Event(name));
@@ -73,13 +71,6 @@ Manager::Manager(bool useSingleton)
 	name = "Deinit"; events.emplace(std::move(name), new Event(name));
 	name = "PostDeinit"; events.emplace(std::move(name), new Event(name));
 	orderedEvents.push_back(events["Update"]);
-
-	if (useSingleton)
-	{
-		if (instance)
-			throw runtime_error("Manager singleton instance is already set.");
-		instance = this;
-	}
 }
 Manager::~Manager()
 {
@@ -106,8 +97,7 @@ Manager::~Manager()
 	isChanging = false;
 	#endif
 
-	if (instance == this)
-		instance = nullptr;
+	unsetSingleton();
 }
 
 void Manager::addSystem(System* system, type_index type)
@@ -622,65 +612,20 @@ void Manager::disposeSystemComponents()
 }
 
 //**********************************************************************************************************************
-ID<Component> DoNotDestroySystem::createComponent(ID<Entity> entity)
-{
-	return ID<Component>(components.create());
-}
-void DoNotDestroySystem::destroyComponent(ID<Component> instance)
-{ 
-	components.destroy(ID<DoNotDestroyComponent>(instance));
-}
-void DoNotDestroySystem::copyComponent(View<Component> source, View<Component> destination)
-{
-	return;
-}
+DoNotDestroySystem::DoNotDestroySystem(bool setSingleton) : Singleton(setSingleton) { }
+DoNotDestroySystem::~DoNotDestroySystem() { unsetSingleton(); }
 
 const string& DoNotDestroySystem::getComponentName() const
 {
 	static const string name = "Do Not Destroy";
 	return name;
 }
-type_index DoNotDestroySystem::getComponentType() const
-{
-	return typeid(DoNotDestroyComponent);
-}
-View<Component> DoNotDestroySystem::getComponent(ID<Component> instance)
-{
-	return View<Component>(components.get(ID<DoNotDestroyComponent>(instance)));
-}
-void DoNotDestroySystem::disposeComponents()
-{
-	components.dispose();
-}
 
-//**********************************************************************************************************************
-ID<Component> DoNotDuplicateSystem::createComponent(ID<Entity> entity)
-{
-	return ID<Component>(components.create());
-}
-void DoNotDuplicateSystem::destroyComponent(ID<Component> instance)
-{
-	components.destroy(ID<DoNotDuplicateComponent>(instance));
-}
-void DoNotDuplicateSystem::copyComponent(View<Component> source, View<Component> destination)
-{
-	return;
-}
+DoNotDuplicateSystem::DoNotDuplicateSystem(bool setSingleton) : Singleton(setSingleton) { }
+DoNotDuplicateSystem::~DoNotDuplicateSystem() { unsetSingleton(); }
 
 const string& DoNotDuplicateSystem::getComponentName() const
 {
 	static const string name = "Do Not Duplicate";
 	return name;
-}
-type_index DoNotDuplicateSystem::getComponentType() const
-{
-	return typeid(DoNotDuplicateComponent);
-}
-View<Component> DoNotDuplicateSystem::getComponent(ID<Component> instance)
-{
-	return View<Component>(components.get(ID<DoNotDuplicateComponent>(instance)));
-}
-void DoNotDuplicateSystem::disposeComponents()
-{
-	components.dispose();
 }

@@ -29,34 +29,24 @@ struct TestComponent final : public Component
 	}
 };
 
-class TestSystem final : public System
+class TestSystem final : public ComponentSystem<TestComponent>
 {
-	LinearPool<TestComponent> components;
-
 	TestSystem()
 	{
-		SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
-		SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
-		SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
+		ECSM_SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
+		ECSM_SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
+		ECSM_SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
 	~TestSystem() final
 	{
-		if (Manager::get()->isRunning())
+		if (Manager::Instance::get()->isRunning())
 		{
-			UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
-			UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
-			UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
+			ECSM_UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
+			ECSM_UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
+			ECSM_UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
 		}
 	}
 
-	ID<Component> createComponent(ID<Entity> entity) final
-	{
-		return ID<Component>(components.create());
-	}
-	void destroyComponent(ID<Component> instance) final
-	{
-		components.destroy(ID<TestComponent>(instance));
-	}
 	void copyComponent(View<Component> source, View<Component> destination) final
 	{
 		const auto sourceView = View<TestComponent>(source);
@@ -68,18 +58,6 @@ class TestSystem final : public System
 	{
 		static const string name = "Test";
 		return name;
-	}
-	type_index getComponentType() const final
-	{
-		return typeid(TestComponent);
-	}
-	View<Component> getComponent(ID<Component> instance) final
-	{
-		return View<Component>(components.get(ID<TestComponent>(instance)));
-	}
-	void disposeComponents() final
-	{
-		components.dispose();
 	}
 
 	void init()

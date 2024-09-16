@@ -17,6 +17,7 @@ See the [documentation](https://cfnptr.github.io/ecsm)
 * Acceptable compilation time
 * Fast component iteration
 * Fast entity component access
+* Singleton class pattern
 
 ## Usage example
 
@@ -28,10 +29,8 @@ struct RigidBodyComponent final : public Component
     float size = 0.0f;
 };
 
-class PhysicsSystem final : public System
+class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 {
-    LinearPool<RigidBodyComponent, false> components;
-
     PhysicsSystem()
     {
         SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
@@ -42,36 +41,11 @@ class PhysicsSystem final : public System
             UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 
-    ID<Component> createComponent(ID<Entity> entity) final
-    {
-        return ID<Component>(components.create());
-    }
-    void destroyComponent(ID<Component> instance) final
-    {
-        components.destroy(ID<RigidBodyComponent>(instance));
-    }
-    View<Component> getComponent(ID<Component> instance) final
-    {
-        return View<Component>(components.get(ID<RigidBodyComponent>(instance)));
-    }
     void copyComponent(View<Component> source, View<Component> destination) final
     {
         const auto sourceView = View<RigidBodyComponent>(source);
         auto destinationView = View<RigidBodyComponent>(destination);
         destinationView->size = sourceView->size;
-    }
-    const string& getComponentName() const final
-    {
-        static const string name = "Rigid Body";
-        return name;
-    }
-    type_index getComponentType() const final
-    {
-        return typeid(RigidBodyComponent);
-    }
-    void disposeComponents() final
-    {
-        components.dispose();
     }
 
     void update()

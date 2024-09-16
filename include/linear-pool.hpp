@@ -14,7 +14,7 @@
 
 /***********************************************************************************************************************
  * @file
- **********************************************************************************************************************/
+ */
 
 #pragma once
 #include <stack>
@@ -33,7 +33,7 @@ using namespace std;
 template<class T, bool Destroy = true>
 class LinearPool;
 
-/***********************************************************************************************************************
+/**
  * @brief Item identifier in the @ref LinearPool.
  * @tparam T type of the item in the linear pool
  * 
@@ -396,7 +396,7 @@ static bool operator<(ID<T> i, const Ref<T>& r) noexcept { return i < ID<T>(r); 
  * the same time, which can result in better performance due to the way modern computer architectures use caches.
  * 
  * @tparam T type of the item in the linear pool
- * @tparam DestroyItems linear pool should call destroy() function of the items.
+ * @tparam DestroyItems linear pool should call destroy() function of the items
  */
 template<class T, bool DestroyItems /* = true */>
 class LinearPool
