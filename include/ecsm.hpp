@@ -28,6 +28,7 @@
 #include <functional>
 #include <type_traits>
 #include <string_view>
+#include <unordered_map>
 
 namespace ecsm
 {
@@ -214,10 +215,10 @@ public:
 		}
 	};
 
-	using Systems = map<type_index, System*>;
-	using ComponentTypes = map<type_index, System*>;
+	using Systems = unordered_map<type_index, System*>;
+	using ComponentTypes = unordered_map<type_index, System*>;
 	using ComponentNames = map<string, System*>;
-	using Events = map<string, Event*>;
+	using Events = unordered_map<string, Event*>;
 	using OrderedEvents = vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
 	using GarbageComponent = pair<type_index, ID<Entity>>;
@@ -948,6 +949,23 @@ public:
 	 * @note Always unlock manager after synchronous access!
 	 */
 	void unlock() noexcept { locker.unlock(); }
+
+	/**
+	 * @brief Sets manager singleton to this instance.
+	 * @details Useful in cases when we need to switch between multiple managers.
+	 */
+	void setSingletonCurrent() noexcept
+	{
+		singletonInstance = this;
+	}
+	/**
+	 * @brief Unsets manager singleton instance.
+	 * @details See the @ref setSingletonCurrent().
+	 */
+	void unsetSingletonCurrent() noexcept
+	{
+		singletonInstance = nullptr;
+	}
 };
 
 /***********************************************************************************************************************
