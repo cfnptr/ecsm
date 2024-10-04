@@ -33,12 +33,12 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 {
     PhysicsSystem()
     {
-        SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
+        ECSM_SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
     }
     ~PhysicsSystem() final
     {
         if (Manager::get()->isRunning())
-            UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
+            ECSM_UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 
     void copyComponent(View<Component> source, View<Component> destination) final

@@ -78,7 +78,7 @@ protected:
 	friend class Manager;
 public:
 	/**
-	 * @brief Returns component entity.
+	 * @brief Returns component entity instance.
 	 */
 	ID<Entity> getEntity() const noexcept { return entity; }
 };
@@ -101,21 +101,25 @@ protected:
 	virtual ~System() = default;
 
 	/**
-	 * @brief Creates a new component instance for the entity.
+	 * @brief Creates a new system component instance for the entity.
 	 * @details You should use @ref Manager to add components to the entity.
 	 * @note Override it to define a custom component of the system.
+	 * @param entity target entity instance
 	 */
 	virtual ID<Component> createComponent(ID<Entity> entity);
 	/**
-	 * @brief Destroys component instance.
+	 * @brief Destroys system component instance.
 	 * @details You should use @ref Manager to remove components from the entity.
 	 * @note Override it to define a custom component of the system.
+	 * @param instance target component instance
 	 */
 	virtual void destroyComponent(ID<Component> instance);
 	/**
-	 * @brief Copies component data from source to destination.
+	 * @brief Copies system component data from source to destination.
 	 * @details You should use @ref Manager to copy component data of entities.
 	 * @note Override it to define a custom component of the system.
+	 * @param source source component view (from)
+	 * @param destination destination component view (to)
 	 */
 	virtual void copyComponent(View<Component> source, View<Component> destination);
 
@@ -134,8 +138,9 @@ public:
 	 */
 	virtual type_index getComponentType() const;
 	/**
-	 * @brief Returns specific component @ref View.
+	 * @brief Returns specific system component @ref View.
 	 * @note Override it to define a custom component of the system.
+	 * @param instance target component instance
 	 */
 	virtual View<Component> getComponent(ID<Component> instance);
 	/**
