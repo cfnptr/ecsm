@@ -1112,7 +1112,7 @@ protected:
 	/**
 	 * @brief Destroy baked transformer system instance.
 	 */
-	~DoNotDestroySystem() final;
+	~DoNotDestroySystem() override;
 
 	const string& getComponentName() const override;
 	friend class ecsm::Manager;
@@ -1139,7 +1139,7 @@ protected:
 	/**
 	 * @brief Destroy baked transformer system instance.
 	 */
-	~DoNotDuplicateSystem() final;
+	~DoNotDuplicateSystem() override;
 
 	const string& getComponentName() const override;
 	friend class ecsm::Manager;
