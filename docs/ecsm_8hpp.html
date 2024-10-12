@@ -67,17 +67,16 @@ $(function(){initNavTree('ecsm_8hpp.html',''); initResizable(true); });
 
 <p>Entity Component System Manager classes.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="linear-pool_8hpp.html">linear-pool.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="singleton_8hpp.html">singleton.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="linear-pool_8hpp.html">linear-pool.hpp</a>&quot;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/set.html">set</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/map.html">map</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/mutex.html">mutex</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/string.html">string</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/typeinfo.html">typeinfo</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/typeindex.html">typeindex</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/algorithm.html">algorithm</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/functional.html">functional</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/type_traits.html">type_traits</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/string_view.html">string_view</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/header/unordered_map.html">unordered_map</a>&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -96,6 +95,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structecsm_1_1_manager_1_1_event.html">Manager::Event</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structecsm_1_1_manager_1_1_event.html" title="Event subscribers holder.">Event</a> subscribers holder.  <a href="structecsm_1_1_manager_1_1_event.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classecsm_1_1_component_system.html">ComponentSystem&lt; T, DestroyComponents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base system class with components.  <a href="classecsm_1_1_component_system.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structecsm_1_1_do_not_destroy_component.html">DoNotDestroyComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structecsm_1_1_component.html" title="Base component structure.">Component</a> indicating that this entity should not be destroyed.  <a href="structecsm_1_1_do_not_destroy_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -111,30 +113,30 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a2c11b493896f524cf2b14f496447a3fd" id="r_a2c11b493896f524cf2b14f496447a3fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c11b493896f524cf2b14f496447a3fd">SUBSCRIBE_TO_EVENT</a>(name,  func)</td></tr>
-<tr class="memdesc:a2c11b493896f524cf2b14f496447a3fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribes System function to the event.  <br /></td></tr>
-<tr class="separator:a2c11b493896f524cf2b14f496447a3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ead73a6a45b42e953a215084417373c" id="r_a4ead73a6a45b42e953a215084417373c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ead73a6a45b42e953a215084417373c">UNSUBSCRIBE_FROM_EVENT</a>(name,  func)</td></tr>
-<tr class="memdesc:a4ead73a6a45b42e953a215084417373c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribes System function from the event.  <br /></td></tr>
-<tr class="separator:a4ead73a6a45b42e953a215084417373c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d87c7e0cb1a0494edb8181c5b3e5e60" id="r_a3d87c7e0cb1a0494edb8181c5b3e5e60"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d87c7e0cb1a0494edb8181c5b3e5e60">TRY_SUBSCRIBE_TO_EVENT</a>(name,  func)</td></tr>
-<tr class="memdesc:a3d87c7e0cb1a0494edb8181c5b3e5e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribes System function to the event if exist.  <br /></td></tr>
-<tr class="separator:a3d87c7e0cb1a0494edb8181c5b3e5e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9219c2b7daea2d9be8722f9a55b7cb6c" id="r_a9219c2b7daea2d9be8722f9a55b7cb6c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9219c2b7daea2d9be8722f9a55b7cb6c">TRY_UNSUBSCRIBE_FROM_EVENT</a>(name,  func)</td></tr>
-<tr class="memdesc:a9219c2b7daea2d9be8722f9a55b7cb6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribes System function from the event if exist.  <br /></td></tr>
-<tr class="separator:a9219c2b7daea2d9be8722f9a55b7cb6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee92b5a7886d65efb8da44fc055b41cf" id="r_aee92b5a7886d65efb8da44fc055b41cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee92b5a7886d65efb8da44fc055b41cf">ECSM_SUBSCRIBE_TO_EVENT</a>(name,  func)</td></tr>
+<tr class="memdesc:aee92b5a7886d65efb8da44fc055b41cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribes System function to the event.  <br /></td></tr>
+<tr class="separator:aee92b5a7886d65efb8da44fc055b41cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cb45ef3e3b608d4f442561ddb105637" id="r_a8cb45ef3e3b608d4f442561ddb105637"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cb45ef3e3b608d4f442561ddb105637">ECSM_UNSUBSCRIBE_FROM_EVENT</a>(name,  func)</td></tr>
+<tr class="memdesc:a8cb45ef3e3b608d4f442561ddb105637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribes System function from the event.  <br /></td></tr>
+<tr class="separator:a8cb45ef3e3b608d4f442561ddb105637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dda603d66e79b18246f7037d168f76b" id="r_a5dda603d66e79b18246f7037d168f76b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dda603d66e79b18246f7037d168f76b">ECSM_TRY_SUBSCRIBE_TO_EVENT</a>(name,  func)</td></tr>
+<tr class="memdesc:a5dda603d66e79b18246f7037d168f76b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribes System function to the event if exist.  <br /></td></tr>
+<tr class="separator:a5dda603d66e79b18246f7037d168f76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2905bc7316305294675da6570c3edff9" id="r_a2905bc7316305294675da6570c3edff9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2905bc7316305294675da6570c3edff9">ECSM_TRY_UNSUBSCRIBE_FROM_EVENT</a>(name,  func)</td></tr>
+<tr class="memdesc:a2905bc7316305294675da6570c3edff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsubscribes System function from the event if exist.  <br /></td></tr>
+<tr class="separator:a2905bc7316305294675da6570c3edff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Entity Component System Manager classes. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a2c11b493896f524cf2b14f496447a3fd" name="a2c11b493896f524cf2b14f496447a3fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c11b493896f524cf2b14f496447a3fd">&#9670;&#160;</a></span>SUBSCRIBE_TO_EVENT</h2>
+<a id="aee92b5a7886d65efb8da44fc055b41cf" name="aee92b5a7886d65efb8da44fc055b41cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee92b5a7886d65efb8da44fc055b41cf">&#9670;&#160;</a></span>ECSM_SUBSCRIBE_TO_EVENT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SUBSCRIBE_TO_EVENT</td>
+          <td class="memname">#define ECSM_SUBSCRIBE_TO_EVENT</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
         </tr>
@@ -145,21 +147,21 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">Manager::get()-&gt;subscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">    Manager::Instance::get()-&gt;subscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 <div class="ttc" id="abind_html"><div class="ttname"><a href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a></div><div class="ttdeci">T bind(T... args)</div></div>
 </div><!-- fragment -->
 <p>Subscribes System function to the event. </p>
 
 </div>
 </div>
-<a id="a4ead73a6a45b42e953a215084417373c" name="a4ead73a6a45b42e953a215084417373c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ead73a6a45b42e953a215084417373c">&#9670;&#160;</a></span>UNSUBSCRIBE_FROM_EVENT</h2>
+<a id="a8cb45ef3e3b608d4f442561ddb105637" name="a8cb45ef3e3b608d4f442561ddb105637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cb45ef3e3b608d4f442561ddb105637">&#9670;&#160;</a></span>ECSM_UNSUBSCRIBE_FROM_EVENT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UNSUBSCRIBE_FROM_EVENT</td>
+          <td class="memname">#define ECSM_UNSUBSCRIBE_FROM_EVENT</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
         </tr>
@@ -170,20 +172,20 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">Manager::get()-&gt;unsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">    Manager::Instance::get()-&gt;unsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Unsubscribes System function from the event. </p>
 
 </div>
 </div>
-<a id="a3d87c7e0cb1a0494edb8181c5b3e5e60" name="a3d87c7e0cb1a0494edb8181c5b3e5e60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d87c7e0cb1a0494edb8181c5b3e5e60">&#9670;&#160;</a></span>TRY_SUBSCRIBE_TO_EVENT</h2>
+<a id="a5dda603d66e79b18246f7037d168f76b" name="a5dda603d66e79b18246f7037d168f76b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dda603d66e79b18246f7037d168f76b">&#9670;&#160;</a></span>ECSM_TRY_SUBSCRIBE_TO_EVENT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TRY_SUBSCRIBE_TO_EVENT</td>
+          <td class="memname">#define ECSM_TRY_SUBSCRIBE_TO_EVENT</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
         </tr>
@@ -194,20 +196,20 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">Manager::get()-&gt;trySubscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">    Manager::Instance::get()-&gt;trySubscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Subscribes System function to the event if exist. </p>
 
 </div>
 </div>
-<a id="a9219c2b7daea2d9be8722f9a55b7cb6c" name="a9219c2b7daea2d9be8722f9a55b7cb6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9219c2b7daea2d9be8722f9a55b7cb6c">&#9670;&#160;</a></span>TRY_UNSUBSCRIBE_FROM_EVENT</h2>
+<a id="a2905bc7316305294675da6570c3edff9" name="a2905bc7316305294675da6570c3edff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2905bc7316305294675da6570c3edff9">&#9670;&#160;</a></span>ECSM_TRY_UNSUBSCRIBE_FROM_EVENT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TRY_UNSUBSCRIBE_FROM_EVENT</td>
+          <td class="memname">#define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
         </tr>
@@ -218,7 +220,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">Manager::get()-&gt;tryUnsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">    Manager::Instance::get()-&gt;tryUnsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Unsubscribes System function from the event if exist. </p>
 
@@ -230,7 +232,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="ecsm_8hpp.html">ecsm.hpp</a></li>
-    <li class="footer">Generated on Sat Sep 14 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+    <li class="footer">Generated on Sat Oct 12 2024 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>
 </body>

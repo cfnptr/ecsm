@@ -9,14 +9,29 @@ var hierarchy =
     [ "ID< T >", "structecsm_1_1_i_d.html", null ],
     [ "ID< ecsm::Entity >", "structecsm_1_1_i_d.html", null ],
     [ "LinearPool< T, DestroyItems >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< ecsm::DoNotDestroyComponent, false >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< ecsm::DoNotDuplicateComponent, false >", "classecsm_1_1_linear_pool.html", null ],
+    [ "LinearPool< Component, true >", "classecsm_1_1_linear_pool.html", null ],
+    [ "LinearPool< DoNotDestroyComponent, DestroyComponents >", "classecsm_1_1_linear_pool.html", null ],
+    [ "LinearPool< DoNotDuplicateComponent, DestroyComponents >", "classecsm_1_1_linear_pool.html", null ],
     [ "LinearPool< Entity >", "classecsm_1_1_linear_pool.html", null ],
-    [ "Manager", "classecsm_1_1_manager.html", null ],
     [ "Ref< T >", "structecsm_1_1_ref.html", null ],
-    [ "System", "classecsm_1_1_system.html", [
-      [ "DoNotDestroySystem", "classecsm_1_1_do_not_destroy_system.html", null ],
+    [ "Singleton< T, UseManager >", "classecsm_1_1_singleton.html", null ],
+    [ "Singleton< DoNotDestroySystem >", "classecsm_1_1_singleton.html", [
+      [ "DoNotDestroySystem", "classecsm_1_1_do_not_destroy_system.html", null ]
+    ] ],
+    [ "Singleton< DoNotDuplicateSystem >", "classecsm_1_1_singleton.html", [
       [ "DoNotDuplicateSystem", "classecsm_1_1_do_not_duplicate_system.html", null ]
+    ] ],
+    [ "Singleton< Manager, false >", "classecsm_1_1_singleton.html", [
+      [ "Manager", "classecsm_1_1_manager.html", null ]
+    ] ],
+    [ "System", "classecsm_1_1_system.html", [
+      [ "ComponentSystem< DoNotDestroyComponent, false >", "classecsm_1_1_component_system.html", [
+        [ "DoNotDestroySystem", "classecsm_1_1_do_not_destroy_system.html", null ]
+      ] ],
+      [ "ComponentSystem< DoNotDuplicateComponent, false >", "classecsm_1_1_component_system.html", [
+        [ "DoNotDuplicateSystem", "classecsm_1_1_do_not_duplicate_system.html", null ]
+      ] ],
+      [ "ComponentSystem< T, DestroyComponents >", "classecsm_1_1_component_system.html", null ]
     ] ],
     [ "View< T >", "structecsm_1_1_view.html", null ]
 ];

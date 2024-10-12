@@ -1,7 +1,8 @@
 var classecsm_1_1_manager =
 [
     [ "Event", "structecsm_1_1_manager_1_1_event.html", null ],
-    [ "Manager", "classecsm_1_1_manager.html#a8039b895c266344ffee774ef7cc56d53", null ],
+    [ "Instance", "classecsm_1_1_manager.html#ac90055a9bdb9707d6bafcd52536e5099", null ],
+    [ "Manager", "classecsm_1_1_manager.html#a61be184217f47e6e2dcab6952dbc35f3", null ],
     [ "~Manager", "classecsm_1_1_manager.html#a829d7114e3ed38c555af0fb4e974a6f6", null ],
     [ "createSystem", "classecsm_1_1_manager.html#a48f021b26d5ab8bffa3c87709d0cf618", null ],
     [ "destroySystem", "classecsm_1_1_manager.html#a548340e29237339ec817dd30c4ef4528", null ],
@@ -72,5 +73,9 @@ var classecsm_1_1_manager =
     [ "disposeEntities", "classecsm_1_1_manager.html#abe26b70eee90151f11395e048583a91e", null ],
     [ "lock", "classecsm_1_1_manager.html#aa81aed607133209dade63a226818224d", null ],
     [ "tryLock", "classecsm_1_1_manager.html#afcfc18f306abd37c4e98abf56f5a34d0", null ],
-    [ "unlock", "classecsm_1_1_manager.html#a4b7c1039f47fca6ca12bbf9134a543a1", null ]
+    [ "unlock", "classecsm_1_1_manager.html#a4b7c1039f47fca6ca12bbf9134a543a1", null ],
+    [ "setSingletonCurrent", "classecsm_1_1_manager.html#a30a05f157da7d98642e705fa549c27f2", null ],
+    [ "unsetSingletonCurrent", "classecsm_1_1_manager.html#a53826f67d5c9a2876b138c3f4bc835a6", null ],
+    [ "setSingleton", "classecsm_1_1_manager.html#a13860914a422213aecadfc1a2737059f", null ],
+    [ "unsetSingleton", "classecsm_1_1_manager.html#ab802efe00138b8e31a2a376a41c5b155", null ]
 ];
