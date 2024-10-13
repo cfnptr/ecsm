@@ -47,11 +47,12 @@ struct ID final
 private:
 	uint32_t index = 0;
 
-	ID(uint32_t index) noexcept { this->index = index; }
+	constexpr ID(uint32_t index) noexcept : index(index) { }
+
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
-	ID() = default;
+	constexpr ID() = default;
 
 	/**
 	 * @brief Changes the type of the identifier item.
@@ -61,7 +62,7 @@ public:
 	 * @param id item identifier in the linear pool
 	 */
 	template<class U>
-	explicit ID(ID<U> id) noexcept : index(*id) { }
+	constexpr explicit ID(ID<U> id) noexcept : index(*id) { }
 
 	/**
 	 * @brief Returns item index + 1 in the linear pool.
@@ -78,22 +79,22 @@ public:
 	 * @brief Returns true if this identifier is equal to the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator==(ID v) const noexcept { return index == v.index; }
+	constexpr bool operator==(ID v) const noexcept { return index == v.index; }
 	/**
 	 * @brief Returns true if this identifier is not equal to the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator!=(ID v) const noexcept { return index != v.index; }
+	constexpr bool operator!=(ID v) const noexcept { return index != v.index; }
 	/**
 	 * @brief Returns true if this identifier is less than the v identifier.
 	 * @param v other identifier value
 	 */
-	bool operator<(ID v) const noexcept { return index < v.index; }
+	constexpr bool operator<(ID v) const noexcept { return index < v.index; }
 
 	/**
 	 * @brief Returns true if item is not null.
 	 */
-	explicit operator bool() const noexcept { return index; }
+	constexpr explicit operator bool() const noexcept { return index; }
 };
 
 /***********************************************************************************************************************
@@ -114,17 +115,13 @@ private:
 	/**
 	 * @brief Creates a new view.
 	 */
-	View(T* item, const uint64_t& poolVersion) noexcept
-	{
-		this->item = item;
-		this->poolVersion = &poolVersion;
-		this->version = poolVersion;
-	}
+	constexpr View(T* item, const uint64_t& poolVersion) noexcept :
+		item(item), poolVersion(&poolVersion), version(poolVersion) { }
 	#else
 	/**
 	 * @brief Creates a new view.
 	 */
-	View(T* item) noexcept { this->item = item; }
+	constexpr View(T* item) noexcept : item(item) { }
 	#endif
 	
 	friend class LinearPool<T, true>;
@@ -133,7 +130,7 @@ public:
 	/**
 	 * @brief Creates a new null item view.
 	 */
-	View() = default;
+	constexpr View() = default;
 
 	/**
 	 * @brief Changes the type of the item view.
@@ -143,7 +140,7 @@ public:
 	 * @param[in] view target item view
 	 */
 	template<class U>
-	explicit View(const View<U>& view) noexcept : item((T*)*view)
+	constexpr explicit View(const View<U>& view) noexcept : item((T*)*view)
 	#ifndef NDEBUG
 		, poolVersion(view.getPoolVersion()), version(view.getVersion())
 	#endif
@@ -198,7 +195,7 @@ public:
 	/**
 	 * @brief Returns true if item view is not null.
 	 */
-	explicit operator bool() const noexcept { return item; }
+	constexpr explicit operator bool() const noexcept { return item; }
 
 #ifndef NDEBUG
 private:
@@ -225,18 +222,17 @@ private:
 	atomic<int64_t>* counter = nullptr;
 	ID<T> item = {};
 public:
-	Ref() = default;
+	constexpr Ref() = default;
 
 	/**
 	 * @brief Creates a new item reference. (Allocates counter)
 	 * @param item target item instance
 	 * @tparam T type of the item in the linear pool
 	 */
-	explicit Ref(ID<T> item)
+	constexpr explicit Ref(ID<T> item) : item(item)
 	{
 		if (item)
 			counter = new atomic<int64_t>(1);
-		this->item = item;
 	}
 	/**
 	 * @brief Destroys item reference. (Decrements or deallocates counter)
@@ -303,7 +299,7 @@ public:
 		return *this;
 	}
 
-	/**
+	/*******************************************************************************************************************
 	 * @brief Returns current item reference count.
 	 */
 	int64_t getRefCount() const noexcept
@@ -326,41 +322,41 @@ public:
 	 * @brief Returns true if this reference item is equal to the v reference item.
 	 * @param v other reference value
 	 */
-	bool operator==(const Ref& v) const noexcept { return item == v.item; }
+	constexpr bool operator==(const Ref& v) const noexcept { return item == v.item; }
 	/**
 	 * @brief Returns true if this reference item is not equal to the v reference item.
 	 * @param v other reference value
 	 */
-	bool operator!=(const Ref& v) const noexcept { return item != v.item; }
+	constexpr bool operator!=(const Ref& v) const noexcept { return item != v.item; }
 	/**
 	 * @brief Returns true if this reference item is less than the v reference item.
 	 * @param v other reference value
 	 */
-	bool operator<(const Ref& v) const noexcept { return item < v.item; }
+	constexpr bool operator<(const Ref& v) const noexcept { return item < v.item; }
 
 	/**
 	 * @brief Returns reference item @ref ID.
 	 * @tparam T type of the item in the linear pool
 	 */
-	explicit operator ID<T>() const noexcept { return item; }
+	constexpr explicit operator ID<T>() const noexcept { return item; }
 	/**
 	 * @brief Returns true if reference item is not null.
 	 */
-	explicit operator bool() const noexcept { return (bool)item; }
+	constexpr explicit operator bool() const noexcept { return (bool)item; }
 	/**
 	 * @brief Returns reference item index + 1 in the linear pool.
 	 */
 	uint32_t operator*() const noexcept { return *item; }
 };
 
-/**
+/***********************************************************************************************************************
  * @brief Returns true if reference item is equal to the v identifier.
  * @param r reference value
  * @param i identifier value
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static bool operator==(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) == i; }
+static constexpr bool operator==(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) == i; }
 /**
  * @brief Returns true if r reference item is not equal to the i identifier.
  * @param r reference value
@@ -368,7 +364,7 @@ static bool operator==(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) == i
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static bool operator!=(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) != i; }
+static constexpr bool operator!=(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) != i; }
 /**
  * @brief Returns true if r reference item is less than the i identifier.
  * @param r reference value
@@ -376,7 +372,7 @@ static bool operator!=(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) != i
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static bool operator<(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) < i; }
+static constexpr bool operator<(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) < i; }
 /**
  * @brief Returns true if i identifier is less than the r reference item.
  * @param i identifier value
@@ -384,7 +380,7 @@ static bool operator<(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) < i; 
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static bool operator<(ID<T> i, const Ref<T>& r) noexcept { return i < ID<T>(r); }
+static constexpr bool operator<(ID<T> i, const Ref<T>& r) noexcept { return i < ID<T>(r); }
 
 /***********************************************************************************************************************
  * @brief Item array with linear memory block.
@@ -411,10 +407,15 @@ class LinearPool
 	bool isChanging = false;
 	#endif
 public:
+	/**
+	 * @brief Creates a new empty linear pool.
+	 * @details It pre-allocates items array.
+	 */
 	LinearPool() { items = new T[1]; }
 
 	/**
-	 * @brief Destroys linear pool items.
+	 * @brief Destroys linear pool.
+	 * @details It destroys all items and deallocates array memory.
 	 */
 	~LinearPool()
 	{

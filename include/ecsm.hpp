@@ -213,11 +213,7 @@ public:
 		Subscribers subscribers;
 		bool isOrdered = false;
 
-		Event(const string& name, bool isOrdered = true)
-		{
-			this->name = name;
-			this->isOrdered = isOrdered;
-		}
+		Event(const string& name, bool isOrdered = true) : name(name), isOrdered(isOrdered) { }
 	};
 
 	using Systems = unordered_map<type_index, System*>;
