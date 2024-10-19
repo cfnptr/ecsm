@@ -26,8 +26,6 @@
 namespace ecsm
 {
 
-using namespace std;
-
 void* getManagerSystem(type_index type);
 bool hasManagerSystem(type_index type);
 void* tryGetManagerSystem(type_index type);

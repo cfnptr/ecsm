@@ -33,8 +33,6 @@
 namespace ecsm
 {
 
-using namespace std;
-
 class Entity;
 struct Component;
 class System;
