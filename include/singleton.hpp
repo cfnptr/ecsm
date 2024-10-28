@@ -57,7 +57,7 @@ protected:
 
 	/**
 	 * @brief Creates a new singleton class instace.
-	 * @param 
+	 * @param set is singleton instance should be set
 	 */
 	Singleton(bool set = true)
 	{
@@ -67,7 +67,6 @@ protected:
 
 	/**
 	 * @brief Sets a new class singleton instance.
-	 * @param instance target class instance
 	 */
 	void setSingleton()
 	{

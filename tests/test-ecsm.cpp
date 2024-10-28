@@ -46,6 +46,8 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 			ECSM_UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
 			ECSM_UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
 		}
+
+		unsetSingleton();
 	}
 
 	void copyComponent(View<Component> source, View<Component> destination) final
