@@ -30,7 +30,7 @@ struct TestComponent final : public Component
 	}
 };
 
-class TestSystem final : public ComponentSystem<TestComponent>, Singleton<TestSystem>
+class TestSystem final : public ComponentSystem<TestComponent>, public Singleton<TestSystem>
 {
 	TestSystem()
 	{
