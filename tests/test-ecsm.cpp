@@ -153,7 +153,7 @@ static void testCommonFlow()
 		throw runtime_error("Bad test system data before update.");
 
 	auto singletonTestView = TestSystem::Instance::get()->getComponent(testEntity);
-	if (testView != singletonTestView)
+	if (*testView != *singletonTestView)
 		throw runtime_error("Different manager and system singleton component views.");
 
 	manager->update();
