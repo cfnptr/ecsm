@@ -30,7 +30,7 @@ struct TestComponent final : public Component
 	}
 };
 
-class TestSystem final : public ComponentSystem<TestComponent>
+class TestSystem final : public ComponentSystem<TestComponent>, Singleton<TestSystem>
 {
 	TestSystem()
 	{
@@ -114,6 +114,8 @@ static void testCommonFlow()
 
 	auto system = manager->get<TestSystem>();
 
+	if (system != TestSystem::Instance::get())
+		throw runtime_error("Different manager and system singleton instance.");
 	if (system->isInitialized != false)
 		throw runtime_error("Test system is already initialized.");
 
@@ -147,9 +149,12 @@ static void testCommonFlow()
 
 	if (testView->ID != 1 || testView->someData != 123.456f)
 		throw runtime_error("Bad test component data before update.");
-
 	if (system->updateCounter != 0 || system->postUpdateCounter != 0)
 		throw runtime_error("Bad test system data before update.");
+
+	auto singletonTestView = TestSystem::Instance::get()->getComponent(testEntity);
+	if (testView != singletonTestView)
+		throw runtime_error("Different manager and system singleton component views.");
 
 	manager->update();
 
