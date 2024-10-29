@@ -232,7 +232,6 @@ private:
 	GarbageComponents garbageComponents;
 	mutex locker;
 	bool initialized = false;
-	bool running = false;
 
 	#ifndef NDEBUG
 	bool isChanging = false;
@@ -240,6 +239,8 @@ private:
 
 	void addSystem(System* system, type_index type);
 public:
+	bool isRunning = false;
+
 	/**
 	 * @brief Creates a new manager instance.
 	 * @param setSingleton set manager singleton instance
@@ -889,10 +890,6 @@ public:
 	 * @brief Returns true if manager is initialized.
 	 */
 	bool isInitialized() const noexcept { return initialized; }
-	/**
-	 * @brief Returns true if manager is currently running.
-	 */
-	bool isRunning() const noexcept { return running; }
 
 	/*******************************************************************************************************************
 	 * @brief Initializes all created systems.
@@ -911,11 +908,6 @@ public:
 	 * @throw runtime_error if manager is not initialized.
 	 */
 	void start();
-	/**
-	 * @brief Stops update loop.
-	 * @details Used to stop the update loop from some system.
-	 */
-	void stop() noexcept { running = false; }
 
 	/*******************************************************************************************************************
 	 * @brief Actually destroys garbage components.
@@ -1104,7 +1096,7 @@ protected:
 	 */
 	DoNotDestroySystem(bool setSingleton = true);
 	/**
-	 * @brief Destroy baked transformer system instance.
+	 * @brief Destroys baked transformer system instance.
 	 */
 	~DoNotDestroySystem() override;
 
@@ -1131,7 +1123,7 @@ protected:
 	 */
 	DoNotDuplicateSystem(bool setSingleton = true);
 	/**
-	 * @brief Destroy baked transformer system instance.
+	 * @brief Destroys baked transformer system instance.
 	 */
 	~DoNotDuplicateSystem() override;
 

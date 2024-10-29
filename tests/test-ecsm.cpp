@@ -40,7 +40,7 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 	}
 	~TestSystem() final
 	{
-		if (Manager::Instance::get()->isRunning())
+		if (Manager::Instance::get()->isRunning)
 		{
 			ECSM_UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
 			ECSM_UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);

@@ -127,7 +127,7 @@ void Manager::addSystem(System* system, type_index type)
 	if (!systems.emplace(type, system).second)
 		throw runtime_error("System is already created. (name: " + typeToString(type) + ")");
 
-	if (running)
+	if (isRunning)
 	{
 		runEvent("PreInit");
 		runEvent("Init");
@@ -148,7 +148,7 @@ void Manager::destroySystem(type_index type)
 	if (searchResult == systems.end())
 		throw runtime_error("System is not created. (type: " + typeToString(type) + ")");
 
-	if (running)
+	if (isRunning)
 	{
 		runEvent("PreDeinit");
 		runEvent("Deinit");
@@ -587,8 +587,10 @@ void Manager::start()
 	if (!initialized)
 		throw runtime_error("Manager is not initialized.");
 
-	running = true;
-	while (running) update();
+	isRunning = true;
+
+	while (isRunning)
+		update();
 }
 
 void Manager::disposeGarbageComponents()

@@ -37,7 +37,7 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
     }
     ~PhysicsSystem() final
     {
-        if (Manager::get()->isRunning())
+        if (Manager::get()->isRunning)
             ECSM_UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
     }
 

@@ -549,6 +549,7 @@ public:
 
 	/**
 	 * @brief Returns @ref ID of the item pointer.
+	 * @warning Use with extreme caution!
 	 * 
 	 * @param[in] instance pointer to the item data
 	 * @tparam T type of the item in the linear pool
