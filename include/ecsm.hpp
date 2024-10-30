@@ -997,11 +997,11 @@ protected:
 	 */
 	void copyComponent(View<Component> source, View<Component> destination) override
 	{
+		const auto sourceView = View<T>(source);
+		auto destinationView = View<T>(destination);
 		if constexpr (DestroyComponents)
-		{
-			auto destinationView = View<T>(destination);
 			destinationView->destroy();
-		}
+		**destinationView = **sourceView;
 	}
 public:
 	/**
