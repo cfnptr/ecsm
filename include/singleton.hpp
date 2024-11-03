@@ -18,9 +18,8 @@
  */
 
 #pragma once
+#include "ecsm-error.hpp"
 #include "type-string.hpp"
-
-#include <stdexcept>
 #include <cassert>
 
 namespace ecsm
@@ -72,7 +71,7 @@ protected:
 	{
 		if (singletonInstance)
 		{
-			throw runtime_error("Singleton instance is already set. ("
+			throw EcsmError("Singleton instance is already set. ("
 				"type: " + typeToString(typeid(T)) + ")");
 		}
 		singletonInstance = (T*)this;
@@ -108,7 +107,7 @@ public:
 			return singletonInstance;
 		if constexpr (UseManager)
 			return (T*)getManagerSystem(typeid(T));
-		throw runtime_error("Singleton instance is not set. ("
+		throw EcsmError("Singleton instance is not set. ("
 			"type: " + typeToString(typeid(T)) + ")");
 	}
 	/**

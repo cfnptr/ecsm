@@ -17,18 +17,16 @@
  */
 
 #pragma once
+#include "ecsm-error.hpp"
+
 #include <stack>
 #include <vector>
-#include <string>
 #include <atomic>
 #include <cassert>
 #include <cstring>
-#include <stdexcept>
 
 namespace ecsm
 {
-
-using namespace std;
 
 template<class T, bool Destroy = true>
 class LinearPool;
@@ -166,7 +164,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (poolVersion && version != *poolVersion)
-			throw runtime_error("Item has been invalidated by the previous calls.");
+			throw EcsmError("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
 	}
@@ -177,7 +175,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (poolVersion && version != *poolVersion)
-			throw runtime_error("Item has been invalidated by the previous calls.");
+			throw EcsmError("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
 	}
@@ -189,7 +187,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (poolVersion && version != *poolVersion)
-			throw runtime_error("Item has been invalidated by the previous calls.");
+			throw EcsmError("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
 	}
@@ -200,7 +198,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (poolVersion && version != *poolVersion)
-			throw runtime_error("Item has been invalidated by the previous calls.");
+			throw EcsmError("Item has been invalidated by the previous calls.");
 		#endif
 		return item;
 	}
@@ -467,7 +465,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Creation of the item inside other create/dispose/clear is not allowed.");
+			throw EcsmError("Creation of the item inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -607,9 +605,9 @@ public:
 	{
 		#ifndef NDEBUG
 		if (destroyItems && !DestroyItems)
-			throw runtime_error("Item does not have destroy function.");
+			throw EcsmError("Item does not have destroy function.");
 		if (isChanging)
-			throw runtime_error("Clear of the items inside other create/dispose/clear is not allowed.");
+			throw EcsmError("Clear of the items inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -651,7 +649,7 @@ public:
 	{
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Destruction of the items inside other create/dispose/clear is not allowed.");
+			throw EcsmError("Destruction of the items inside other create/dispose/clear is not allowed.");
 		isChanging = true;
 		#endif
 

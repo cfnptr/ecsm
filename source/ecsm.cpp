@@ -19,15 +19,15 @@ using namespace ecsm;
 //**********************************************************************************************************************
 ID<Component> System::createComponent(ID<Entity> entity)
 {
-	throw runtime_error("System has no components.");
+	throw EcsmError("System has no components.");
 }
 void System::destroyComponent(ID<Component> instance)
 {
-	throw runtime_error("System has no components.");
+	throw EcsmError("System has no components.");
 }
 void System::copyComponent(View<Component> source, View<Component> destination)
 {
-	throw runtime_error("System has no components.");
+	throw EcsmError("System has no components.");
 }
 
 const string& System::getComponentName() const
@@ -107,7 +107,7 @@ void Manager::addSystem(System* system, type_index type)
 	{
 		if (!componentTypes.emplace(componentType, system).second)
 		{
-			throw runtime_error("Component is already registered by the other system. ("
+			throw EcsmError("Component is already registered by the other system. ("
 				"componentType: " + typeToString(componentType) + ", "
 				"thisSystem: " + typeToString(type) + ")");
 		}
@@ -118,14 +118,14 @@ void Manager::addSystem(System* system, type_index type)
 	{
 		if (!componentNames.emplace(componentName, system).second)
 		{
-			throw runtime_error("Component name is already registered by the other system. ("
+			throw EcsmError("Component name is already registered by the other system. ("
 				"componentName: " + componentName + ", "
 				"thisSystem: " + typeToString(type) + ")");
 		}
 	}
 
 	if (!systems.emplace(type, system).second)
-		throw runtime_error("System is already created. (name: " + typeToString(type) + ")");
+		throw EcsmError("System is already created. (name: " + typeToString(type) + ")");
 
 	if (isRunning)
 	{
@@ -140,13 +140,13 @@ void Manager::destroySystem(type_index type)
 {
 	#ifndef NDEBUG
 	if (isChanging)
-		throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
+		throw EcsmError("Destruction of the system inside other create/destroy is not allowed.");
 	isChanging = true;
 	#endif
 
 	auto searchResult = systems.find(type);
 	if (searchResult == systems.end())
-		throw runtime_error("System is not created. (type: " + typeToString(type) + ")");
+		throw EcsmError("System is not created. (type: " + typeToString(type) + ")");
 
 	if (isRunning)
 	{
@@ -164,7 +164,7 @@ void Manager::destroySystem(type_index type)
 		auto eraseResult = componentNames.erase(componentName);
 		if (eraseResult != 1)
 		{
-			throw runtime_error("Failed to erase system component name. ("
+			throw EcsmError("Failed to erase system component name. ("
 				"componentName: " + componentName + ", "
 				"systemType: " + typeToString(type) + ")");
 		}
@@ -176,7 +176,7 @@ void Manager::destroySystem(type_index type)
 		auto eraseResult = componentTypes.erase(componentType);
 		if (eraseResult != 1)
 		{
-			throw runtime_error("Failed to erase system component type. ("
+			throw EcsmError("Failed to erase system component type. ("
 				"componentType: " + typeToString(componentType) + ", "
 				"systemType: " + typeToString(type) + ")");
 		}
@@ -192,7 +192,7 @@ bool Manager::tryDestroySystem(type_index type)
 {
 	#ifndef NDEBUG
 	if (isChanging)
-		throw runtime_error("Destruction of the system inside other create/destroy is not allowed.");
+		throw EcsmError("Destruction of the system inside other create/destroy is not allowed.");
 	isChanging = true;
 	#endif
 
@@ -223,7 +223,7 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	auto result = componentTypes.find(componentType);
 	if (result == componentTypes.end())
 	{
-		throw runtime_error("Component is not registered by any system. ("
+		throw EcsmError("Component is not registered by any system. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
@@ -236,7 +236,7 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	auto entityView = entities.get(entity);
 	if (!entityView->components.emplace(componentType, make_pair(system, component)).second)
 	{
-		throw runtime_error("Component is already added to the entity. ("
+		throw EcsmError("Component is already added to the entity. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
@@ -252,7 +252,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 
 	if (iterator == components.end())
 	{
-		throw runtime_error("Component is not added. ("
+		throw EcsmError("Component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*entity) + ")");
 	}
@@ -260,7 +260,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 	auto result = garbageComponents.emplace(make_pair(componentType, entity));
 	if (!result.second)
 	{
-		throw runtime_error("Already removed component. ("
+		throw EcsmError("Already removed component. ("
 			"type: " + typeToString(componentType) + 
 			"entity: " + to_string(*entity) + ")");
 	}
@@ -277,13 +277,13 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index compone
 
 	if (sourceIter == sourceView->components.end())
 	{
-		throw runtime_error("Source component is not added. ("
+		throw EcsmError("Source component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*source) + ")");
 	}
 	if (destinationIter == destinationView->components.end())
 	{
-		throw runtime_error("Destination component is not added. ("
+		throw EcsmError("Destination component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + to_string(*destination) + ")");
 	}
@@ -312,7 +312,7 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
 		if (!duplicateView->components.emplace(pair.first, make_pair(system, duplicateComponent)).second)
 		{
-			throw runtime_error("Component is already added to the entity. ("
+			throw EcsmError("Component is already added to the entity. ("
 				"type: " + typeToString(pair.first) +
 				"entity:" + to_string(*entity) + ")");
 		}
@@ -326,7 +326,7 @@ void Manager::registerEvent(const string& name)
 {
 	assert(!name.empty());
 	if (!events.emplace(name, new Event(name, false)).second)
-		throw runtime_error("Event is already registered. (name: " + name + ")");
+		throw EcsmError("Event is already registered. (name: " + name + ")");
 }
 bool Manager::tryRegisterEvent(const string& name)
 {
@@ -341,7 +341,7 @@ void Manager::registerEventBefore(const string& newEvent, const string& beforeEv
 
 	auto result = events.emplace(newEvent, new Event(newEvent));
 	if (!result.second)
-		throw runtime_error("Event is already registered. (newEvent: " + newEvent + ")");
+		throw EcsmError("Event is already registered. (newEvent: " + newEvent + ")");
 
 	for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 	{
@@ -351,7 +351,7 @@ void Manager::registerEventBefore(const string& newEvent, const string& beforeEv
 		return;
 	}
 
-	throw runtime_error("Before event is not registered. ("
+	throw EcsmError("Before event is not registered. ("
 		"newEvent: " + newEvent + ", beforeEvent: " + beforeEvent + ")");
 }
 void Manager::registerEventAfter(const string& newEvent, const string& afterEvent)
@@ -361,7 +361,7 @@ void Manager::registerEventAfter(const string& newEvent, const string& afterEven
 
 	auto result = events.emplace(newEvent, new Event(newEvent));
 	if (!result.second)
-		throw runtime_error("Event is already registered. (newEvent: " + newEvent + ")");
+		throw EcsmError("Event is already registered. (newEvent: " + newEvent + ")");
 
 	for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 	{
@@ -371,7 +371,7 @@ void Manager::registerEventAfter(const string& newEvent, const string& afterEven
 		return;
 	}
 
-	throw runtime_error("After event is not registered. ("
+	throw EcsmError("After event is not registered. ("
 		"newEvent: " + newEvent + ", afterEvent: " + afterEvent + ")");
 }
 
@@ -381,7 +381,7 @@ void Manager::unregisterEvent(const string& name)
 	assert(!name.empty());
 	auto iterator = events.find(name);
 	if (iterator == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 		
 	auto event = iterator->second;
 	events.erase(iterator);
@@ -399,7 +399,7 @@ void Manager::unregisterEvent(const string& name)
 		}
 
 		if (!isEventFound)
-			throw runtime_error("Ordered event is not found. (name: " + name + ")");
+			throw EcsmError("Ordered event is not found. (name: " + name + ")");
 	}
 		
 	delete event;
@@ -440,7 +440,7 @@ bool Manager::isEventOrdered(const string& name) const
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 	return result->second->isOrdered;
 }
 const Manager::Event::Subscribers& Manager::getEventSubscribers(const string& name) const
@@ -448,7 +448,7 @@ const Manager::Event::Subscribers& Manager::getEventSubscribers(const string& na
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 	return result->second->subscribers;
 }
 bool Manager::isEventHasSubscribers(const string& name) const
@@ -456,7 +456,7 @@ bool Manager::isEventHasSubscribers(const string& name) const
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 	return !result->second->subscribers.empty();
 }
 
@@ -466,7 +466,7 @@ void Manager::runEvent(const string& name)
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 
 	const auto& subscribers = result->second->subscribers;
 	for (const auto& onEvent : subscribers)
@@ -502,7 +502,7 @@ void Manager::subscribeToEvent(const string& name, const std::function<void()>& 
 
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 	result->second->subscribers.push_back(onEvent);
 }
 void Manager::unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
@@ -512,7 +512,7 @@ void Manager::unsubscribeFromEvent(const string& name, const std::function<void(
 
 	auto result = events.find(name);
 	if (result == events.end())
-		throw runtime_error("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + name + ")");
 
 	auto& subscribers = result->second->subscribers;
 	for (auto i = subscribers.begin(); i != subscribers.end(); i++)
@@ -523,7 +523,7 @@ void Manager::unsubscribeFromEvent(const string& name, const std::function<void(
 		return;
 	}
 
-	throw runtime_error("Event subscriber not found. (name: " + name + ")");
+	throw EcsmError("Event subscriber not found. (name: " + name + ")");
 }
 
 //**********************************************************************************************************************
@@ -564,7 +564,7 @@ bool Manager::tryUnsubscribeFromEvent(const string& name, const std::function<vo
 void Manager::initialize()
 {
 	if (initialized)
-		throw runtime_error("Manager is already initialized.");
+		throw EcsmError("Manager is already initialized.");
 
 	runEvent("PreInit");
 	runEvent("Init");
@@ -575,7 +575,7 @@ void Manager::initialize()
 void Manager::update()
 {
 	if (!initialized)
-		throw runtime_error("Manager is not initialized.");
+		throw EcsmError("Manager is not initialized.");
 
 	runOrderedEvents();
 	disposeGarbageComponents();
@@ -585,7 +585,7 @@ void Manager::update()
 void Manager::start()
 {
 	if (!initialized)
-		throw runtime_error("Manager is not initialized.");
+		throw EcsmError("Manager is not initialized.");
 
 	isRunning = true;
 

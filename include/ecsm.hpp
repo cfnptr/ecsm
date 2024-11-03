@@ -262,7 +262,7 @@ public:
 	 * @tparam Args additional argument types
 	 * @param args additional system creation arguments
 	 * 
-	 * @throw runtime_error if system is already created or component type registered.
+	 * @throw EcsmError if system is already created or component type registered.
 	 */
 	template<class T = System, typename... Args>
 	void createSystem(Args&&... args)
@@ -270,7 +270,7 @@ public:
 		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
 		#ifndef NDEBUG
 		if (isChanging)
-			throw runtime_error("Creation of the system inside other create/destroy is not allowed.");
+			throw EcsmError("Creation of the system inside other create/destroy is not allowed.");
 		isChanging = true;
 		#endif
 
@@ -285,13 +285,13 @@ public:
 	/**
 	 * @brief Terminates and destroys system.
 	 * @param type target system typeid()
-	 * @throw runtime_error if system is not found.
+	 * @throw EcsmError if system is not found.
 	 */
 	void destroySystem(type_index type);
 	/**
 	 * @brief Terminates and destroys system.
 	 * @tparam T target system type
-	 * @throw runtime_error if system is not found.
+	 * @throw EcsmError if system is not found.
 	 */
 	template<class T = System>
 	void destroySystem()
@@ -341,19 +341,19 @@ public:
 	 * @brief Returns system instance.
 	 * @warning Be carefull with system pointer, it can be destroyed later.
 	 * @param type target system typeid()
-	 * @throw runtime_error if system is not found.
+	 * @throw EcsmError if system is not found.
 	 */
 	System* get(type_index type) const
 	{
 		auto result = systems.find(type);
 		if (result == systems.end())
-			throw runtime_error("System is not created. (type: " + typeToString(type) + ")");
+			throw EcsmError("System is not created. (type: " + typeToString(type) + ")");
 		return result->second;
 	}
 	/**
 	 * @brief Returns system instance.
 	 * @tparam T target system type
-	 * @throw runtime_error if system is not found.
+	 * @throw EcsmError if system is not found.
 	 */
 	template<class T = System>
 	T* get() const
@@ -409,7 +409,7 @@ public:
 	 * @param componentType target component typeid()
 	 * 
 	 * @return Returns @ref View of the created component.
-	 * @throw runtime_error if component type is not registered, or component is already added.
+	 * @throw EcsmError if component type is not registered, or component is already added.
 	 */
 	View<Component> add(ID<Entity> entity, type_index componentType);
 
@@ -426,7 +426,7 @@ public:
 	 * @tparam T target component type
 	 * 
 	 * @return Returns @ref View of the created component.
-	 * @throw runtime_error if component type is not registered, or component is already added.
+	 * @throw EcsmError if component type is not registered, or component is already added.
 	 */
 	template<class T = Component>
 	View<T> add(ID<Entity> entity)
@@ -443,7 +443,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 * 
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	void remove(ID<Entity> entity, type_index componentType);
 	/**
@@ -454,7 +454,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 * 
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	template<class T = Component>
 	void remove(ID<Entity> entity)
@@ -470,8 +470,6 @@ public:
 	 *
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
-	 *
-	 * @throw runtime_error if component is not found.
 	 */
 	bool isGarbage(ID<Entity> entity, type_index componentType) const noexcept
 	{
@@ -484,8 +482,6 @@ public:
 	 *
 	 * @param entity entity instance
 	 * @tparam T target component type
-	 *
-	 * @throw runtime_error if component is not found.
 	 */
 	template<class T = Component>
 	bool isGarbage(ID<Entity> entity) const noexcept
@@ -502,7 +498,7 @@ public:
 	 * @param destination copy to entity instance
 	 * @param componentType target component typeid()
 	 *
-	 * @throw runtime_error if source or destination component is not found.
+	 * @throw EcsmError if source or destination component is not found.
 	 */
 	void copy(ID<Entity> source, ID<Entity> destination, type_index componentType);
 	/**
@@ -513,7 +509,7 @@ public:
 	 * @param destination copy to entity instance
 	 * @tparam T target component type
 	 *
-	 * @throw runtime_error if source or destination component is not found.
+	 * @throw EcsmError if source or destination component is not found.
 	 */
 	template<class T = Component>
 	void copy(ID<Entity> source, ID<Entity> destination)
@@ -564,7 +560,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 * 
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	View<Component> get(ID<Entity> entity, type_index componentType) const
 	{
@@ -574,7 +570,7 @@ public:
 
 		if (result == entityView->components.end())
 		{
-			throw runtime_error("Component is not added. ("
+			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
 				"entity:" + to_string(*entity) + ")");
 		}
@@ -589,7 +585,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 * 
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	template<class T = Component>
 	View<T> get(ID<Entity> entity) const
@@ -643,7 +639,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 * 
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	ID<Component> getID(ID<Entity> entity, type_index componentType) const
 	{
@@ -653,7 +649,7 @@ public:
 
 		if (result == entityView->components.end())
 		{
-			throw runtime_error("Component is not added. ("
+			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
 				"entity:" + to_string(*entity) + ")");
 		}
@@ -667,7 +663,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 *
-	 * @throw runtime_error if component is not found.
+	 * @throw EcsmError if component is not found.
 	 */
 	template<class T = Component>
 	ID<T> getID(ID<Entity> entity) const
@@ -725,7 +721,7 @@ public:
 	/*******************************************************************************************************************
 	 * @brief Registers a new unordered event.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is already registered.
+	 * @throw EcsmError if event is already registered.
 	 */
 	void registerEvent(const string& name);
 	/**
@@ -741,7 +737,7 @@ public:
 	 * @param[in] newEvent target event name
 	 * @param[in] beforeEvent name of the event after target event
 	 * 
-	 * @throw runtime_error if event is already registered.
+	 * @throw EcsmError if event is already registered.
 	 */
 	void registerEventBefore(const string& newEvent, const string& beforeEvent);
 	/**
@@ -750,14 +746,14 @@ public:
 	 * @param[in] newEvent target event name
 	 * @param[in] afterEvent name of the event before target event
 	 *
-	 * @throw runtime_error if event is already registered.
+	 * @throw EcsmError if event is already registered.
 	 */
 	void registerEventAfter(const string& newEvent, const string& afterEvent);
 
 	/**
 	 * @brief Unregisters existing event.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is not registered, or not found.
+	 * @throw EcsmError if event is not registered, or not found.
 	 */
 	void unregisterEvent(const string& name);
 	/**
@@ -779,26 +775,26 @@ public:
 	/**
 	 * @brief Returns true if event is ordered.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is not registered.
+	 * @throw EcsmError if event is not registered.
 	 */
 	bool isEventOrdered(const string& name) const;
 	/**
 	 * @brief Returns all event subscribers.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is not registered.
+	 * @throw EcsmError if event is not registered.
 	 */
 	const Event::Subscribers& getEventSubscribers(const string& name) const;
 	/**
 	 * @brief Returns true if event has subscribers.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is not registered.
+	 * @throw EcsmError if event is not registered.
 	 */
 	bool isEventHasSubscribers(const string& name) const;
 
 	/**
 	 * @brief Calls all event subscribers.
 	 * @param[in] name target event name
-	 * @throw runtime_error if event is not registered.
+	 * @throw EcsmError if event is not registered.
 	 */
 	void runEvent(const string& name);
 	/**
@@ -819,7 +815,7 @@ public:
 	 * @param[in] name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
-	 * @throw runtime_error if event is not registered.
+	 * @throw EcsmError if event is not registered.
 	 */
 	void subscribeToEvent(const string& name, const std::function<void()>& onEvent);
 	/**
@@ -828,7 +824,7 @@ public:
 	 * @param[in] name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
-	 * @throw runtime_error if event is not registered, or not subscribed.
+	 * @throw EcsmError if event is not registered, or not subscribed.
 	 */
 	void unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent);
 
@@ -893,19 +889,19 @@ public:
 
 	/*******************************************************************************************************************
 	 * @brief Initializes all created systems.
-	 * @throw runtime_error if manager is already initialized.
+	 * @throw EcsmError if manager is already initialized.
 	 */
 	void initialize();
 
 	/**
 	 * @brief Runs ordered events and disposes destroyed resources on each tick.
-	 * @throw runtime_error if manager is not initialized.
+	 * @throw EcsmError if manager is not initialized.
 	 */
 	void update();
 
 	/**
 	 * @brief Enters update loop. Executes @ref update() on each tick.
-	 * @throw runtime_error if manager is not initialized.
+	 * @throw EcsmError if manager is not initialized.
 	 */
 	void start();
 
