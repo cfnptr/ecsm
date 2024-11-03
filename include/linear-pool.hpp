@@ -97,6 +97,19 @@ public:
 	constexpr explicit operator bool() const noexcept { return index; }
 };
 
+/**
+ * @brief Item identifier hash implementation.
+ * @tparam T type of the item in the linear pool
+ */
+template<class T>
+struct IdHash
+{
+	/**
+	 * @brief Returns item identifier hash value. 
+	 */
+	size_t operator()(ID<T> id) const noexcept { return (size_t)*id; }
+};
+
 /***********************************************************************************************************************
  * @brief View of the item in the @ref LinearPool.
  * @tparam T type of the item in the linear pool
