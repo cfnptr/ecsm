@@ -736,24 +736,24 @@ public:
 	private:
 		pointer ptr = nullptr;
 	public:
-		Iterator(pointer ptr) noexcept : ptr(ptr) { }
-		Iterator& operator=(const Iterator& i) noexcept = default;
-		Iterator& operator=(pointer ptr) noexcept { this->ptr = ptr; return (*this); }
+		ConstantIterator(pointer ptr) noexcept : ptr(ptr) { }
+		ConstantIterator& operator=(const ConstantIterator& i) noexcept = default;
+		ConstantIterator& operator=(pointer ptr) noexcept { this->ptr = ptr; return (*this); }
 
 		operator bool() const noexcept { return ptr; }
 
-		bool operator==(const Iterator& i) const noexcept { return ptr == i.ptr; }
-		bool operator!=(const Iterator& i) const noexcept { return ptr != i.ptr; }
+		bool operator==(const ConstantIterator& i) const noexcept { return ptr == i.ptr; }
+		bool operator!=(const ConstantIterator& i) const noexcept { return ptr != i.ptr; }
 
-		Iterator& operator+=(const difference_type& m) noexcept { ptr += m; return *this; }
-		Iterator& operator-=(const difference_type& m) noexcept { ptr -= m; return *this; }
-		Iterator& operator++() noexcept { ++ptr; return *this; }
-		Iterator& operator--() noexcept { --ptr; return *this; }
-		Iterator operator++(int) noexcept { auto tmp = *this; ++ptr; return tmp; }
-		Iterator operator--(int) noexcept { auto tmp = *this; --ptr; return tmp; }
-		Iterator operator+(const difference_type& m) noexcept { return Iterator(ptr + m); }
-		Iterator operator-(const difference_type& m) noexcept { return Iterator(ptr - m); }
-		difference_type operator-(const Iterator& i) noexcept { return std::distance(i.ptr, ptr); }
+		ConstantIterator& operator+=(const difference_type& m) noexcept { ptr += m; return *this; }
+		ConstantIterator& operator-=(const difference_type& m) noexcept { ptr -= m; return *this; }
+		ConstantIterator& operator++() noexcept { ++ptr; return *this; }
+		ConstantIterator& operator--() noexcept { --ptr; return *this; }
+		ConstantIterator operator++(int) noexcept { auto tmp = *this; ++ptr; return tmp; }
+		ConstantIterator operator--(int) noexcept { auto tmp = *this; --ptr; return tmp; }
+		ConstantIterator operator+(const difference_type& m) noexcept { return ConstantIterator(ptr + m); }
+		ConstantIterator operator-(const difference_type& m) noexcept { return ConstantIterator(ptr - m); }
+		difference_type operator-(const ConstantIterator& i) noexcept { return std::distance(i.ptr, ptr); }
 
 		reference operator*() const noexcept { return *ptr; }
 		pointer operator->() const noexcept { return ptr; }
