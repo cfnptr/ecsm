@@ -29,13 +29,11 @@
 namespace ecsm
 {
 
-using namespace std;
-
 /**
  * @brief Returns @ref type_index string representation.
  * @param type target type
  */
-static string typeToString(type_index type)
+static std::string typeToString(std::type_index type)
 {
 	auto name = type.name();
 
@@ -46,11 +44,11 @@ static string typeToString(type_index type)
 		name = demangledName;
 	#endif
 
-	string result;
+	std::string result;
 	if (strlen(name) > 0)
 		result.assign(name);
 	else
-		result = to_string(type.hash_code());
+		result = std::to_string(type.hash_code());
 
 	#ifdef __GNUG__
 	free(demangledName);
@@ -62,7 +60,7 @@ static string typeToString(type_index type)
  * @tparam T target type
  */
 template<typename T>
-static string typeToString()
+static std::string typeToString()
 {
 	return typeToString(typeid(T));
 }

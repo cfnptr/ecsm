@@ -25,9 +25,9 @@
 namespace ecsm
 {
 
-void* getManagerSystem(type_index type);
-bool hasManagerSystem(type_index type);
-void* tryGetManagerSystem(type_index type);
+void* getManagerSystem(std::type_index type);
+bool hasManagerSystem(std::type_index type);
+void* tryGetManagerSystem(std::type_index type);
 
 /**
  * @brief Base singleton class.

@@ -22,8 +22,10 @@
 #include <stack>
 #include <vector>
 #include <atomic>
+#include <cstddef>
 #include <cassert>
 #include <cstring>
+#include <iterator>
 
 namespace ecsm
 {
@@ -230,7 +232,7 @@ template<typename T>
 struct Ref final
 {
 private:
-	atomic<int64_t>* counter = nullptr;
+	std::atomic<int64_t>* counter = nullptr;
 	ID<T> item = {};
 public:
 	constexpr Ref() = default;
@@ -243,7 +245,7 @@ public:
 	constexpr explicit Ref(ID<T> item) : item(item)
 	{
 		if (item)
-			counter = new atomic<int64_t>(1);
+			counter = new std::atomic<int64_t>(1);
 	}
 	/**
 	 * @brief Destroys item reference. (Decrements or deallocates counter)
@@ -254,7 +256,7 @@ public:
 			return;
 		if (counter->fetch_sub(1, memory_order_release) == 1)
 		{
-			atomic_thread_fence(memory_order_acquire);
+			std::atomic_thread_fence(memory_order_acquire);
 			delete counter;
 		}
 	}
@@ -281,7 +283,7 @@ public:
 		{
 			if (item && counter->fetch_sub(1, memory_order_release) == 1)
 			{
-				atomic_thread_fence(memory_order_acquire);
+				std::atomic_thread_fence(memory_order_acquire);
 				delete counter;
 			}
 
@@ -298,7 +300,7 @@ public:
 		{
 			if (item && counter->fetch_sub(1, memory_order_release) == 1)
 			{
-				atomic_thread_fence(memory_order_acquire);
+				std::atomic_thread_fence(memory_order_acquire);
 				delete counter;
 			}
 
@@ -406,12 +408,12 @@ static constexpr bool operator<(ID<T> i, const Ref<T>& r) noexcept { return i < 
  * @tparam DestroyItems linear pool should call destroy() function of the items
  */
 template<class T, bool DestroyItems /* = true */>
-class LinearPool
+class LinearPool final
 {
 	T* items = nullptr;
 	uint32_t occupancy = 0, capacity = 1;
-	stack<ID<T>> freeItems;
-	vector<ID<T>> garbageItems;
+	std::stack<ID<T>> freeItems;
+	std::vector<ID<T>> garbageItems;
 
 	#ifndef NDEBUG
 	uint64_t version = 0;
@@ -682,6 +684,98 @@ public:
 		isChanging = false;
 		#endif
 	}
+
+	/*******************************************************************************************************************
+	 * @brief Linear pool iterator class.
+	 */
+	struct Iterator
+	{
+		using iterator_category = std::random_access_iterator_tag;
+		using value_type = T;
+		using difference_type = ptrdiff_t;
+		using pointer = value_type*;
+		using reference = value_type&;
+	private:
+		pointer ptr = nullptr;
+	public:
+		Iterator(pointer ptr) noexcept : ptr(ptr) { }
+		Iterator& operator=(const Iterator& i) noexcept = default;
+		Iterator& operator=(pointer ptr) noexcept { this->ptr = ptr; return (*this); }
+
+		operator bool() const noexcept { return ptr; }
+
+		bool operator==(const Iterator& i) const noexcept { return ptr == i.ptr; }
+		bool operator!=(const Iterator& i) const noexcept { return ptr != i.ptr; }
+
+		Iterator& operator+=(const difference_type& m) noexcept { ptr += m; return *this; }
+		Iterator& operator-=(const difference_type& m) noexcept { ptr -= m; return *this; }
+		Iterator& operator++() noexcept { ++ptr; return *this; }
+		Iterator& operator--() noexcept { --ptr; return *this; }
+		Iterator operator++(int) noexcept { auto tmp = *this; ++ptr; return tmp; }
+		Iterator operator--(int) noexcept { auto tmp = *this; --ptr; return tmp; }
+		Iterator operator+(const difference_type& m) noexcept { return Iterator(ptr + m); }
+		Iterator operator-(const difference_type& m) noexcept { return Iterator(ptr - m); }
+		difference_type operator-(const Iterator& i) noexcept { return std::distance(i.ptr, ptr); }
+
+		reference operator*() noexcept { return *ptr; }
+		const reference operator*() const noexcept { return *ptr; }
+		pointer operator->() noexcept { return ptr; }
+		const pointer operator->() const noexcept { return ptr; }
+	};
+
+	/*******************************************************************************************************************
+	 * @brief Linear pool constant iterator class.
+	 */
+	struct ConstantIterator
+	{
+		using iterator_category = std::random_access_iterator_tag;
+		using value_type = const T;
+		using difference_type = ptrdiff_t;
+		using pointer = value_type*;
+		using reference = value_type&;
+	private:
+		pointer ptr = nullptr;
+	public:
+		Iterator(pointer ptr) noexcept : ptr(ptr) { }
+		Iterator& operator=(const Iterator& i) noexcept = default;
+		Iterator& operator=(pointer ptr) noexcept { this->ptr = ptr; return (*this); }
+
+		operator bool() const noexcept { return ptr; }
+
+		bool operator==(const Iterator& i) const noexcept { return ptr == i.ptr; }
+		bool operator!=(const Iterator& i) const noexcept { return ptr != i.ptr; }
+
+		Iterator& operator+=(const difference_type& m) noexcept { ptr += m; return *this; }
+		Iterator& operator-=(const difference_type& m) noexcept { ptr -= m; return *this; }
+		Iterator& operator++() noexcept { ++ptr; return *this; }
+		Iterator& operator--() noexcept { --ptr; return *this; }
+		Iterator operator++(int) noexcept { auto tmp = *this; ++ptr; return tmp; }
+		Iterator operator--(int) noexcept { auto tmp = *this; --ptr; return tmp; }
+		Iterator operator+(const difference_type& m) noexcept { return Iterator(ptr + m); }
+		Iterator operator-(const difference_type& m) noexcept { return Iterator(ptr - m); }
+		difference_type operator-(const Iterator& i) noexcept { return std::distance(i.ptr, ptr); }
+
+		reference operator*() const noexcept { return *ptr; }
+		pointer operator->() const noexcept { return ptr; }
+	};
+
+	/**
+	 * @brief Returns an iterator pointing to the first element in the items array.
+	 */
+	Iterator begin() noexcept { return Iterator(&items[0]); }
+	/**
+	 * @brief Returns an iterator pointing to the past-the-end element in the items array.
+	 */
+	Iterator end() noexcept { return Iterator(&items[capacity]); }
+
+	/**
+	 * @brief Returns a constant iterator pointing to the first element in the items array.
+	 */
+	ConstantIterator begin() const noexcept { return ConstantIterator(&items[0]); }
+	/**
+	 * @brief Returns a constant iterator pointing to the past-the-end element in the items array.
+	 */
+	ConstantIterator end() const noexcept { return ConstantIterator(&items[capacity]); }
 };
 
 } // namespace ecsm

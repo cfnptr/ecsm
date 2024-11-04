@@ -129,12 +129,12 @@ public:
 	 * @brief Returns specific component name of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual const string& getComponentName() const;
+	virtual const std::string& getComponentName() const;
 	/**
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual type_index getComponentType() const;
+	virtual std::type_index getComponentType() const;
 	/**
 	 * @brief Returns specific system component @ref View.
 	 * @note Override it to define a custom component of the system.
@@ -158,8 +158,8 @@ public:
 class Entity final
 {
 public:
-	using SystemComponent = pair<System*, ID<Component>>;
-	using Components = map<type_index, SystemComponent>;
+	using SystemComponent = std::pair<System*, ID<Component>>;
+	using Components = std::map<std::type_index, SystemComponent>;
 private:
 	Components components;
 	friend class Manager;
@@ -207,21 +207,21 @@ public:
 	{
 		using Subscribers = std::vector<std::function<void()>>;
 
-		string name;
+		std::string name;
 		Subscribers subscribers;
 		bool isOrdered = false;
 
-		Event(const string& name, bool isOrdered = true) : name(name), isOrdered(isOrdered) { }
+		Event(const std::string& name, bool isOrdered = true) : name(name), isOrdered(isOrdered) { }
 	};
 
-	using Systems = unordered_map<type_index, System*>;
-	using ComponentTypes = unordered_map<type_index, System*>;
-	using ComponentNames = map<string, System*>;
-	using Events = unordered_map<string, Event*>;
-	using OrderedEvents = vector<const Event*>;
+	using Systems = std::unordered_map<std::type_index, System*>;
+	using ComponentTypes = std::unordered_map<std::type_index, System*>;
+	using ComponentNames = std::map<std::string, System*>;
+	using Events = std::unordered_map<std::string, Event*>;
+	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
-	using GarbageComponent = pair<type_index, ID<Entity>>;
-	using GarbageComponents = set<GarbageComponent>;
+	using GarbageComponent = std::pair<std::type_index, ID<Entity>>;
+	using GarbageComponents = std::set<GarbageComponent>;
 private:
 	Systems systems;
 	ComponentTypes componentTypes;
@@ -230,14 +230,14 @@ private:
 	Events events;
 	OrderedEvents orderedEvents;
 	GarbageComponents garbageComponents;
-	mutex locker;
+	std::mutex locker;
 	bool initialized = false;
 
 	#ifndef NDEBUG
 	bool isChanging = false;
 	#endif
 
-	void addSystem(System* system, type_index type);
+	void addSystem(System* system, std::type_index type);
 public:
 	bool isRunning = false;
 
@@ -267,7 +267,7 @@ public:
 	template<class T = System, typename... Args>
 	void createSystem(Args&&... args)
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		#ifndef NDEBUG
 		if (isChanging)
 			throw EcsmError("Creation of the system inside other create/destroy is not allowed.");
@@ -287,7 +287,7 @@ public:
 	 * @param type target system typeid()
 	 * @throw EcsmError if system is not found.
 	 */
-	void destroySystem(type_index type);
+	void destroySystem(std::type_index type);
 	/**
 	 * @brief Terminates and destroys system.
 	 * @tparam T target system type
@@ -296,7 +296,7 @@ public:
 	template<class T = System>
 	void destroySystem()
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		destroySystem(typeid(T));
 	}
 
@@ -305,7 +305,7 @@ public:
 	 * @param type target system typeid()
 	 * @return True if system is destroyed, otherwise false.
 	 */
-	bool tryDestroySystem(type_index type);
+	bool tryDestroySystem(std::type_index type);
 	/**
 	 * @brief Terminates and destroys system if exist.
 	 * @tparam T target system type
@@ -314,7 +314,7 @@ public:
 	template<class T = System>
 	bool tryDestroySystem()
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		return tryDestroySystem(typeid(T));
 	}
 
@@ -322,7 +322,7 @@ public:
 	 * @brief Returns true if system is created.
 	 * @param type target system typeid()
 	 */
-	bool has(type_index type) const noexcept
+	bool has(std::type_index type) const noexcept
 	{
 		return systems.find(type) != systems.end();
 	}
@@ -333,7 +333,7 @@ public:
 	template<class T = System>
 	bool has() const noexcept
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		return has(typeid(T));
 	}
 
@@ -343,7 +343,7 @@ public:
 	 * @param type target system typeid()
 	 * @throw EcsmError if system is not found.
 	 */
-	System* get(type_index type) const
+	System* get(std::type_index type) const
 	{
 		auto result = systems.find(type);
 		if (result == systems.end())
@@ -358,7 +358,7 @@ public:
 	template<class T = System>
 	T* get() const
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		return (T*)get(typeid(T));
 	}
 
@@ -366,7 +366,7 @@ public:
 	 * @brief Returns system instance if created, otherwise nullptr.
 	 * @param type target system typeid()
 	 */
-	System* tryGet(type_index type) const noexcept
+	System* tryGet(std::type_index type) const noexcept
 	{
 		auto result = systems.find(type);
 		return result == systems.end() ? nullptr : result->second;
@@ -378,7 +378,7 @@ public:
 	template<class T = System>
 	T* tryGet() const noexcept
 	{
-		static_assert(is_base_of_v<System, T>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
 		return (T*)tryGet(typeid(T));
 	}
 
@@ -411,7 +411,7 @@ public:
 	 * @return Returns @ref View of the created component.
 	 * @throw EcsmError if component type is not registered, or component is already added.
 	 */
-	View<Component> add(ID<Entity> entity, type_index componentType);
+	View<Component> add(ID<Entity> entity, std::type_index componentType);
 
 	/**
 	 * @brief Adds a new component to the entity.
@@ -431,7 +431,7 @@ public:
 	template<class T = Component>
 	View<T> add(ID<Entity> entity)
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return View<T>(add(entity, typeid(T)));
 	}
 
@@ -445,7 +445,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	void remove(ID<Entity> entity, type_index componentType);
+	void remove(ID<Entity> entity, std::type_index componentType);
 	/**
 	 * @brief Removes component from the entity.
 	 * @details Component data destruction is handled by the @ref System.
@@ -459,7 +459,7 @@ public:
 	template<class T = Component>
 	void remove(ID<Entity> entity)
 	{ 
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		remove(entity, typeid(T));
 	}
 
@@ -471,9 +471,9 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 */
-	bool isGarbage(ID<Entity> entity, type_index componentType) const noexcept
+	bool isGarbage(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
-		return garbageComponents.find(make_pair(componentType, entity)) != garbageComponents.end();
+		return garbageComponents.find(std::make_pair(componentType, entity)) != garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if target entity component was removed and is in the garbage pool.
@@ -486,7 +486,7 @@ public:
 	template<class T = Component>
 	bool isGarbage(ID<Entity> entity) const noexcept
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return isGarbage(entity, typeid(T));
 	}
 
@@ -500,7 +500,7 @@ public:
 	 *
 	 * @throw EcsmError if source or destination component is not found.
 	 */
-	void copy(ID<Entity> source, ID<Entity> destination, type_index componentType);
+	void copy(ID<Entity> source, ID<Entity> destination, std::type_index componentType);
 	/**
 	 * @brief Copies component data from source entity to destination.
 	 * @details Component data copying is handled by the @ref System.
@@ -514,7 +514,7 @@ public:
 	template<class T = Component>
 	void copy(ID<Entity> source, ID<Entity> destination)
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		copy(source, destination, typeid(T));
 	}
 
@@ -532,7 +532,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 */
-	bool has(ID<Entity> entity, type_index componentType) const noexcept
+	bool has(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
@@ -549,7 +549,7 @@ public:
 	template<class T = Component>
 	bool has(ID<Entity> entity) const noexcept
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return has(entity, typeid(T));
 	}
 
@@ -562,7 +562,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	View<Component> get(ID<Entity> entity, type_index componentType) const
+	View<Component> get(ID<Entity> entity, std::type_index componentType) const
 	{
 		assert(entity);
 		auto entityView = entities.get(entity);
@@ -572,7 +572,7 @@ public:
 		{
 			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
-				"entity:" + to_string(*entity) + ")");
+				"entity:" + std::to_string(*entity) + ")");
 		}
 
 		auto pair = result->second;
@@ -590,7 +590,7 @@ public:
 	template<class T = Component>
 	View<T> get(ID<Entity> entity) const
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return View<T>(get(entity, typeid(T)));
 	}
 
@@ -602,7 +602,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 */
-	View<Component> tryGet(ID<Entity> entity, type_index componentType) const noexcept
+	View<Component> tryGet(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
@@ -628,7 +628,7 @@ public:
 	template<class T = Component>
 	View<T> tryGet(ID<Entity> entity) const noexcept
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return View<T>(tryGet(entity, typeid(T)));
 	}
 
@@ -641,7 +641,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	ID<Component> getID(ID<Entity> entity, type_index componentType) const
+	ID<Component> getID(ID<Entity> entity, std::type_index componentType) const
 	{
 		assert(entity);
 		auto entityView = entities.get(entity);
@@ -651,7 +651,7 @@ public:
 		{
 			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
-				"entity:" + to_string(*entity) + ")");
+				"entity:" + std::to_string(*entity) + ")");
 		}
 
 		return result->second.second;
@@ -668,7 +668,7 @@ public:
 	template<class T = Component>
 	ID<T> getID(ID<Entity> entity) const
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return ID<T>(getID(entity, typeid(T)));
 	}
 
@@ -680,7 +680,7 @@ public:
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 */
-	ID<Component> tryGetID(ID<Entity> entity, type_index componentType) const noexcept
+	ID<Component> tryGetID(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
 		const auto& components = entities.get(entity)->components;
@@ -705,7 +705,7 @@ public:
 	template<class T = Component>
 	ID<T> tryGetID(ID<Entity> entity) const noexcept
 	{
-		static_assert(is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return ID<T>(tryGetID(entity, typeid(T)));
 	}
 
@@ -723,13 +723,13 @@ public:
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEvent(const string& name);
+	void registerEvent(const std::string& name);
 	/**
 	 * @brief Registers a new unordered event if not exist.
 	 * @param[in] name target event name
 	 * @return True if event is registered, otherwise false.
 	 */
-	bool tryRegisterEvent(const string& name);
+	bool tryRegisterEvent(const std::string& name);
 
 	/**
 	 * @brief Registers a new ordered event before another.
@@ -739,7 +739,7 @@ public:
 	 * 
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEventBefore(const string& newEvent, const string& beforeEvent);
+	void registerEventBefore(const std::string& newEvent, const std::string& beforeEvent);
 	/**
 	 * @brief Registers a new ordered event after another.
 	 *
@@ -748,26 +748,26 @@ public:
 	 *
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEventAfter(const string& newEvent, const string& afterEvent);
+	void registerEventAfter(const std::string& newEvent, const std::string& afterEvent);
 
 	/**
 	 * @brief Unregisters existing event.
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered, or not found.
 	 */
-	void unregisterEvent(const string& name);
+	void unregisterEvent(const std::string& name);
 	/**
 	 * @brief Unregisters event if exist.
 	 * @param[in] name target event name
 	 * @return True if event is unregistered, otherwise false.
 	 */
-	bool tryUnregisterEvent(const string& name);
+	bool tryUnregisterEvent(const std::string& name);
 
 	/**
 	 * @brief Returns true if event is registered.
 	 * @param[in] name target event name
 	 */
-	bool hasEvent(const string& name) const noexcept
+	bool hasEvent(const std::string& name) const noexcept
 	{
 		assert(!name.empty());
 		return events.find(name) != events.end();
@@ -777,32 +777,32 @@ public:
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	bool isEventOrdered(const string& name) const;
+	bool isEventOrdered(const std::string& name) const;
 	/**
 	 * @brief Returns all event subscribers.
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	const Event::Subscribers& getEventSubscribers(const string& name) const;
+	const Event::Subscribers& getEventSubscribers(const std::string& name) const;
 	/**
 	 * @brief Returns true if event has subscribers.
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	bool isEventHasSubscribers(const string& name) const;
+	bool isEventHasSubscribers(const std::string& name) const;
 
 	/**
 	 * @brief Calls all event subscribers.
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	void runEvent(const string& name);
+	void runEvent(const std::string& name);
 	/**
 	 * @brief Calls all event subscribers if event exist.
 	 * @param[in] name target event name
 	 * @return True if event is found.
 	 */
-	bool tryRunEvent(const string& name);
+	bool tryRunEvent(const std::string& name);
 	/**
 	 * @brief Runs all ordered events.
 	 * @details Unordered events subscribers are not called.
@@ -817,7 +817,7 @@ public:
 	 * 
 	 * @throw EcsmError if event is not registered.
 	 */
-	void subscribeToEvent(const string& name, const std::function<void()>& onEvent);
+	void subscribeToEvent(const std::string& name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber.
 	 * 
@@ -826,7 +826,7 @@ public:
 	 * 
 	 * @throw EcsmError if event is not registered, or not subscribed.
 	 */
-	void unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent);
+	void unsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent);
 
 	/**
 	 * @brief Adds a new event subscriber if not exist.
@@ -836,7 +836,7 @@ public:
 	 * 
 	 * @return True if subscribed to the event, otherwise false.
 	 */
-	bool trySubscribeToEvent(const string& name, const std::function<void()>& onEvent);
+	bool trySubscribeToEvent(const std::string& name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber if exist.
 	 * 
@@ -845,7 +845,7 @@ public:
 	 * 
 	 * @throw True if unsubscribed from the event, otherwise false.
 	 */
-	bool tryUnsubscribeFromEvent(const string& name, const std::function<void()>& onEvent);
+	bool tryUnsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent);
 
 	/*******************************************************************************************************************
 	 * @brief Returns all manager systems.
@@ -1003,16 +1003,16 @@ public:
 	/**
 	 * @brief Returns specific component name of the system.
 	 */
-	const string& getComponentName() const override
+	const std::string& getComponentName() const override
 	{
-		static const string name = typeToString(typeid(T));
+		static const std::string name = typeToString(typeid(T));
 		return name;
 	}
 	/**
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	type_index getComponentType() const override
+	std::type_index getComponentType() const override
 	{
 		return typeid(T);
 	}
@@ -1096,7 +1096,7 @@ protected:
 	 */
 	~DoNotDestroySystem() override;
 
-	const string& getComponentName() const override;
+	const std::string& getComponentName() const override;
 	friend class ecsm::Manager;
 };
 
@@ -1123,7 +1123,7 @@ protected:
 	 */
 	~DoNotDuplicateSystem() override;
 
-	const string& getComponentName() const override;
+	const std::string& getComponentName() const override;
 	friend class ecsm::Manager;
 };
 

@@ -14,6 +14,7 @@
 
 #include "ecsm.hpp"
 
+using namespace std;
 using namespace ecsm;
 
 struct TestComponent final : public Component

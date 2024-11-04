@@ -30,12 +30,12 @@ void System::copyComponent(View<Component> source, View<Component> destination)
 	throw EcsmError("System has no components.");
 }
 
-const string& System::getComponentName() const
+const std::string& System::getComponentName() const
 {
-	static const string name = "";
+	static const std::string name = "";
 	return name;
 }
-type_index System::getComponentType() const
+std::type_index System::getComponentType() const
 {
 	return typeid(Component);
 }
@@ -100,7 +100,7 @@ Manager::~Manager()
 	unsetSingleton();
 }
 
-void Manager::addSystem(System* system, type_index type)
+void Manager::addSystem(System* system, std::type_index type)
 {
 	auto componentType = system->getComponentType();
 	if (componentType != typeid(Component))
@@ -136,7 +136,7 @@ void Manager::addSystem(System* system, type_index type)
 }
 
 //**********************************************************************************************************************
-void Manager::destroySystem(type_index type)
+void Manager::destroySystem(std::type_index type)
 {
 	#ifndef NDEBUG
 	if (isChanging)
@@ -188,7 +188,7 @@ void Manager::destroySystem(type_index type)
 	isChanging = false;
 	#endif
 }
-bool Manager::tryDestroySystem(type_index type)
+bool Manager::tryDestroySystem(std::type_index type)
 {
 	#ifndef NDEBUG
 	if (isChanging)
@@ -216,7 +216,7 @@ bool Manager::tryDestroySystem(type_index type)
 }
 
 //**********************************************************************************************************************
-View<Component> Manager::add(ID<Entity> entity, type_index componentType)
+View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 {
 	assert(entity);
 
@@ -225,7 +225,7 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	{
 		throw EcsmError("Component is not registered by any system. ("
 			"type: " + typeToString(componentType) +
-			"entity:" + to_string(*entity) + ")");
+			"entity:" + std::to_string(*entity) + ")");
 	}
 
 	auto system = result->second;
@@ -234,16 +234,16 @@ View<Component> Manager::add(ID<Entity> entity, type_index componentType)
 	componentView->entity = entity;
 
 	auto entityView = entities.get(entity);
-	if (!entityView->components.emplace(componentType, make_pair(system, component)).second)
+	if (!entityView->components.emplace(componentType, std::make_pair(system, component)).second)
 	{
 		throw EcsmError("Component is already added to the entity. ("
 			"type: " + typeToString(componentType) +
-			"entity:" + to_string(*entity) + ")");
+			"entity:" + std::to_string(*entity) + ")");
 	}
 
 	return componentView;
 }
-void Manager::remove(ID<Entity> entity, type_index componentType)
+void Manager::remove(ID<Entity> entity, std::type_index componentType)
 { 
 	assert(entity);
 	auto entityView = entities.get(entity);
@@ -254,7 +254,7 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 	{
 		throw EcsmError("Component is not added. ("
 			"type: " + typeToString(componentType) +
-			"entity:" + to_string(*entity) + ")");
+			"entity:" + std::to_string(*entity) + ")");
 	}
 
 	auto result = garbageComponents.emplace(make_pair(componentType, entity));
@@ -262,10 +262,10 @@ void Manager::remove(ID<Entity> entity, type_index componentType)
 	{
 		throw EcsmError("Already removed component. ("
 			"type: " + typeToString(componentType) + 
-			"entity: " + to_string(*entity) + ")");
+			"entity: " + std::to_string(*entity) + ")");
 	}
 }
-void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index componentType)
+void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index componentType)
 {
 	assert(source);
 	assert(destination);
@@ -279,13 +279,13 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, type_index compone
 	{
 		throw EcsmError("Source component is not added. ("
 			"type: " + typeToString(componentType) +
-			"entity:" + to_string(*source) + ")");
+			"entity:" + std::to_string(*source) + ")");
 	}
 	if (destinationIter == destinationView->components.end())
 	{
 		throw EcsmError("Destination component is not added. ("
 			"type: " + typeToString(componentType) +
-			"entity:" + to_string(*destination) + ")");
+			"entity:" + std::to_string(*destination) + ")");
 	}
 
 	auto system = sourceIter->second.first;
@@ -310,11 +310,11 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 		system->copyComponent(sourceView, destinationView);
 
 		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
-		if (!duplicateView->components.emplace(pair.first, make_pair(system, duplicateComponent)).second)
+		if (!duplicateView->components.emplace(pair.first, std::make_pair(system, duplicateComponent)).second)
 		{
 			throw EcsmError("Component is already added to the entity. ("
 				"type: " + typeToString(pair.first) +
-				"entity:" + to_string(*entity) + ")");
+				"entity:" + std::to_string(*entity) + ")");
 		}
 	}
 
@@ -322,19 +322,19 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 }
 
 //**********************************************************************************************************************
-void Manager::registerEvent(const string& name)
+void Manager::registerEvent(const std::string& name)
 {
 	assert(!name.empty());
 	if (!events.emplace(name, new Event(name, false)).second)
 		throw EcsmError("Event is already registered. (name: " + name + ")");
 }
-bool Manager::tryRegisterEvent(const string& name)
+bool Manager::tryRegisterEvent(const std::string& name)
 {
 	assert(!name.empty());
 	return events.emplace(name, new Event(name, false)).second;
 }
 
-void Manager::registerEventBefore(const string& newEvent, const string& beforeEvent)
+void Manager::registerEventBefore(const std::string& newEvent, const std::string& beforeEvent)
 {
 	assert(!newEvent.empty());
 	assert(!beforeEvent.empty());
@@ -354,7 +354,7 @@ void Manager::registerEventBefore(const string& newEvent, const string& beforeEv
 	throw EcsmError("Before event is not registered. ("
 		"newEvent: " + newEvent + ", beforeEvent: " + beforeEvent + ")");
 }
-void Manager::registerEventAfter(const string& newEvent, const string& afterEvent)
+void Manager::registerEventAfter(const std::string& newEvent, const std::string& afterEvent)
 {
 	assert(!newEvent.empty());
 	assert(!afterEvent.empty());
@@ -376,7 +376,7 @@ void Manager::registerEventAfter(const string& newEvent, const string& afterEven
 }
 
 //**********************************************************************************************************************
-void Manager::unregisterEvent(const string& name)
+void Manager::unregisterEvent(const std::string& name)
 {
 	assert(!name.empty());
 	auto iterator = events.find(name);
@@ -404,7 +404,7 @@ void Manager::unregisterEvent(const string& name)
 		
 	delete event;
 }
-bool Manager::tryUnregisterEvent(const string& name)
+bool Manager::tryUnregisterEvent(const std::string& name)
 {
 	assert(!name.empty());
 	auto iterator = events.find(name);
@@ -435,7 +435,7 @@ bool Manager::tryUnregisterEvent(const string& name)
 }
 
 //**********************************************************************************************************************
-bool Manager::isEventOrdered(const string& name) const
+bool Manager::isEventOrdered(const std::string& name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -443,7 +443,7 @@ bool Manager::isEventOrdered(const string& name) const
 		throw EcsmError("Event is not registered. (name: " + name + ")");
 	return result->second->isOrdered;
 }
-const Manager::Event::Subscribers& Manager::getEventSubscribers(const string& name) const
+const Manager::Event::Subscribers& Manager::getEventSubscribers(const std::string& name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -451,7 +451,7 @@ const Manager::Event::Subscribers& Manager::getEventSubscribers(const string& na
 		throw EcsmError("Event is not registered. (name: " + name + ")");
 	return result->second->subscribers;
 }
-bool Manager::isEventHasSubscribers(const string& name) const
+bool Manager::isEventHasSubscribers(const std::string& name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -461,7 +461,7 @@ bool Manager::isEventHasSubscribers(const string& name) const
 }
 
 //**********************************************************************************************************************
-void Manager::runEvent(const string& name)
+void Manager::runEvent(const std::string& name)
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -472,7 +472,7 @@ void Manager::runEvent(const string& name)
 	for (const auto& onEvent : subscribers)
 		onEvent();
 }
-bool Manager::tryRunEvent(const string& name)
+bool Manager::tryRunEvent(const std::string& name)
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -495,7 +495,7 @@ void Manager::runOrderedEvents()
 }
 
 //**********************************************************************************************************************
-void Manager::subscribeToEvent(const string& name, const std::function<void()>& onEvent)
+void Manager::subscribeToEvent(const std::string& name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
@@ -505,7 +505,7 @@ void Manager::subscribeToEvent(const string& name, const std::function<void()>& 
 		throw EcsmError("Event is not registered. (name: " + name + ")");
 	result->second->subscribers.push_back(onEvent);
 }
-void Manager::unsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
+void Manager::unsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
@@ -527,7 +527,7 @@ void Manager::unsubscribeFromEvent(const string& name, const std::function<void(
 }
 
 //**********************************************************************************************************************
-bool Manager::trySubscribeToEvent(const string& name, const std::function<void()>& onEvent)
+bool Manager::trySubscribeToEvent(const std::string& name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
@@ -539,7 +539,7 @@ bool Manager::trySubscribeToEvent(const string& name, const std::function<void()
 	result->second->subscribers.push_back(onEvent);
 	return true;
 }
-bool Manager::tryUnsubscribeFromEvent(const string& name, const std::function<void()>& onEvent)
+bool Manager::tryUnsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
@@ -617,17 +617,17 @@ void Manager::disposeSystemComponents()
 DoNotDestroySystem::DoNotDestroySystem(bool setSingleton) : Singleton(setSingleton) { }
 DoNotDestroySystem::~DoNotDestroySystem() { unsetSingleton(); }
 
-const string& DoNotDestroySystem::getComponentName() const
+const std::string& DoNotDestroySystem::getComponentName() const
 {
-	static const string name = "Do Not Destroy";
+	static const std::string name = "Do Not Destroy";
 	return name;
 }
 
 DoNotDuplicateSystem::DoNotDuplicateSystem(bool setSingleton) : Singleton(setSingleton) { }
 DoNotDuplicateSystem::~DoNotDuplicateSystem() { unsetSingleton(); }
 
-const string& DoNotDuplicateSystem::getComponentName() const
+const std::string& DoNotDuplicateSystem::getComponentName() const
 {
-	static const string name = "Do Not Duplicate";
+	static const std::string name = "Do Not Duplicate";
 	return name;
 }

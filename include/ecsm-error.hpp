@@ -24,20 +24,18 @@
 namespace ecsm
 {
 
-using namespace std;
-
 /**
  * @brief ECSM error (exception) class. 
  */
-class EcsmError : public exception
+class EcsmError : public std::exception
 {
-	string message;
+	std::string message;
 public:
 	/**
 	 * @brief Creates a new ECSM error (exception) instance. 
 	 * @param message target error message
 	 */
-	EcsmError(const string& message) : message(message) { }
+	EcsmError(const std::string& message) : message(message) { }
 
 	/**
 	 * @brief Returns ECSM error message C-string.
