@@ -254,9 +254,9 @@ public:
 	{
 		if (!item)
 			return;
-		if (counter->fetch_sub(1, memory_order_release) == 1)
+		if (counter->fetch_sub(1, std::memory_order_release) == 1)
 		{
-			std::atomic_thread_fence(memory_order_acquire);
+			std::atomic_thread_fence(std::memory_order_acquire);
 			delete counter;
 		}
 	}
@@ -265,7 +265,7 @@ public:
 	{
     	if (!ref.item)
 			return;
-		ref.counter->fetch_add(1, memory_order_relaxed);
+		ref.counter->fetch_add(1, std::memory_order_relaxed);
 		counter = ref.counter;
 		item = ref.item;
 	}
@@ -281,14 +281,14 @@ public:
 	{
 		if (this != &ref)
 		{
-			if (item && counter->fetch_sub(1, memory_order_release) == 1)
+			if (item && counter->fetch_sub(1, std::memory_order_release) == 1)
 			{
-				std::atomic_thread_fence(memory_order_acquire);
+				std::atomic_thread_fence(std::memory_order_acquire);
 				delete counter;
 			}
 
 			if (ref.item)
-				ref.counter->fetch_add(1, memory_order_relaxed);
+				ref.counter->fetch_add(1, std::memory_order_relaxed);
 			counter = ref.counter;
 			item = ref.item;
 		}
@@ -298,9 +298,9 @@ public:
 	{
 		if (this != &ref)
 		{
-			if (item && counter->fetch_sub(1, memory_order_release) == 1)
+			if (item && counter->fetch_sub(1, std::memory_order_release) == 1)
 			{
-				std::atomic_thread_fence(memory_order_acquire);
+				std::atomic_thread_fence(std::memory_order_acquire);
 				delete counter;
 			}
 
@@ -319,7 +319,7 @@ public:
 	{
 		if (!item)
 			return 0;
-		return counter->load(memory_order_relaxed);
+		return counter->load(std::memory_order_relaxed);
 	}
 	/**
 	 * @brief Returns true if this is last item reference.
@@ -328,7 +328,7 @@ public:
 	{
 		if (!item)
 			return false;
-		return counter->load(memory_order_relaxed) == 1;
+		return counter->load(std::memory_order_relaxed) == 1;
 	}
 
 	/**
