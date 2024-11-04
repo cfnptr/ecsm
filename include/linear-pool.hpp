@@ -717,10 +717,8 @@ public:
 		Iterator operator-(const difference_type& m) noexcept { return Iterator(ptr - m); }
 		difference_type operator-(const Iterator& i) noexcept { return std::distance(i.ptr, ptr); }
 
-		reference operator*() noexcept { return *ptr; }
-		const reference operator*() const noexcept { return *ptr; }
+		reference operator*() const noexcept { return *ptr; }
 		pointer operator->() noexcept { return ptr; }
-		const pointer operator->() const noexcept { return ptr; }
 	};
 
 	/*******************************************************************************************************************
@@ -756,7 +754,7 @@ public:
 		difference_type operator-(const ConstantIterator& i) noexcept { return std::distance(i.ptr, ptr); }
 
 		reference operator*() const noexcept { return *ptr; }
-		pointer operator->() const noexcept { return ptr; }
+		pointer operator->() noexcept { return ptr; }
 	};
 
 	/**
