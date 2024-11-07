@@ -43,23 +43,23 @@ class SystemExt;
  * @brief Subscribes @ref System function to the event.
  */
 #define ECSM_SUBSCRIBE_TO_EVENT(name, func) \
-	Manager::Instance::get()->subscribeToEvent(name, std::bind(&func, this))
+	ecsm::Manager::Instance::get()->subscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event.
  */
 #define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) \
-	Manager::Instance::get()->unsubscribeFromEvent(name, std::bind(&func, this))
+	ecsm::Manager::Instance::get()->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
  * @brief Subscribes @ref System function to the event if exist.
  */
 #define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) \
-	Manager::Instance::get()->trySubscribeToEvent(name, std::bind(&func, this))
+	ecsm::Manager::Instance::get()->trySubscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event if exist.
  */
 #define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) \
-	Manager::Instance::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
+	ecsm::Manager::Instance::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
 /***********************************************************************************************************************
  * @brief Base component structure.
