@@ -4,10 +4,16 @@ var hierarchy =
       [ "DoNotDestroyComponent", "structecsm_1_1_do_not_destroy_component.html", null ],
       [ "DoNotDuplicateComponent", "structecsm_1_1_do_not_duplicate_component.html", null ]
     ] ],
+    [ "ConstantIterator", "structecsm_1_1_linear_pool_1_1_constant_iterator.html", null ],
     [ "Entity", "classecsm_1_1_entity.html", null ],
     [ "Event", "structecsm_1_1_manager_1_1_event.html", null ],
+    [ "exception", "https://en.cppreference.com/w/cpp/error/exception.html", [
+      [ "EcsmError", "classecsm_1_1_ecsm_error.html", null ]
+    ] ],
     [ "ID< T >", "structecsm_1_1_i_d.html", null ],
     [ "ID< ecsm::Entity >", "structecsm_1_1_i_d.html", null ],
+    [ "IdHash< T >", "structecsm_1_1_id_hash.html", null ],
+    [ "Iterator", "structecsm_1_1_linear_pool_1_1_iterator.html", null ],
     [ "LinearPool< T, DestroyItems >", "classecsm_1_1_linear_pool.html", null ],
     [ "LinearPool< Component, true >", "classecsm_1_1_linear_pool.html", null ],
     [ "LinearPool< DoNotDestroyComponent, DestroyComponents >", "classecsm_1_1_linear_pool.html", null ],
