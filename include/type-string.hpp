@@ -40,7 +40,7 @@ static std::string typeToString(std::type_index type)
 	#ifdef __GNUG__
 	int status = -4;
 	auto demangledName = abi::__cxa_demangle(name, nullptr, nullptr, &status);
-	if (status != 0)
+	if (status == 0)
 		name = demangledName;
 	#endif
 
