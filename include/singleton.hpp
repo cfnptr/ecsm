@@ -55,7 +55,7 @@ protected:
 	inline static T* singletonInstance = nullptr;
 
 	/**
-	 * @brief Creates a new singleton class instace.
+	 * @brief Creates a new singleton class instance.
 	 * @param set is singleton instance should be set
 	 */
 	Singleton(bool set = true)

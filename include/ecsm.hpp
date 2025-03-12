@@ -912,7 +912,7 @@ public:
 	void disposeGarbageComponents();
 	/**
 	 * @brief Actually destroys system components and internal resources.
-	 * @details Systen components are not destroyed immediately, only after the dispose call.
+	 * @details System components are not destroyed immediately, only after the dispose call.
 	 */
 	void disposeSystemComponents();
 	/**
