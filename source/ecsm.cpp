@@ -435,29 +435,21 @@ bool Manager::tryUnregisterEvent(const std::string& name)
 }
 
 //**********************************************************************************************************************
-bool Manager::isEventOrdered(const std::string& name) const
+const Manager::Event& Manager::getEvent(const std::string& name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
 		throw EcsmError("Event is not registered. (name: " + name + ")");
-	return result->second->isOrdered;
+	return *result->second;
 }
-const Manager::Event::Subscribers& Manager::getEventSubscribers(const std::string& name) const
+const Manager::Event* Manager::tryGetEvent(const std::string& name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
-	return result->second->subscribers;
-}
-bool Manager::isEventHasSubscribers(const std::string& name) const
-{
-	assert(!name.empty());
-	auto result = events.find(name);
-	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
-	return !result->second->subscribers.empty();
+		return nullptr;
+	return result->second;
 }
 
 //**********************************************************************************************************************

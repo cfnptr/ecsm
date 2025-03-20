@@ -201,7 +201,7 @@ class Manager final : public Singleton<Manager, false>
 {
 public:
 	/**
-	 * @brief Event subscribers holder.
+	 * @brief Event data container.
 	 */
 	struct Event final
 	{
@@ -211,7 +211,21 @@ public:
 		Subscribers subscribers;
 		bool isOrdered = false;
 
-		Event(const std::string& name, bool isOrdered = true) : name(name), isOrdered(isOrdered) { }
+		Event(const std::string& name, bool isOrdered = true) : 
+			name(name), isOrdered(isOrdered) { }
+
+		/**
+		 * @brief Returns true if this event has subscribers. 
+		 */
+		bool hasSubscribers() const noexcept { return !subscribers.empty(); }
+		/**
+		 * @brief Calls all event subscribers.
+		 */
+		void run() const
+		{
+			for (const auto& onEvent : subscribers)
+				onEvent();
+		}
 	};
 
 	using Systems = std::unordered_map<std::type_index, System*>;
@@ -773,23 +787,16 @@ public:
 		return events.find(name) != events.end();
 	}
 	/**
-	 * @brief Returns true if event is ordered.
+	 * @brief Returns event data container by name.
 	 * @param[in] name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	bool isEventOrdered(const std::string& name) const;
+	const Event& getEvent(const std::string& name) const;
 	/**
-	 * @brief Returns all event subscribers.
+	 * @brief Returns event data container by name if it exist, otherwise null.
 	 * @param[in] name target event name
-	 * @throw EcsmError if event is not registered.
 	 */
-	const Event::Subscribers& getEventSubscribers(const std::string& name) const;
-	/**
-	 * @brief Returns true if event has subscribers.
-	 * @param[in] name target event name
-	 * @throw EcsmError if event is not registered.
-	 */
-	bool isEventHasSubscribers(const std::string& name) const;
+	const Event* tryGetEvent(const std::string& name) const;
 
 	/**
 	 * @brief Calls all event subscribers.
