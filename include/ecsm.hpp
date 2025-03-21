@@ -1094,12 +1094,12 @@ class DoNotDestroySystem : public ComponentSystem<DoNotDestroyComponent, false>,
 {
 protected:
 	/**
-	 * @brief Creates a new do not duplicate system instance.
+	 * @brief Creates a new do not destroy system instance.
 	 * @param setSingleton set system singleton instance
 	 */
 	DoNotDestroySystem(bool setSingleton = true);
 	/**
-	 * @brief Destroys baked transformer system instance.
+	 * @brief Destroys do not destroy system instance.
 	 */
 	~DoNotDestroySystem() override;
 
@@ -1126,7 +1126,7 @@ protected:
 	 */
 	DoNotDuplicateSystem(bool setSingleton = true);
 	/**
-	 * @brief Destroys baked transformer system instance.
+	 * @brief Destroys do not duplicate system instance.
 	 */
 	~DoNotDuplicateSystem() override;
 
