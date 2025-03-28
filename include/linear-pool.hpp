@@ -348,6 +348,22 @@ public:
 	constexpr bool operator<(const Ref& v) const noexcept { return item < v.item; }
 
 	/**
+	 * @brief Returns true if this reference item is equal to the v identifier.
+	 * @param v other reference value
+	 */
+	constexpr bool operator==(ID<T> v) const noexcept { return item == v; }
+	/**
+	 * @brief Returns true if this reference item is not equal to the v identifier.
+	 * @param v other reference value
+	 */
+	constexpr bool operator!=(ID<T> v) const noexcept { return item != v; }
+	/**
+	 * @brief Returns true if this reference item is less than the v identifier.
+	 * @param v other reference value
+	 */
+	constexpr bool operator<(ID<T> v) const noexcept { return item < v; }
+
+	/**
 	 * @brief Returns reference item @ref ID.
 	 * @tparam T type of the item in the linear pool
 	 */
@@ -363,33 +379,25 @@ public:
 };
 
 /***********************************************************************************************************************
- * @brief Returns true if reference item is equal to the v identifier.
+ * @brief Returns true if i identifier is equal to the r reference item.
  * @param r reference value
  * @param i identifier value
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static constexpr bool operator==(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) == i; }
+static constexpr bool operator==(ID<T> i, const Ref<T>& r) noexcept { return i == ID<T>(r); }
 /**
- * @brief Returns true if r reference item is not equal to the i identifier.
+ * @brief Returns true if i identifier is not equal to the t reference item.
  * @param r reference value
  * @param i identifier value
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
-static constexpr bool operator!=(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) != i; }
+static constexpr bool operator!=(ID<T> i, const Ref<T>& r) noexcept { return i != ID<T>(r); }
 /**
- * @brief Returns true if r reference item is less than the i identifier.
+ * @brief Returns true if i identifier is less than the t reference item.
  * @param r reference value
  * @param i identifier value
- * @tparam T type of the item in the linear pool
- */
-template<typename T>
-static constexpr bool operator<(const Ref<T>& r, ID<T> i) noexcept { return ID<T>(r) < i; }
-/**
- * @brief Returns true if i identifier is less than the r reference item.
- * @param i identifier value
- * @param r reference value
  * @tparam T type of the item in the linear pool
  */
 template<typename T>
