@@ -527,6 +527,8 @@ public:
 
 		#ifndef NDEBUG
 		assert(*instance - 1 < occupancy);
+		for (auto item : garbageItems)
+			assert(item != instance); // Second item destroy detected.
 		version++; // Protects from the use after free.
 		#endif
 
