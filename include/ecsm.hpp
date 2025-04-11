@@ -21,14 +21,15 @@
 #include "singleton.hpp"
 #include "linear-pool.hpp"
 
+#include <cassert>
+#include <cstdint>
 #include <set>
 #include <map>
 #include <mutex>
-#include <algorithm>
 #include <functional>
 #include <type_traits>
-#include <string_view>
 #include <unordered_map>
+#include <cstdlib>
 
 namespace ecsm
 {
@@ -158,23 +159,101 @@ public:
 class Entity final
 {
 public:
-	using SystemComponent = std::pair<System*, ID<Component>>;
-	using Components = std::map<std::type_index, SystemComponent>;
+	/**
+	 * @brief Entity component data container.
+	 */
+	struct ComponentData final
+	{
+		size_t type = 0;
+		System* system = nullptr;
+		ID<Component> instance = {};
+	};
 private:
-	Components components;
+	ComponentData* components = nullptr;
+	uint32_t capacity = 0;
+	uint32_t count = 0;
+
+	inline static int compareComps(const void* a, const void* b) noexcept
+	{
+    	const auto l = (const ComponentData*)a;
+    	const auto r = (const ComponentData*)b;
+    	if (l->type < r->type) return -1;
+		if (l->type > r->type) return 1;
+		return 0;
+	}
+
+	void reserve(uint32_t capacity)
+	{
+		this->capacity = capacity;
+		if (this->capacity == 0)
+			components = (ComponentData*)malloc(sizeof(ComponentData) * capacity);
+		else
+			components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
+		if (!components) abort();
+	}
+	void addComponent(size_t type, System* system, ID<Component> instance)
+	{
+		if (count == capacity)
+		{
+			if (capacity == 0)
+			{
+				capacity = 1;
+				components = (ComponentData*)malloc(sizeof(ComponentData));
+			}
+			else
+			{
+				capacity *= 2;
+				components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
+			}
+			if (!components) abort();
+		}
+		components[count++] = { type, system, instance };
+		qsort(components, count, sizeof(ComponentData), compareComps);
+	}
+	void removeComponent(const ComponentData* data)
+	{
+		for (uint32_t i = (uint32_t)(data - components), c = --count; i < c; i++)
+			components[i] = components[i + 1];
+	}
+	
 	friend class Manager;
 public:
-	/**
+	/*******************************************************************************************************************
 	 * @brief Destroys all entity components.
 	 * @note Components are not destroyed immediately, only after the dispose call.
 	 */
 	bool destroy();
 
 	/**
-	 * @brief Returns entity components map.
+	 * @brief Returns entity components array.
 	 * @details Use @ref Manager to add or remove components.
 	 */
-	const Components& getComponents() const noexcept { return components; }
+	const ComponentData* getComponents() const noexcept { return components; }
+	/**
+	 * @brief Returns entity components array size.
+	 * @details Use @ref Manager to add or remove components.
+	 */
+	uint32_t getComponentCount() const noexcept { return count; }
+	/**
+	 * @brief Returns entity components array capacity.
+	 * @details Use @ref Manager to add or remove components.
+	 */
+	uint32_t getComponentCapacity() const noexcept { return capacity; }
+
+	/**
+	 * @brief Returns true if entity has components.
+	 */
+	bool hasComponents() const noexcept { return count; }
+	/**
+	 * @brief Searches for the specified component type.
+	 * @param type target component type hash code
+	 * @return Component data on success, otherwise null.
+	 */
+	const ComponentData* findComponent(size_t type) const noexcept
+	{
+		ComponentData key = { type };
+		return (const ComponentData*)bsearch(&key, components, count, sizeof(ComponentData), compareComps);
+	}
 };
 
 /***********************************************************************************************************************
@@ -234,7 +313,7 @@ public:
 	using Events = std::unordered_map<std::string, Event*>;
 	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
-	using GarbageComponent = std::pair<std::type_index, ID<Entity>>;
+	using GarbageComponent = std::pair<size_t, ID<Entity>>;
 	using GarbageComponents = std::set<GarbageComponent>;
 private:
 	Systems systems;
@@ -487,7 +566,7 @@ public:
 	 */
 	bool isGarbage(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
-		return garbageComponents.find(std::make_pair(componentType, entity)) != garbageComponents.end();
+		return garbageComponents.find(std::make_pair(componentType.hash_code(), entity)) != garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if target entity component was removed and is in the garbage pool.
@@ -549,9 +628,9 @@ public:
 	bool has(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
-		const auto& components = entities.get(entity)->components;
-		return components.find(componentType) != components.end() && garbageComponents.find(
-			make_pair(componentType, entity)) == garbageComponents.end();
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
+		return componentData && garbageComponents.find(garbagePair) == garbageComponents.end();
 	}
 	/**
 	 * @brief Returns true if entity has target component.
@@ -579,18 +658,14 @@ public:
 	View<Component> get(ID<Entity> entity, std::type_index componentType) const
 	{
 		assert(entity);
-		auto entityView = entities.get(entity);
-		auto result = entityView->components.find(componentType);
-
-		if (result == entityView->components.end())
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		if (!componentData)
 		{
 			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
 				"entity:" + std::to_string(*entity) + ")");
 		}
-
-		auto pair = result->second;
-		return pair.first->getComponent(pair.second);
+		return componentData->system->getComponent(componentData->instance);
 	}
 	/**
 	 * @brief Returns component data accessor. (@ref View)
@@ -619,17 +694,11 @@ public:
 	View<Component> tryGet(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
-		const auto& components = entities.get(entity)->components;
-		
-		auto result = components.find(componentType);
-		if (result == components.end() || garbageComponents.find(
-			make_pair(componentType, entity)) != garbageComponents.end())
-		{
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
+		if (!componentData || garbageComponents.find(garbagePair) != garbageComponents.end())
 			return {};
-		}
-
-		auto pair = result->second;
-		return pair.first->getComponent(pair.second);
+		return componentData->system->getComponent(componentData->instance);
 	}
 	/**
 	 * @brief Returns component data accessor if exist, otherwise null. (@ref View)
@@ -658,17 +727,14 @@ public:
 	ID<Component> getID(ID<Entity> entity, std::type_index componentType) const
 	{
 		assert(entity);
-		auto entityView = entities.get(entity);
-		auto result = entityView->components.find(componentType);
-
-		if (result == entityView->components.end())
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		if (!componentData)
 		{
 			throw EcsmError("Component is not added. ("
 				"type: " + typeToString(componentType) +
 				"entity:" + std::to_string(*entity) + ")");
 		}
-
-		return result->second.second;
+		return componentData->instance;
 	}
 	/**
 	 * @brief Returns entity component @ref ID.
@@ -697,17 +763,11 @@ public:
 	ID<Component> tryGetID(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		assert(entity);
-		const auto& components = entities.get(entity)->components;
-
-		auto result = components.find(componentType);
-		if (result == components.end() || garbageComponents.find(
-			make_pair(componentType, entity)) != garbageComponents.end())
-		{
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
+		if (!componentData || garbageComponents.find(garbagePair) != garbageComponents.end())
 			return {};
-		}
-
-		auto pair = result->second;
-		return pair.second;
+		return componentData->instance;
 	}
 	/**
 	 * @brief Returns entity component @ref ID if added, otherwise null.
@@ -724,12 +784,34 @@ public:
 	}
 
 	/**
+	 * @brief Returns true if entity has components.
+	 * @param entity target entity instance
+	 */
+	uint32_t hasComponents(ID<Entity> entity) const noexcept
+	{
+		return (uint32_t)entities.get(entity)->hasComponents();
+	}
+	/**
 	 * @brief Returns entity component count.
 	 * @param entity target entity instance
 	 */
 	uint32_t getComponentCount(ID<Entity> entity) const noexcept
 	{
-		return (uint32_t)entities.get(entity)->components.size();
+		return (uint32_t)entities.get(entity)->getComponentCount();
+	}
+	
+	/**
+	 * @brief Increases entity component array capacity.
+	 * 
+	 * @param entity target entity instance
+	 * @param capacity component array capacity
+	 */
+	void reserveComponents(ID<Entity> entity, uint32_t capacity) noexcept
+	{
+		auto entityView = entities.get(entity);
+		if (capacity <= entityView->capacity)
+			return;
+		entityView->reserve(capacity);
 	}
 
 	/*******************************************************************************************************************
@@ -1048,8 +1130,7 @@ public:
 	{
 		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& entityComponents = entityView->getComponents();
-		return entityComponents.find(typeid(T)) != entityComponents.end();
+		return entityView->findComponent(typeid(T).hash_code());
 	}
 	/**
 	 * @brief Returns entity specific component view.
@@ -1060,8 +1141,14 @@ public:
 	{
 		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& pair = entityView->getComponents().at(typeid(T));
-		return components.get(ID<T>(pair.second));
+		auto componentData = entityView->findComponent(typeid(T).hash_code());
+		if (!componentData)
+		{
+			throw EcsmError("Component is not added. ("
+				"type: " + typeToString(typeid(T)) +
+				"entity:" + std::to_string(*entity) + ")");
+		}
+		return components.get(ID<T>(componentData->instance));
 	}
 	/**
 	 * @brief Returns entity specific component view if exist.
@@ -1072,11 +1159,10 @@ public:
 	{
 		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		const auto& entityComponents = entityView->getComponents();
-		auto result = entityComponents.find(typeid(T));
-		if (result == entityComponents.end())
+		auto componentData = entityView->findComponent(typeid(T).hash_code());
+		if (!componentData)
 			return {};
-		return components.get(ID<T>(result->second.second));
+		return components.get(ID<T>(componentData->instance));
 	}
 };
 

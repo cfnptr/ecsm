@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "ecsm.hpp"
+#include <cstdint>
 
 using namespace ecsm;
 
@@ -51,12 +52,13 @@ void System::disposeComponents()
 //**********************************************************************************************************************
 bool Entity::destroy()
 {
-	for (const auto& component : components)
+	for (uint32_t i = 0; i < count; i++)
 	{
-		auto pair = component.second;
-		pair.first->destroyComponent(pair.second);
+		const auto& componentData = components[i];
+		componentData.system->destroyComponent(componentData.instance);
 	}
-	components.clear();
+
+	free(components);
 	return true;
 }
 
@@ -234,31 +236,25 @@ View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 	componentView->entity = entity;
 
 	auto entityView = entities.get(entity);
-	if (!entityView->components.emplace(componentType, std::make_pair(system, component)).second)
+	if (entityView->findComponent(componentType.hash_code()))
 	{
 		throw EcsmError("Component is already added to the entity. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + std::to_string(*entity) + ")");
 	}
-
+	entityView->addComponent(componentType.hash_code(), system, component);
 	return componentView;
 }
 void Manager::remove(ID<Entity> entity, std::type_index componentType)
 { 
 	assert(entity);
-	auto entityView = entities.get(entity);
-	const auto& components = entityView->components;
-	auto iterator = components.find(componentType);
-
-	if (iterator == components.end())
+	if (!entities.get(entity)->findComponent(componentType.hash_code()))
 	{
 		throw EcsmError("Component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + std::to_string(*entity) + ")");
 	}
-
-	auto result = garbageComponents.emplace(make_pair(componentType, entity));
-	if (!result.second)
+	if (!garbageComponents.emplace(std::make_pair(componentType.hash_code(), entity)).second)
 	{
 		throw EcsmError("Already removed component. ("
 			"type: " + typeToString(componentType) + 
@@ -269,53 +265,53 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index co
 {
 	assert(source);
 	assert(destination);
+	auto srcComponentData = entities.get(source)->findComponent(componentType.hash_code());
+	auto dstComponentData = entities.get(destination)->findComponent(componentType.hash_code());
 
-	const auto sourceView = entities.get(source);
-	auto destinationView = entities.get(destination);
-	auto sourceIter = sourceView->components.find(componentType);
-	auto destinationIter = destinationView->components.find(componentType);
-
-	if (sourceIter == sourceView->components.end())
+	if (!srcComponentData)
 	{
 		throw EcsmError("Source component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + std::to_string(*source) + ")");
 	}
-	if (destinationIter == destinationView->components.end())
+	if (!dstComponentData)
 	{
 		throw EcsmError("Destination component is not added. ("
 			"type: " + typeToString(componentType) +
 			"entity:" + std::to_string(*destination) + ")");
 	}
 
-	auto system = sourceIter->second.first;
-	auto sourceComponent = system->getComponent(sourceIter->second.second);
-	auto destinationComponent = system->getComponent(destinationIter->second.second);
-	system->copyComponent(sourceComponent, destinationComponent);
+	auto srcComponent = srcComponentData->system->getComponent(srcComponentData->instance);
+	auto dstComponent = dstComponentData->system->getComponent(dstComponentData->instance);
+	srcComponentData->system->copyComponent(srcComponent, dstComponent);
 }
 ID<Entity> Manager::duplicate(ID<Entity> entity)
 {
 	auto duplicateEntity = entities.create();
 	auto entityView = entities.get(entity);
-	const auto& components = entityView->components;
+	entities.get(duplicateEntity)->reserve(entityView->capacity);
 
-	for (const auto& pair : components)
+	auto components = entityView->components;
+	auto componentCount = entityView->count;
+
+	for (uint32_t i = 0; i < componentCount; i++)
 	{
-		auto system = pair.second.first;
+		auto componentData = components[i];
+		auto system = componentData.system;
 		auto duplicateComponent = system->createComponent(duplicateEntity);
-		auto sourceView = system->getComponent(pair.second.second);
+		auto sourceView = system->getComponent(componentData.instance);
 		auto destinationView = system->getComponent(duplicateComponent);
 		destinationView->entity = duplicateEntity;
-
 		system->copyComponent(sourceView, destinationView);
 
 		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
-		if (!duplicateView->components.emplace(pair.first, std::make_pair(system, duplicateComponent)).second)
+		if (duplicateView->findComponent(componentData.type))
 		{
 			throw EcsmError("Component is already added to the entity. ("
-				"type: " + typeToString(pair.first) +
+				"type: " + typeToString(system->getComponentType()) +
 				"entity:" + std::to_string(*entity) + ")");
 		}
+		duplicateView->addComponent(componentData.type, system, duplicateComponent);
 	}
 
 	return duplicateEntity;
@@ -590,12 +586,10 @@ void Manager::disposeGarbageComponents()
 	for (const auto& garbagePair : garbageComponents)
 	{
 		auto entityView = entities.get(garbagePair.second);
-		auto& components = entityView->components;
-		auto iterator = components.find(garbagePair.first);
-		assert(iterator != components.end()); // Corrupted entity component destruction order.
-		auto pair = iterator->second;
-		pair.first->destroyComponent(pair.second);
-		components.erase(iterator);
+		auto componentData = entityView->findComponent(garbagePair.first);
+		assert(!componentData); // Corrupted entity component destruction order.componentData
+		componentData->system->destroyComponent(componentData->instance);
+		entityView->removeComponent(componentData);
 	}
 	garbageComponents.clear();
 }
