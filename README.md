@@ -113,3 +113,5 @@ git clone https://github.com/cfnptr/ecsm
 
 * Windows: ```./scripts/build-release.bat```
 * macOS / Ubuntu: ```./scripts/build-release.sh```
+
+### Special thanks to Sahak Grigoryan.

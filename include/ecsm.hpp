@@ -27,6 +27,7 @@
 #include <map>
 #include <mutex>
 #include <functional>
+#include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <cstdlib>
@@ -290,7 +291,7 @@ public:
 		Subscribers subscribers;
 		bool isOrdered = false;
 
-		Event(const std::string& name, bool isOrdered = true) : 
+		Event(std::string_view name, bool isOrdered = true) : 
 			name(name), isOrdered(isOrdered) { }
 
 		/**
@@ -309,8 +310,8 @@ public:
 
 	using Systems = std::unordered_map<std::type_index, System*>;
 	using ComponentTypes = std::unordered_map<std::type_index, System*>;
-	using ComponentNames = std::map<std::string, System*>;
-	using Events = std::unordered_map<std::string, Event*>;
+	using ComponentNames = std::map<std::string, System*, std::less<>>;
+	using Events = std::map<std::string, Event*, std::less<>>;
 	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
 	using GarbageComponent = std::pair<size_t, ID<Entity>>;
@@ -816,82 +817,82 @@ public:
 
 	/*******************************************************************************************************************
 	 * @brief Registers a new unordered event.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEvent(const std::string& name);
+	void registerEvent(std::string_view name);
 	/**
 	 * @brief Registers a new unordered event if not exist.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @return True if event is registered, otherwise false.
 	 */
-	bool tryRegisterEvent(const std::string& name);
+	bool tryRegisterEvent(std::string_view name);
 
 	/**
 	 * @brief Registers a new ordered event before another.
 	 * 
-	 * @param[in] newEvent target event name
-	 * @param[in] beforeEvent name of the event after target event
+	 * @param newEvent target event name
+	 * @param beforeEvent name of the event after target event
 	 * 
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEventBefore(const std::string& newEvent, const std::string& beforeEvent);
+	void registerEventBefore(std::string_view newEvent, std::string_view beforeEvent);
 	/**
 	 * @brief Registers a new ordered event after another.
 	 *
-	 * @param[in] newEvent target event name
-	 * @param[in] afterEvent name of the event before target event
+	 * @param newEvent target event name
+	 * @param afterEvent name of the event before target event
 	 *
 	 * @throw EcsmError if event is already registered.
 	 */
-	void registerEventAfter(const std::string& newEvent, const std::string& afterEvent);
+	void registerEventAfter(std::string_view newEvent, std::string_view afterEvent);
 
 	/**
 	 * @brief Unregisters existing event.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @throw EcsmError if event is not registered, or not found.
 	 */
-	void unregisterEvent(const std::string& name);
+	void unregisterEvent(std::string_view name);
 	/**
 	 * @brief Unregisters event if exist.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @return True if event is unregistered, otherwise false.
 	 */
-	bool tryUnregisterEvent(const std::string& name);
+	bool tryUnregisterEvent(std::string_view name);
 
 	/**
 	 * @brief Returns true if event is registered.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 */
-	bool hasEvent(const std::string& name) const noexcept
+	bool hasEvent(std::string_view name) const noexcept
 	{
 		assert(!name.empty());
 		return events.find(name) != events.end();
 	}
 	/**
 	 * @brief Returns event data container by name.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	const Event& getEvent(const std::string& name) const;
+	const Event& getEvent(std::string_view name) const;
 	/**
 	 * @brief Returns event data container by name if it exist, otherwise null.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 */
-	const Event* tryGetEvent(const std::string& name) const;
+	const Event* tryGetEvent(std::string_view name) const;
 
 	/**
 	 * @brief Calls all event subscribers.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @throw EcsmError if event is not registered.
 	 */
-	void runEvent(const std::string& name);
+	void runEvent(std::string_view name);
 	/**
 	 * @brief Calls all event subscribers if event exist.
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @return True if event is found.
 	 */
-	bool tryRunEvent(const std::string& name);
+	bool tryRunEvent(std::string_view name);
 	/**
 	 * @brief Runs all ordered events.
 	 * @details Unordered events subscribers are not called.
@@ -901,40 +902,40 @@ public:
 	/**
 	 * @brief Adds a new event subscriber.
 	 * 
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
 	 * @throw EcsmError if event is not registered.
 	 */
-	void subscribeToEvent(const std::string& name, const std::function<void()>& onEvent);
+	void subscribeToEvent(std::string_view name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber.
 	 * 
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
 	 * @throw EcsmError if event is not registered, or not subscribed.
 	 */
-	void unsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent);
+	void unsubscribeFromEvent(std::string_view name, const std::function<void()>& onEvent);
 
 	/**
 	 * @brief Adds a new event subscriber if not exist.
 	 * 
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
 	 * @return True if subscribed to the event, otherwise false.
 	 */
-	bool trySubscribeToEvent(const std::string& name, const std::function<void()>& onEvent);
+	bool trySubscribeToEvent(std::string_view name, const std::function<void()>& onEvent);
 	/**
 	 * @brief Removes existing event subscriber if exist.
 	 * 
-	 * @param[in] name target event name
+	 * @param name target event name
 	 * @param[in] onEvent on event function callback
 	 * 
 	 * @throw True if unsubscribed from the event, otherwise false.
 	 */
-	bool tryUnsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent);
+	bool tryUnsubscribeFromEvent(std::string_view name, const std::function<void()>& onEvent);
 
 	/*******************************************************************************************************************
 	 * @brief Returns all manager systems.
@@ -1054,11 +1055,13 @@ public:
 template<class T = Component, bool DestroyComponents = true>
 class ComponentSystem : public System
 {
+public:
+	using Components = LinearPool<T, DestroyComponents>; /**< System component pool type. */
 protected:
 	/**
 	 * @brief System component pool.
 	 */
-	LinearPool<T, DestroyComponents> components;
+	Components components;
 
 	/**
 	 * @brief Creates a new component instance for the entity.
@@ -1090,6 +1093,10 @@ protected:
 	}
 public:
 	/**
+	 * @brief Returns system component pool.
+	 */
+	const Components& getComponents() const noexcept { return components; }
+	/**
 	 * @brief Returns specific component name of the system.
 	 */
 	const std::string& getComponentName() const override
@@ -1101,10 +1108,8 @@ public:
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	std::type_index getComponentType() const override
-	{
-		return typeid(T);
-	}
+	std::type_index getComponentType() const override { return typeid(T); }
+
 	/**
 	 * @brief Returns specific component @ref View.
 	 */
@@ -1116,10 +1121,7 @@ public:
 	 * @brief Actually destroys system components.
 	 * @details Components are not destroyed immediately, only after the dispose call.
 	 */
-	void disposeComponents() override
-	{
-		components.dispose();
-	}
+	void disposeComponents() override { components.dispose(); }
 
 	/**
 	 * @brief Returns true if entity has specific component.

@@ -318,26 +318,26 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 }
 
 //**********************************************************************************************************************
-void Manager::registerEvent(const std::string& name)
+void Manager::registerEvent(std::string_view name)
 {
 	assert(!name.empty());
 	if (!events.emplace(name, new Event(name, false)).second)
-		throw EcsmError("Event is already registered. (name: " + name + ")");
+		throw EcsmError("Event is already registered. (name: " + std::string(name) + ")");
 }
-bool Manager::tryRegisterEvent(const std::string& name)
+bool Manager::tryRegisterEvent(std::string_view name)
 {
 	assert(!name.empty());
 	return events.emplace(name, new Event(name, false)).second;
 }
 
-void Manager::registerEventBefore(const std::string& newEvent, const std::string& beforeEvent)
+void Manager::registerEventBefore(std::string_view newEvent, std::string_view beforeEvent)
 {
 	assert(!newEvent.empty());
 	assert(!beforeEvent.empty());
 
 	auto result = events.emplace(newEvent, new Event(newEvent));
 	if (!result.second)
-		throw EcsmError("Event is already registered. (newEvent: " + newEvent + ")");
+		throw EcsmError("Event is already registered. (newEvent: " + std::string(newEvent) + ")");
 
 	for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 	{
@@ -347,17 +347,17 @@ void Manager::registerEventBefore(const std::string& newEvent, const std::string
 		return;
 	}
 
-	throw EcsmError("Before event is not registered. ("
-		"newEvent: " + newEvent + ", beforeEvent: " + beforeEvent + ")");
+	throw EcsmError("Before event is not registered. (newEvent: " + 
+		std::string(newEvent) + ", beforeEvent: " + std::string(beforeEvent) + ")");
 }
-void Manager::registerEventAfter(const std::string& newEvent, const std::string& afterEvent)
+void Manager::registerEventAfter(std::string_view newEvent, std::string_view afterEvent)
 {
 	assert(!newEvent.empty());
 	assert(!afterEvent.empty());
 
 	auto result = events.emplace(newEvent, new Event(newEvent));
 	if (!result.second)
-		throw EcsmError("Event is already registered. (newEvent: " + newEvent + ")");
+		throw EcsmError("Event is already registered. (newEvent: " + std::string(newEvent) + ")");
 
 	for (auto i = orderedEvents.begin(); i != orderedEvents.end(); i++)
 	{
@@ -367,17 +367,17 @@ void Manager::registerEventAfter(const std::string& newEvent, const std::string&
 		return;
 	}
 
-	throw EcsmError("After event is not registered. ("
-		"newEvent: " + newEvent + ", afterEvent: " + afterEvent + ")");
+	throw EcsmError("After event is not registered. (newEvent: " + \
+		std::string(newEvent) + ", afterEvent: " + std::string(afterEvent) + ")");
 }
 
 //**********************************************************************************************************************
-void Manager::unregisterEvent(const std::string& name)
+void Manager::unregisterEvent(std::string_view name)
 {
 	assert(!name.empty());
 	auto iterator = events.find(name);
 	if (iterator == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + std::string(name) + ")");
 		
 	auto event = iterator->second;
 	events.erase(iterator);
@@ -395,12 +395,12 @@ void Manager::unregisterEvent(const std::string& name)
 		}
 
 		if (!isEventFound)
-			throw EcsmError("Ordered event is not found. (name: " + name + ")");
+			throw EcsmError("Ordered event is not found. (name: " + std::string(name) + ")");
 	}
 		
 	delete event;
 }
-bool Manager::tryUnregisterEvent(const std::string& name)
+bool Manager::tryUnregisterEvent(std::string_view name)
 {
 	assert(!name.empty());
 	auto iterator = events.find(name);
@@ -431,15 +431,15 @@ bool Manager::tryUnregisterEvent(const std::string& name)
 }
 
 //**********************************************************************************************************************
-const Manager::Event& Manager::getEvent(const std::string& name) const
+const Manager::Event& Manager::getEvent(std::string_view name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + std::string(name) + ")");
 	return *result->second;
 }
-const Manager::Event* Manager::tryGetEvent(const std::string& name) const
+const Manager::Event* Manager::tryGetEvent(std::string_view name) const
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -449,18 +449,18 @@ const Manager::Event* Manager::tryGetEvent(const std::string& name) const
 }
 
 //**********************************************************************************************************************
-void Manager::runEvent(const std::string& name)
+void Manager::runEvent(std::string_view name)
 {
 	assert(!name.empty());
 	auto result = events.find(name);
 	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + std::string(name) + ")");
 
 	const auto& subscribers = result->second->subscribers;
 	for (const auto& onEvent : subscribers)
 		onEvent();
 }
-bool Manager::tryRunEvent(const std::string& name)
+bool Manager::tryRunEvent(std::string_view name)
 {
 	assert(!name.empty());
 	auto result = events.find(name);
@@ -483,24 +483,24 @@ void Manager::runOrderedEvents()
 }
 
 //**********************************************************************************************************************
-void Manager::subscribeToEvent(const std::string& name, const std::function<void()>& onEvent)
+void Manager::subscribeToEvent(std::string_view name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
 
 	auto result = events.find(name);
 	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + std::string(name) + ")");
 	result->second->subscribers.push_back(onEvent);
 }
-void Manager::unsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent)
+void Manager::unsubscribeFromEvent(std::string_view name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
 
 	auto result = events.find(name);
 	if (result == events.end())
-		throw EcsmError("Event is not registered. (name: " + name + ")");
+		throw EcsmError("Event is not registered. (name: " + std::string(name) + ")");
 
 	auto& subscribers = result->second->subscribers;
 	for (auto i = subscribers.begin(); i != subscribers.end(); i++)
@@ -511,11 +511,11 @@ void Manager::unsubscribeFromEvent(const std::string& name, const std::function<
 		return;
 	}
 
-	throw EcsmError("Event subscriber not found. (name: " + name + ")");
+	throw EcsmError("Event subscriber not found. (name: " + std::string(name) + ")");
 }
 
 //**********************************************************************************************************************
-bool Manager::trySubscribeToEvent(const std::string& name, const std::function<void()>& onEvent)
+bool Manager::trySubscribeToEvent(std::string_view name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
@@ -527,7 +527,7 @@ bool Manager::trySubscribeToEvent(const std::string& name, const std::function<v
 	result->second->subscribers.push_back(onEvent);
 	return true;
 }
-bool Manager::tryUnsubscribeFromEvent(const std::string& name, const std::function<void()>& onEvent)
+bool Manager::tryUnsubscribeFromEvent(std::string_view name, const std::function<void()>& onEvent)
 {
 	assert(!name.empty());
 	assert(onEvent);
