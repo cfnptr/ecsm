@@ -176,9 +176,9 @@ private:
 
 	inline static int compareComps(const void* a, const void* b) noexcept
 	{
-    	const auto l = (const ComponentData*)a;
-    	const auto r = (const ComponentData*)b;
-    	if (l->type < r->type) return -1;
+		const auto l = (const ComponentData*)a;
+		const auto r = (const ComponentData*)b;
+		if (l->type < r->type) return -1;
 		if (l->type > r->type) return 1;
 		return 0;
 	}
