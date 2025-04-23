@@ -50,7 +50,13 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 
     void update()
     {
-        // Process components...
+        for (auto component : components)
+        {
+            if (!component->getEntity())
+                continue;
+
+            // Process your component
+        }
     }
 
     friend class ecsm::Manager;

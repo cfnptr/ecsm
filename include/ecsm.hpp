@@ -663,7 +663,7 @@ public:
 		if (!componentData)
 		{
 			throw EcsmError("Component is not added. ("
-				"type: " + typeToString(componentType) +
+				"type: " + typeToString(componentType) + ", "
 				"entity:" + std::to_string(*entity) + ")");
 		}
 		return componentData->system->getComponent(componentData->instance);
@@ -732,7 +732,7 @@ public:
 		if (!componentData)
 		{
 			throw EcsmError("Component is not added. ("
-				"type: " + typeToString(componentType) +
+				"type: " + typeToString(componentType) + ", "
 				"entity:" + std::to_string(*entity) + ")");
 		}
 		return componentData->instance;
@@ -1147,7 +1147,7 @@ public:
 		if (!componentData)
 		{
 			throw EcsmError("Component is not added. ("
-				"type: " + typeToString(typeid(T)) +
+				"type: " + typeToString(typeid(T)) + ", "
 				"entity:" + std::to_string(*entity) + ")");
 		}
 		return components.get(ID<T>(componentData->instance));

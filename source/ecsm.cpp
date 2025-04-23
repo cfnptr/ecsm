@@ -226,7 +226,7 @@ View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 	if (result == componentTypes.end())
 	{
 		throw EcsmError("Component is not registered by any system. ("
-			"type: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) + ", "
 			"entity:" + std::to_string(*entity) + ")");
 	}
 
@@ -239,7 +239,7 @@ View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 	if (entityView->findComponent(componentType.hash_code()))
 	{
 		throw EcsmError("Component is already added to the entity. ("
-			"type: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) + ", "
 			"entity:" + std::to_string(*entity) + ")");
 	}
 	entityView->addComponent(componentType.hash_code(), system, component);
@@ -251,13 +251,13 @@ void Manager::remove(ID<Entity> entity, std::type_index componentType)
 	if (!entities.get(entity)->findComponent(componentType.hash_code()))
 	{
 		throw EcsmError("Component is not added. ("
-			"type: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) + ", "
 			"entity:" + std::to_string(*entity) + ")");
 	}
 	if (!garbageComponents.emplace(std::make_pair(componentType.hash_code(), entity)).second)
 	{
 		throw EcsmError("Already removed component. ("
-			"type: " + typeToString(componentType) + 
+			"type: " + typeToString(componentType) +  ", "
 			"entity: " + std::to_string(*entity) + ")");
 	}
 }
@@ -271,13 +271,13 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index co
 	if (!srcComponentData)
 	{
 		throw EcsmError("Source component is not added. ("
-			"type: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) + ", "
 			"entity:" + std::to_string(*source) + ")");
 	}
 	if (!dstComponentData)
 	{
 		throw EcsmError("Destination component is not added. ("
-			"type: " + typeToString(componentType) +
+			"type: " + typeToString(componentType) + ", "
 			"entity:" + std::to_string(*destination) + ")");
 	}
 
@@ -308,7 +308,7 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 		if (duplicateView->findComponent(componentData.type))
 		{
 			throw EcsmError("Component is already added to the entity. ("
-				"type: " + typeToString(system->getComponentType()) +
+				"type: " + typeToString(system->getComponentType()) + ", "
 				"entity:" + std::to_string(*entity) + ")");
 		}
 		duplicateView->addComponent(componentData.type, system, duplicateComponent);
@@ -587,7 +587,7 @@ void Manager::disposeGarbageComponents()
 	{
 		auto entityView = entities.get(garbagePair.second);
 		auto componentData = entityView->findComponent(garbagePair.first);
-		assert(!componentData); // Corrupted entity component destruction order.componentData
+		assert(!componentData); // Corrupted entity component destruction order.
 		componentData->system->destroyComponent(componentData->instance);
 		entityView->removeComponent(componentData);
 	}
