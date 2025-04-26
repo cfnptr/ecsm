@@ -52,7 +52,7 @@ private:
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
-	constexpr ID() = default;
+	constexpr ID() noexcept = default;
 
 	/**
 	 * @brief Changes the type of the identifier item.
@@ -95,19 +95,6 @@ public:
 	 * @brief Returns true if item is not null.
 	 */
 	constexpr explicit operator bool() const noexcept { return index; }
-};
-
-/**
- * @brief Item identifier hash implementation.
- * @tparam T type of the item in the linear pool
- */
-template<class T>
-struct IdHash
-{
-	/**
-	 * @brief Returns item identifier hash value. 
-	 */
-	size_t operator()(ID<T> id) const noexcept { return (size_t)*id; }
 };
 
 /***********************************************************************************************************************
@@ -787,3 +774,15 @@ public:
 };
 
 } // namespace ecsm
+
+namespace std
+{
+	template<typename T>
+	struct hash<ecsm::ID<T>>
+	{
+		size_t operator()(const ecsm::ID<T>& id) const noexcept
+		{
+			return std::hash<uint32_t>{}(*id);
+		}
+	};
+} // namespace std

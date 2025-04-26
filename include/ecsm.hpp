@@ -20,17 +20,15 @@
 #pragma once
 #include "singleton.hpp"
 #include "linear-pool.hpp"
+#include "tsl/robin_map.h"
 
 #include <cassert>
 #include <cstdint>
 #include <set>
-#include <map>
 #include <mutex>
 #include <functional>
 #include <string_view>
 #include <type_traits>
-#include <unordered_map>
-#include <cstdlib>
 
 namespace ecsm
 {
@@ -40,6 +38,24 @@ struct Component;
 class System;
 class Manager;
 class SystemExt;
+
+/**
+ * @brief String view heterogeneous hash functions.
+ */
+struct SvHash
+{
+	using is_transparent = void;
+	std::size_t operator()(std::string_view sv) const { return std::hash<std::string_view>{}(sv); }
+	std::size_t operator()(const std::string& str) const { return std::hash<std::string>{}(str); }
+};
+/**
+ * @brief String view heterogeneous equal functions.
+ */
+struct SvEqual
+{
+	using is_transparent = void;
+	bool operator()(std::string_view lhs, std::string_view rhs) const noexcept { return lhs == rhs; }
+};
 
 /**
  * @brief Subscribes @ref System function to the event.
@@ -308,10 +324,10 @@ public:
 		}
 	};
 
-	using Systems = std::unordered_map<std::type_index, System*>;
-	using ComponentTypes = std::unordered_map<std::type_index, System*>;
-	using ComponentNames = std::map<std::string, System*, std::less<>>;
-	using Events = std::map<std::string, Event*, std::less<>>;
+	using Systems = tsl::robin_map<std::type_index, System*>;
+	using ComponentTypes = tsl::robin_map<std::type_index, System*>;
+	using ComponentNames = tsl::robin_map<std::string, System*>;
+	using Events = tsl::robin_map<std::string, Event*, SvHash, SvEqual>;
 	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
 	using GarbageComponent = std::pair<size_t, ID<Entity>>;

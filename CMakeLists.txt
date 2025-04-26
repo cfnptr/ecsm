@@ -32,7 +32,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 option(ECSM_BUILD_SHARED "Build ECSM shared library" ON)
 option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 
+add_subdirectory(libraries/robin-map)
+
 add_library(ecsm-static STATIC source/ecsm.cpp "source/singleton.cpp")
+target_link_libraries(ecsm-static PUBLIC tsl::robin_map)
 target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 if(ECSM_BUILD_SHARED)

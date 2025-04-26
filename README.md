@@ -50,7 +50,7 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 
     void update()
     {
-        for (auto component : components)
+        for (auto& component : components)
         {
             if (!component->getEntity())
                 continue;
@@ -112,12 +112,16 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 ## Cloning
 
 ```
-git clone https://github.com/cfnptr/ecsm
+git clone --recursive https://github.com/cfnptr/ecsm
 ```
 
 ## Building ![CI](https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg)
 
 * Windows: ```./scripts/build-release.bat```
 * macOS / Ubuntu: ```./scripts/build-release.sh```
+
+## Third-party
+
+* [robin-map](https://github.com/Tessil/robin-map) (MIT license)
 
 ### Special thanks to Sahak Grigoryan.

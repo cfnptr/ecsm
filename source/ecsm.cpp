@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "ecsm.hpp"
-#include <cstdint>
 
 using namespace ecsm;
 
@@ -65,7 +64,7 @@ bool Entity::destroy()
 //**********************************************************************************************************************
 Manager::Manager(bool setSingleton) : Singleton(setSingleton)
 {
-	auto name = "PreInit"; events.emplace(std::move(name), new Event(name));
+	std::string name = "PreInit"; events.emplace(std::move(name), new Event(name));
 	name = "Init"; events.emplace(std::move(name), new Event(name));
 	name = "PostInit"; events.emplace(std::move(name), new Event(name));
 	name = "Update"; events.emplace(std::move(name), new Event(name));
