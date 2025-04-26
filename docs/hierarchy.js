@@ -1,43 +1,41 @@
 var hierarchy =
 [
-    [ "Component", "structecsm_1_1_component.html", [
-      [ "DoNotDestroyComponent", "structecsm_1_1_do_not_destroy_component.html", null ],
-      [ "DoNotDuplicateComponent", "structecsm_1_1_do_not_duplicate_component.html", null ]
+    [ "Component", "structecsm_1_1Component.html", [
+      [ "DoNotDestroyComponent", "structecsm_1_1DoNotDestroyComponent.html", null ],
+      [ "DoNotDuplicateComponent", "structecsm_1_1DoNotDuplicateComponent.html", null ]
     ] ],
-    [ "ConstantIterator", "structecsm_1_1_linear_pool_1_1_constant_iterator.html", null ],
-    [ "Entity", "classecsm_1_1_entity.html", null ],
-    [ "Event", "structecsm_1_1_manager_1_1_event.html", null ],
+    [ "ComponentData", "classecsm_1_1Entity.html#structecsm_1_1Entity_1_1ComponentData", null ],
+    [ "ConstantIterator", "structecsm_1_1LinearPool_1_1ConstantIterator.html", null ],
+    [ "Entity", "classecsm_1_1Entity.html", null ],
+    [ "Event", "structecsm_1_1Manager_1_1Event.html", null ],
     [ "exception", "https://en.cppreference.com/w/cpp/error/exception.html", [
-      [ "EcsmError", "classecsm_1_1_ecsm_error.html", null ]
+      [ "EcsmError", "classecsm_1_1EcsmError.html", null ]
     ] ],
-    [ "ID< T >", "structecsm_1_1_i_d.html", null ],
-    [ "ID< ecsm::Entity >", "structecsm_1_1_i_d.html", null ],
-    [ "IdHash< T >", "structecsm_1_1_id_hash.html", null ],
-    [ "Iterator", "structecsm_1_1_linear_pool_1_1_iterator.html", null ],
-    [ "LinearPool< T, DestroyItems >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< Component, true >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< DoNotDestroyComponent, DestroyComponents >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< DoNotDuplicateComponent, DestroyComponents >", "classecsm_1_1_linear_pool.html", null ],
-    [ "LinearPool< Entity >", "classecsm_1_1_linear_pool.html", null ],
-    [ "Ref< T >", "structecsm_1_1_ref.html", null ],
-    [ "Singleton< T, UseManager >", "classecsm_1_1_singleton.html", null ],
-    [ "Singleton< DoNotDestroySystem >", "classecsm_1_1_singleton.html", [
-      [ "DoNotDestroySystem", "classecsm_1_1_do_not_destroy_system.html", null ]
+    [ "hash< ecsm::ID< T > >", "structstd_1_1hash_3_01ecsm_1_1ID_3_01T_01_4_01_4.html", null ],
+    [ "ID< T >", "structecsm_1_1ID.html", null ],
+    [ "Iterator", "structecsm_1_1LinearPool_1_1Iterator.html", null ],
+    [ "LinearPool< T, DestroyItems >", "classecsm_1_1LinearPool.html", null ],
+    [ "Ref< T >", "structecsm_1_1Ref.html", null ],
+    [ "Singleton< T, UseManager >", "classecsm_1_1Singleton.html", null ],
+    [ "Singleton< DoNotDestroySystem >", "classecsm_1_1Singleton.html", [
+      [ "DoNotDestroySystem", "classecsm_1_1DoNotDestroySystem.html", null ]
     ] ],
-    [ "Singleton< DoNotDuplicateSystem >", "classecsm_1_1_singleton.html", [
-      [ "DoNotDuplicateSystem", "classecsm_1_1_do_not_duplicate_system.html", null ]
+    [ "Singleton< DoNotDuplicateSystem >", "classecsm_1_1Singleton.html", [
+      [ "DoNotDuplicateSystem", "classecsm_1_1DoNotDuplicateSystem.html", null ]
     ] ],
-    [ "Singleton< Manager, false >", "classecsm_1_1_singleton.html", [
-      [ "Manager", "classecsm_1_1_manager.html", null ]
+    [ "Singleton< Manager, false >", "classecsm_1_1Singleton.html", [
+      [ "Manager", "classecsm_1_1Manager.html", null ]
     ] ],
-    [ "System", "classecsm_1_1_system.html", [
-      [ "ComponentSystem< DoNotDestroyComponent, false >", "classecsm_1_1_component_system.html", [
-        [ "DoNotDestroySystem", "classecsm_1_1_do_not_destroy_system.html", null ]
+    [ "SvEqual", "structecsm_1_1SvEqual.html", null ],
+    [ "SvHash", "structecsm_1_1SvHash.html", null ],
+    [ "System", "classecsm_1_1System.html", [
+      [ "ComponentSystem< DoNotDestroyComponent, false >", "classecsm_1_1ComponentSystem.html", [
+        [ "DoNotDestroySystem", "classecsm_1_1DoNotDestroySystem.html", null ]
       ] ],
-      [ "ComponentSystem< DoNotDuplicateComponent, false >", "classecsm_1_1_component_system.html", [
-        [ "DoNotDuplicateSystem", "classecsm_1_1_do_not_duplicate_system.html", null ]
+      [ "ComponentSystem< DoNotDuplicateComponent, false >", "classecsm_1_1ComponentSystem.html", [
+        [ "DoNotDuplicateSystem", "classecsm_1_1DoNotDuplicateSystem.html", null ]
       ] ],
-      [ "ComponentSystem< T, DestroyComponents >", "classecsm_1_1_component_system.html", null ]
+      [ "ComponentSystem< T, DestroyComponents >", "classecsm_1_1ComponentSystem.html", null ]
     ] ],
-    [ "View< T >", "structecsm_1_1_view.html", null ]
+    [ "View< T >", "structecsm_1_1View.html", null ]
 ];
