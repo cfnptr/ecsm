@@ -42,6 +42,7 @@ if(ECSM_BUILD_SHARED)
 	add_library(ecsm-shared SHARED source/ecsm.cpp source/singleton.cpp)
 	set_target_properties(ecsm-shared PROPERTIES
 		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	target_link_libraries(ecsm-shared PUBLIC tsl::robin_map)
 	target_include_directories(ecsm-shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
 endif()
 
