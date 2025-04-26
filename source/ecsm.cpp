@@ -30,10 +30,9 @@ void System::copyComponent(View<Component> source, View<Component> destination)
 	throw EcsmError("System has no components.");
 }
 
-const std::string& System::getComponentName() const
+std::string_view System::getComponentName() const
 {
-	static const std::string name = "";
-	return name;
+	return "";
 }
 std::type_index System::getComponentType() const
 {
@@ -114,13 +113,13 @@ void Manager::addSystem(System* system, std::type_index type)
 		}
 	}
 
-	const auto& componentName = system->getComponentName();
+	auto componentName = system->getComponentName();
 	if (!componentName.empty())
 	{
 		if (!componentNames.emplace(componentName, system).second)
 		{
 			throw EcsmError("Component name is already registered by the other system. ("
-				"componentName: " + componentName + ", "
+				"componentName: " + std::string(componentName) + ", "
 				"thisSystem: " + typeToString(type) + ")");
 		}
 	}
@@ -159,14 +158,14 @@ void Manager::destroySystem(std::type_index type)
 	auto system = searchResult->second;
 	systems.erase(searchResult);
 	
-	const auto& componentName = system->getComponentName();
+	auto componentName = system->getComponentName();
 	if (!componentName.empty())
 	{
 		auto eraseResult = componentNames.erase(componentName);
 		if (eraseResult != 1)
 		{
 			throw EcsmError("Failed to erase system component name. ("
-				"componentName: " + componentName + ", "
+				"componentName: " + std::string(componentName) + ", "
 				"systemType: " + typeToString(type) + ")");
 		}
 	}
@@ -602,17 +601,15 @@ void Manager::disposeSystemComponents()
 DoNotDestroySystem::DoNotDestroySystem(bool setSingleton) : Singleton(setSingleton) { }
 DoNotDestroySystem::~DoNotDestroySystem() { unsetSingleton(); }
 
-const std::string& DoNotDestroySystem::getComponentName() const
+std::string_view DoNotDestroySystem::getComponentName() const
 {
-	static const std::string name = "Do Not Destroy";
-	return name;
+	return "Do Not Destroy";
 }
 
 DoNotDuplicateSystem::DoNotDuplicateSystem(bool setSingleton) : Singleton(setSingleton) { }
 DoNotDuplicateSystem::~DoNotDuplicateSystem() { unsetSingleton(); }
 
-const std::string& DoNotDuplicateSystem::getComponentName() const
+std::string_view DoNotDuplicateSystem::getComponentName() const
 {
-	static const std::string name = "Do Not Duplicate";
-	return name;
+	return "Do Not Duplicate";
 }

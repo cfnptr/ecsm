@@ -58,10 +58,9 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 		destinationView->ID = sourceView->ID;
 		destinationView->someData = sourceView->someData;
 	}
-	const string& getComponentName() const final
+	string_view getComponentName() const final
 	{
-		static const string name = "Test";
-		return name;
+		return "Test";
 	}
 
 	void init()

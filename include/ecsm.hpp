@@ -147,7 +147,7 @@ public:
 	 * @brief Returns specific component name of the system.
 	 * @note Override it to define a custom component of the system.
 	 */
-	virtual const std::string& getComponentName() const;
+	virtual std::string_view getComponentName() const;
 	/**
 	 * @brief Returns specific component typeid() of the system.
 	 * @note Override it to define a custom component of the system.
@@ -326,7 +326,7 @@ public:
 
 	using Systems = tsl::robin_map<std::type_index, System*>;
 	using ComponentTypes = tsl::robin_map<std::type_index, System*>;
-	using ComponentNames = tsl::robin_map<std::string, System*>;
+	using ComponentNames = tsl::robin_map<std::string, System*, SvHash, SvEqual>;
 	using Events = tsl::robin_map<std::string, Event*, SvHash, SvEqual>;
 	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
@@ -1115,7 +1115,7 @@ public:
 	/**
 	 * @brief Returns specific component name of the system.
 	 */
-	const std::string& getComponentName() const override
+	std::string_view getComponentName() const override
 	{
 		static const std::string name = typeToString(typeid(T));
 		return name;
@@ -1207,7 +1207,7 @@ protected:
 	 */
 	~DoNotDestroySystem() override;
 
-	const std::string& getComponentName() const override;
+	std::string_view getComponentName() const override;
 	friend class ecsm::Manager;
 };
 
@@ -1234,7 +1234,7 @@ protected:
 	 */
 	~DoNotDuplicateSystem() override;
 
-	const std::string& getComponentName() const override;
+	std::string_view getComponentName() const override;
 	friend class ecsm::Manager;
 };
 
