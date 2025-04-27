@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.2.0</span>
+   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.3.0</span>
    </div>
   </td>
  </tr>
@@ -84,9 +84,9 @@ Public Member Functions</h2></td></tr>
 const <a class="el" href="#a6cafcadbd223bbb2fef0a961041f6e68">Components</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getComponents</b> () const noexcept</td></tr>
 <tr class="memdesc:a3efcbf8f7b239131ff254dc305436d7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns system component pool. <br /></td></tr>
 <tr class="separator:a3efcbf8f7b239131ff254dc305436d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9b3047bda877369e3db3c2c69a46fe3" id="r_af9b3047bda877369e3db3c2c69a46fe3"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9b3047bda877369e3db3c2c69a46fe3">getComponentName</a> () const override</td></tr>
-<tr class="memdesc:af9b3047bda877369e3db3c2c69a46fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
-<tr class="separator:af9b3047bda877369e3db3c2c69a46fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af31439fb308128da46c9810199b71211" id="r_af31439fb308128da46c9810199b71211"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af31439fb308128da46c9810199b71211">getComponentName</a> () const override</td></tr>
+<tr class="memdesc:af31439fb308128da46c9810199b71211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
+<tr class="separator:af31439fb308128da46c9810199b71211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2d98204ffde58b516c1d6a0d71c399b" id="r_af2d98204ffde58b516c1d6a0d71c399b"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2d98204ffde58b516c1d6a0d71c399b">getComponentType</a> () const override</td></tr>
 <tr class="memdesc:af2d98204ffde58b516c1d6a0d71c399b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:af2d98204ffde58b516c1d6a0d71c399b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,8 +255,8 @@ template&lt;class T = Component, bool DestroyComponents = true&gt; </div>
 
 </div>
 </div>
-<a id="af9b3047bda877369e3db3c2c69a46fe3" name="af9b3047bda877369e3db3c2c69a46fe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9b3047bda877369e3db3c2c69a46fe3">&#9670;&#160;</a></span>getComponentName()</h2>
+<a id="af31439fb308128da46c9810199b71211" name="af31439fb308128da46c9810199b71211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af31439fb308128da46c9810199b71211">&#9670;&#160;</a></span>getComponentName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,7 +267,7 @@ template&lt;class T = Component, bool DestroyComponents = true&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp; getComponentName </td>
+          <td class="memname"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> getComponentName </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -282,9 +282,9 @@ template&lt;class T = Component, bool DestroyComponents = true&gt; </div>
 
 <p>Returns specific component name of the system. </p>
 
-<p>Reimplemented from <a class="el" href="classecsm_1_1System.html#a6a78291bde5bb50755accc618bde609f">System</a>.</p>
+<p>Reimplemented from <a class="el" href="classecsm_1_1System.html#a7e425eeeced33050b22c2468f206a341">System</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1DoNotDestroySystem.html#af9b3047bda877369e3db3c2c69a46fe3">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1DoNotDuplicateSystem.html#af9b3047bda877369e3db3c2c69a46fe3">DoNotDuplicateSystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1DoNotDestroySystem.html#af31439fb308128da46c9810199b71211">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1DoNotDuplicateSystem.html#af31439fb308128da46c9810199b71211">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -497,7 +497,7 @@ template&lt;class T = Component, bool DestroyComponents = true&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1ComponentSystem.html">ComponentSystem</a></li>
-    <li class="footer">Generated on Sat Apr 26 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Apr 27 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

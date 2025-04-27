@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.2.0</span>
+   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.3.0</span>
    </div>
   </td>
  </tr>
@@ -134,9 +134,9 @@ Protected Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~DoNotDuplicateSystem</b> () override</td></tr>
 <tr class="memdesc:a4254a8897573d036347136a6f43e8368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys do not duplicate system instance. <br /></td></tr>
 <tr class="separator:a4254a8897573d036347136a6f43e8368"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9b3047bda877369e3db3c2c69a46fe3" id="r_af9b3047bda877369e3db3c2c69a46fe3"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9b3047bda877369e3db3c2c69a46fe3">getComponentName</a> () const override</td></tr>
-<tr class="memdesc:af9b3047bda877369e3db3c2c69a46fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
-<tr class="separator:af9b3047bda877369e3db3c2c69a46fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af31439fb308128da46c9810199b71211" id="r_af31439fb308128da46c9810199b71211"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af31439fb308128da46c9810199b71211">getComponentName</a> () const override</td></tr>
+<tr class="memdesc:af31439fb308128da46c9810199b71211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
+<tr class="separator:af31439fb308128da46c9810199b71211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa37ec66feb512fdef66a275d6564d07a" id="r_aa37ec66feb512fdef66a275d6564d07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classecsm_1_1ComponentSystem.html#aa37ec66feb512fdef66a275d6564d07a">createComponent</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) override</td></tr>
 <tr class="memdesc:aa37ec66feb512fdef66a275d6564d07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new component instance for the entity.  <br /></td></tr>
 <tr class="separator:aa37ec66feb512fdef66a275d6564d07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,8 +236,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af9b3047bda877369e3db3c2c69a46fe3" name="af9b3047bda877369e3db3c2c69a46fe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9b3047bda877369e3db3c2c69a46fe3">&#9670;&#160;</a></span>getComponentName()</h2>
+<a id="af31439fb308128da46c9810199b71211" name="af31439fb308128da46c9810199b71211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af31439fb308128da46c9810199b71211">&#9670;&#160;</a></span>getComponentName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +246,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp; getComponentName </td>
+          <td class="memname"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> getComponentName </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -261,7 +261,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 
 <p>Returns specific component name of the system. </p>
 
-<p>Reimplemented from <a class="el" href="classecsm_1_1ComponentSystem.html#af9b3047bda877369e3db3c2c69a46fe3">ComponentSystem&lt; DoNotDuplicateComponent, false &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="classecsm_1_1ComponentSystem.html#af31439fb308128da46c9810199b71211">ComponentSystem&lt; DoNotDuplicateComponent, false &gt;</a>.</p>
 
 </div>
 </div>
@@ -556,7 +556,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ecsm::Manager</b></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1DoNotDuplicateSystem.html">DoNotDuplicateSystem</a></li>
-    <li class="footer">Generated on Sat Apr 26 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Apr 27 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.2.0</span>
+   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.3.0</span>
    </div>
   </td>
  </tr>
@@ -74,9 +74,9 @@ $(function(){initNavTree('classecsm_1_1System.html',''); initResizable(true); })
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6a78291bde5bb50755accc618bde609f" id="r_a6a78291bde5bb50755accc618bde609f"><td class="memItemLeft" align="right" valign="top">virtual const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a78291bde5bb50755accc618bde609f">getComponentName</a> () const</td></tr>
-<tr class="memdesc:a6a78291bde5bb50755accc618bde609f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
-<tr class="separator:a6a78291bde5bb50755accc618bde609f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e425eeeced33050b22c2468f206a341" id="r_a7e425eeeced33050b22c2468f206a341"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e425eeeced33050b22c2468f206a341">getComponentName</a> () const</td></tr>
+<tr class="memdesc:a7e425eeeced33050b22c2468f206a341"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component name of the system.  <br /></td></tr>
+<tr class="separator:a7e425eeeced33050b22c2468f206a341"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08e4087c24b92a0a6b6d7e70f4802fc3" id="r_a08e4087c24b92a0a6b6d7e70f4802fc3"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08e4087c24b92a0a6b6d7e70f4802fc3">getComponentType</a> () const</td></tr>
 <tr class="memdesc:a08e4087c24b92a0a6b6d7e70f4802fc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specific component typeid() of the system.  <br /></td></tr>
 <tr class="separator:a08e4087c24b92a0a6b6d7e70f4802fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,8 +260,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SystemExt</b></td></
 
 </div>
 </div>
-<a id="a6a78291bde5bb50755accc618bde609f" name="a6a78291bde5bb50755accc618bde609f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a78291bde5bb50755accc618bde609f">&#9670;&#160;</a></span>getComponentName()</h2>
+<a id="a7e425eeeced33050b22c2468f206a341" name="a7e425eeeced33050b22c2468f206a341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e425eeeced33050b22c2468f206a341">&#9670;&#160;</a></span>getComponentName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,7 +270,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SystemExt</b></td></
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> &amp; getComponentName </td>
+          <td class="memname">virtual <a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> getComponentName </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -286,7 +286,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SystemExt</b></td></
 <p>Returns specific component name of the system. </p>
 <dl class="section note"><dt>Note</dt><dd>Override it to define a custom component of the system. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classecsm_1_1ComponentSystem.html#af9b3047bda877369e3db3c2c69a46fe3">ComponentSystem&lt; T, DestroyComponents &gt;</a>, <a class="el" href="classecsm_1_1ComponentSystem.html#af9b3047bda877369e3db3c2c69a46fe3">ComponentSystem&lt; DoNotDestroyComponent, false &gt;</a>, <a class="el" href="classecsm_1_1ComponentSystem.html#af9b3047bda877369e3db3c2c69a46fe3">ComponentSystem&lt; DoNotDuplicateComponent, false &gt;</a>, <a class="el" href="classecsm_1_1DoNotDestroySystem.html#af9b3047bda877369e3db3c2c69a46fe3">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1DoNotDuplicateSystem.html#af9b3047bda877369e3db3c2c69a46fe3">DoNotDuplicateSystem</a>.</p>
+<p>Reimplemented in <a class="el" href="classecsm_1_1ComponentSystem.html#af31439fb308128da46c9810199b71211">ComponentSystem&lt; T, DestroyComponents &gt;</a>, <a class="el" href="classecsm_1_1ComponentSystem.html#af31439fb308128da46c9810199b71211">ComponentSystem&lt; DoNotDestroyComponent, false &gt;</a>, <a class="el" href="classecsm_1_1ComponentSystem.html#af31439fb308128da46c9810199b71211">ComponentSystem&lt; DoNotDuplicateComponent, false &gt;</a>, <a class="el" href="classecsm_1_1DoNotDestroySystem.html#af31439fb308128da46c9810199b71211">DoNotDestroySystem</a>, and <a class="el" href="classecsm_1_1DoNotDuplicateSystem.html#af31439fb308128da46c9810199b71211">DoNotDuplicateSystem</a>.</p>
 
 </div>
 </div>
@@ -392,7 +392,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SystemExt</b></td></
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ecsm</b></li><li class="navelem"><a class="el" href="classecsm_1_1System.html">System</a></li>
-    <li class="footer">Generated on Sat Apr 26 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Apr 27 2025 for ECSM by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
