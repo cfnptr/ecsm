@@ -42,4 +42,4 @@ public:
 	const char* what() const noexcept override { return message.c_str(); }
 };
 
-} // mpio
+} // namespace ecsm
