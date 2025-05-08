@@ -563,10 +563,12 @@ void Manager::update()
 	if (!initialized)
 		throw EcsmError("Manager is not initialized.");
 
+	locker.lock();
 	runOrderedEvents();
 	disposeGarbageComponents();
 	disposeEntities();
 	disposeSystemComponents();
+	locker.unlock();
 }
 void Manager::start()
 {
