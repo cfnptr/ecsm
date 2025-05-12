@@ -407,7 +407,7 @@ class LinearPool final
 {
 	T* items = nullptr;
 	uint32_t occupancy = 0, capacity = 1;
-	std::stack<ID<T>> freeItems;
+	std::stack<ID<T>, std::vector<ID<T>>> freeItems;
 	std::vector<ID<T>> garbageItems;
 
 	#ifndef NDEBUG
