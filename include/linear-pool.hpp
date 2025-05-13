@@ -615,15 +615,7 @@ public:
 			if (destroyItems)
 			{
 				for (uint32_t i = 0; i < occupancy; i++)
-				{
 					items[i].destroy();
-					items[i] = T();
-				}
-			}
-			else
-			{
-				for (uint32_t i = 0; i < occupancy; i++)
-					items[i] = T();
 			}
 		}
 
@@ -654,24 +646,32 @@ public:
 
 		if constexpr (DestroyItems)
 		{
-			for (int64_t i = garbageItems.size() - 1; i >= 0; i--)
+			auto garbageData = garbageItems.data();
+			size_t i = 0, n = garbageItems.size();
+
+			while (i < n)
 			{
-				auto item = garbageItems[i];
-				auto index = *item - 1;
-				if (!items[index].destroy())
-					continue;
-			
-				items[index] = T();
-				freeItems.push(item);
-				garbageItems.erase(garbageItems.begin() + i);
+				auto item = garbageData[i];
+				if (items[*item - 1].destroy())
+				{
+					items[*item - 1] = T();
+					freeItems.push(item);
+					garbageData[i] = garbageData[n - 1];
+					n--;
+				}
+				else
+				{
+					i++;
+				}
 			}
+
+			garbageItems.resize(n);
 		}
 		else
 		{
 			for (auto item : garbageItems)
 			{
-				auto index = *item - 1;
-				items[index] = T();
+				items[*item - 1] = T();
 				freeItems.push(item);
 			}
 			garbageItems.clear();
