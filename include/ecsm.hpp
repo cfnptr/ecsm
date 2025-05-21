@@ -1072,6 +1072,7 @@ template<class T = Component, bool DestroyComponents = true>
 class ComponentSystem : public System
 {
 public:
+	typedef T ComponentType; /**< Type of the system component. */
 	using Components = LinearPool<T, DestroyComponents>; /**< System component pool type. */
 protected:
 	/**

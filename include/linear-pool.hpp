@@ -415,6 +415,8 @@ class LinearPool final
 	bool isChanging = false;
 	#endif
 public:
+	typedef T ItemType; /**< Type of the item in the linear pool. */
+
 	/**
 	 * @brief Creates a new empty linear pool.
 	 * @details It pre-allocates items array.

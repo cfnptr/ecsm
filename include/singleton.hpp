@@ -44,15 +44,10 @@ template<class T, bool UseManager = true>
 class Singleton
 {
 public:
-	/**
-	 * @brief Singleton class type.
-	 */
-	typedef Singleton<T, UseManager> Instance;
+	typedef T ItemType;                        /**< Type of the singleton class. */
+	typedef Singleton<T, UseManager> Instance; /**< Singleton instance class type. */
 protected:
-	/**
-	 * @brief Singleton class instance.
-	 */
-	inline static T* singletonInstance = nullptr;
+	inline static T* singletonInstance = nullptr; /**< Singleton class instance. */
 
 	/**
 	 * @brief Creates a new singleton class instance.
