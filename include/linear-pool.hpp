@@ -612,9 +612,9 @@ public:
 		isChanging = true;
 		#endif
 
-		if (occupancy - (uint32_t)freeItems.size() != 0)
+		if constexpr (DestroyItems)
 		{
-			if (destroyItems)
+			if (occupancy - (uint32_t)freeItems.size() != 0 && destroyItems)
 			{
 				for (uint32_t i = 0; i < occupancy; i++)
 					items[i].destroy();

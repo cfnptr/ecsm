@@ -25,6 +25,10 @@ void System::destroyComponent(ID<Component> instance)
 {
 	throw EcsmError("System has no components.");
 }
+void System::resetComponent(View<Component> component, bool full)
+{
+	throw EcsmError("System has no components.");
+}
 void System::copyComponent(View<Component> source, View<Component> destination)
 {
 	throw EcsmError("System has no components.");
@@ -245,7 +249,6 @@ View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 }
 void Manager::remove(ID<Entity> entity, std::type_index componentType)
 { 
-	assert(entity);
 	if (!entities.get(entity)->findComponent(componentType.hash_code()))
 	{
 		throw EcsmError("Component is not added. ("
@@ -259,6 +262,7 @@ void Manager::remove(ID<Entity> entity, std::type_index componentType)
 			"entity: " + std::to_string(*entity) + ")");
 	}
 }
+
 void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index componentType)
 {
 	assert(source);
@@ -281,6 +285,7 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index co
 
 	auto srcComponent = srcComponentData->system->getComponent(srcComponentData->instance);
 	auto dstComponent = dstComponentData->system->getComponent(dstComponentData->instance);
+	srcComponentData->system->resetComponent(dstComponent, false);
 	srcComponentData->system->copyComponent(srcComponent, dstComponent);
 }
 ID<Entity> Manager::duplicate(ID<Entity> entity)
@@ -313,6 +318,19 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 	}
 
 	return duplicateEntity;
+}
+void Manager::resetComponents(ID<Entity> entity, bool full)
+{
+	auto entityView = entities.get(entity);
+	auto components = entityView->components;
+	auto componentCount = entityView->count;
+
+	for (uint32_t i = 0; i < componentCount; i++)
+	{
+		const auto& componentData = components[i];
+		auto componentView = componentData.system->getComponent(componentData.instance);
+		componentData.system->resetComponent(componentView, full);
+	}
 }
 
 //**********************************************************************************************************************

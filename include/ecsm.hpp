@@ -131,9 +131,19 @@ protected:
 	 */
 	virtual void destroyComponent(ID<Component> instance);
 	/**
+	 * @brief Resets system component data.
+	 * @details You should use @ref Manager to reset entity components.
+	 * @note Override it to define a custom component of the system.
+	 *
+	 * @param component target component view
+	 * @param full reset all component data
+	 */
+	virtual void resetComponent(View<Component> component, bool full);
+	/**
 	 * @brief Copies system component data from source to destination.
 	 * @details You should use @ref Manager to copy component data of entities.
 	 * @note Override it to define a custom component of the system.
+	 *
 	 * @param source source component view (from)
 	 * @param destination destination component view (to)
 	 */
@@ -644,7 +654,6 @@ public:
 	 */
 	bool has(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
-		assert(entity);
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
 		return componentData && garbageComponents.find(garbagePair) == garbageComponents.end();
@@ -674,7 +683,6 @@ public:
 	 */
 	View<Component> get(ID<Entity> entity, std::type_index componentType) const
 	{
-		assert(entity);
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		if (!componentData)
 		{
@@ -710,7 +718,6 @@ public:
 	 */
 	View<Component> tryGet(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
-		assert(entity);
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
 		if (!componentData || garbageComponents.find(garbagePair) != garbageComponents.end())
@@ -743,7 +750,6 @@ public:
 	 */
 	ID<Component> getID(ID<Entity> entity, std::type_index componentType) const
 	{
-		assert(entity);
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		if (!componentData)
 		{
@@ -769,7 +775,7 @@ public:
 		return ID<T>(getID(entity, typeid(T)));
 	}
 
-	/*******************************************************************************************************************
+	/**
 	 * @brief Returns entity component @ref ID if added, otherwise null.
 	 * @note It also checks for component in the garbage pool.
 	 * @details See the tryGetID<T>(ID<Entity> entity).
@@ -779,7 +785,6 @@ public:
 	 */
 	ID<Component> tryGetID(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
-		assert(entity);
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
 		if (!componentData || garbageComponents.find(garbagePair) != garbageComponents.end())
@@ -800,7 +805,7 @@ public:
 		return ID<T>(tryGetID(entity, typeid(T)));
 	}
 
-	/**
+	/*******************************************************************************************************************
 	 * @brief Returns true if entity has components.
 	 * @param entity target entity instance
 	 */
@@ -818,12 +823,55 @@ public:
 	}
 	
 	/**
+	 * @brief Resets entity component data.
+	 *
+	 * @param entity target entity instance
+	 * @param componentType target component typeid()
+	 * @param full reset all component data
+	 * 
+	 * @throw EcsmError if component is not found.
+	 */
+	void reset(ID<Entity> entity, std::type_index componentType, bool full = true)
+	{
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		if (!componentData)
+		{
+			throw EcsmError("Component is not added. ("
+				"type: " + typeToString(componentType) + ", "
+				"entity:" + std::to_string(*entity) + ")");
+		}
+		auto componentView = componentData->system->getComponent(componentData->instance);
+		componentData->system->resetComponent(componentView, full);
+	}
+	/**
+	 * @brief Resets entity component data.
+	 * 
+	 * @param entity entity instance
+	 * @param full reset all component data
+	 * @tparam T target component type
+	 * 
+	 * @throw EcsmError if component is not found.
+	 */
+	template<class T = Component>
+	void reset(ID<Entity> entity, bool full = true)
+	{
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		reset(entity, typeid(T), full);
+	}
+	/**
+	 * @brief Resets entity components data.
+	 * @param entity target entity instance
+	 * @param full reset all component data
+	 */
+	void resetComponents(ID<Entity> entity, bool full = true);
+
+	/**
 	 * @brief Increases entity component array capacity.
 	 * 
 	 * @param entity target entity instance
 	 * @param capacity component array capacity
 	 */
-	void reserveComponents(ID<Entity> entity, uint32_t capacity) noexcept
+	void reserveComponents(ID<Entity> entity, uint32_t capacity)
 	{
 		auto entityView = entities.get(entity);
 		if (capacity <= entityView->capacity)
@@ -1047,18 +1095,12 @@ public:
 	 * @brief Sets manager singleton to this instance.
 	 * @details Useful in cases when we need to switch between multiple managers.
 	 */
-	void setSingletonCurrent() noexcept
-	{
-		singletonInstance = this;
-	}
+	void setSingletonCurrent() noexcept { singletonInstance = this; }
 	/**
 	 * @brief Unsets manager singleton instance.
 	 * @details See the @ref setSingletonCurrent().
 	 */
-	void unsetSingletonCurrent() noexcept
-	{
-		singletonInstance = nullptr;
-	}
+	void unsetSingletonCurrent() noexcept { singletonInstance = nullptr; }
 };
 
 /***********************************************************************************************************************
@@ -1075,10 +1117,7 @@ public:
 	typedef T ComponentType; /**< Type of the system component. */
 	using Components = LinearPool<T, DestroyComponents>; /**< System component pool type. */
 protected:
-	/**
-	 * @brief System component pool.
-	 */
-	Components components;
+	Components components; /**< System component pool. */
 
 	/**
 	 * @brief Creates a new component instance for the entity.
@@ -1094,20 +1133,20 @@ protected:
 	 */
 	void destroyComponent(ID<Component> instance) override
 	{
+		auto component = components.get(ID<T>(instance));
+		resetComponent(View<Component>(component), false);
 		components.destroy(ID<T>(instance));
 	}
+	/**
+	 * @brief Resets component data.
+	 * @details You should use @ref Manager to remove components from the entity.
+	 */
+	void resetComponent(View<Component> component, bool full) override { }
 	/**
 	 * @brief Copies component data from source to destination.
 	 * @details You should use @ref Manager to copy component data of entities.
 	 */
-	void copyComponent(View<Component> source, View<Component> destination) override
-	{
-		const auto sourceView = View<T>(source);
-		auto destinationView = View<T>(destination);
-		if constexpr (DestroyComponents)
-			destinationView->destroy();
-		**destinationView = **sourceView;
-	}
+	void copyComponent(View<Component> source, View<Component> destination) override { }
 public:
 	/**
 	 * @brief Returns system component pool.
@@ -1129,6 +1168,7 @@ public:
 
 	/**
 	 * @brief Returns specific component @ref View.
+	 * @param instance target system component instance
 	 */
 	View<Component> getComponent(ID<Component> instance) override
 	{
@@ -1147,7 +1187,6 @@ public:
 	 */
 	bool hasComponent(ID<Entity> entity) const
 	{
-		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
 		return entityView->findComponent(typeid(T).hash_code());
 	}
@@ -1158,7 +1197,6 @@ public:
 	 */
 	View<T> getComponent(ID<Entity> entity) const
 	{
-		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
 		auto componentData = entityView->findComponent(typeid(T).hash_code());
 		if (!componentData)
@@ -1176,12 +1214,30 @@ public:
 	 */
 	View<T> tryGetComponent(ID<Entity> entity) const
 	{
-		assert(entity);
 		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
 		auto componentData = entityView->findComponent(typeid(T).hash_code());
 		if (!componentData)
 			return {};
 		return components.get(ID<T>(componentData->instance));
+	}
+	/**
+	 * @brief Resets entity specific component data.
+	 * @param entity target entity with component
+	 * @param full reset all component data
+	 * @note This function is faster than the Manager one.
+	 */
+	void resetComponentData(ID<Entity> entity, bool full = true)
+	{
+		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
+		auto componentData = entityView->findComponent(typeid(T).hash_code());
+		if (!componentData)
+		{
+			throw EcsmError("Component is not added. ("
+				"type: " + typeToString(typeid(T)) + ", "
+				"entity:" + std::to_string(*entity) + ")");
+		}
+		auto component = components.get(ID<T>(componentData->instance));
+		resetComponent(View<Component>(component), full);
 	}
 };
 
