@@ -3,6 +3,7 @@ var classecsm_1_1System =
     [ "~System", "classecsm_1_1System.html#a75d73261228a8127f188edb3aa46fc21", null ],
     [ "createComponent", "classecsm_1_1System.html#a20f198a7d88eb55f6f07b36fdec8f997", null ],
     [ "destroyComponent", "classecsm_1_1System.html#a17987f74255606e05dfe807900b72e84", null ],
+    [ "resetComponent", "classecsm_1_1System.html#ab7fde461140e6215826df4edcb5587fb", null ],
     [ "copyComponent", "classecsm_1_1System.html#a9e626eba166eb282a4e0e002c5f40bcd", null ],
     [ "getComponentName", "classecsm_1_1System.html#a7e425eeeced33050b22c2468f206a341", null ],
     [ "getComponentType", "classecsm_1_1System.html#a08e4087c24b92a0a6b6d7e70f4802fc3", null ],

@@ -1,6 +1,7 @@
 var classecsm_1_1Manager =
 [
     [ "Event", "structecsm_1_1Manager_1_1Event.html", "structecsm_1_1Manager_1_1Event" ],
+    [ "ItemType", "classecsm_1_1Manager.html#ac6b9297546075cb59c43b79191a2f3a6", null ],
     [ "Instance", "classecsm_1_1Manager.html#aac62185ec8d2b2e94fe264b482c9b594", null ],
     [ "Manager", "classecsm_1_1Manager.html#a61be184217f47e6e2dcab6952dbc35f3", null ],
     [ "~Manager", "classecsm_1_1Manager.html#a829d7114e3ed38c555af0fb4e974a6f6", null ],
@@ -39,7 +40,10 @@ var classecsm_1_1Manager =
     [ "tryGetID", "classecsm_1_1Manager.html#a688a30302fa6b1f37b385028037bbb23", null ],
     [ "hasComponents", "classecsm_1_1Manager.html#ae17479bb0a0f1a24dcb452031e3d075e", null ],
     [ "getComponentCount", "classecsm_1_1Manager.html#abbf6c87cc9064ad60d1bb85bf5fec845", null ],
-    [ "reserveComponents", "classecsm_1_1Manager.html#ae8480641509ead3b64cc978953cfd76b", null ],
+    [ "reset", "classecsm_1_1Manager.html#ac9c055d5a25e558b60703517ab56e749", null ],
+    [ "reset", "classecsm_1_1Manager.html#a274d9db7f89e1050f6cc42e3a9ae8529", null ],
+    [ "resetComponents", "classecsm_1_1Manager.html#a3471a7aafeb5c418f177f4ff8984496e", null ],
+    [ "reserveComponents", "classecsm_1_1Manager.html#aa7adc08b6a122d67fd680be71831c8e9", null ],
     [ "registerEvent", "classecsm_1_1Manager.html#aa8635bb81770b733ab46cbe97e976dad", null ],
     [ "tryRegisterEvent", "classecsm_1_1Manager.html#a4255088336ed216f8af645b102fa58df", null ],
     [ "registerEventBefore", "classecsm_1_1Manager.html#a27c76b103ad9acdd09983a5d3ccbc543", null ],

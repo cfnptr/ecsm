@@ -33,24 +33,24 @@ var NAVTREE =
       [ "CMake targets", "index.html#cmake-targets", null ]
     ] ],
     [ "Cloning", "index.html#cloning", null ],
-    [ "Building", "index.html#building-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
+    [ "Building <img src=\"https://github.com/cfnptr/ecsm/actions/workflows/cmake.yml/badge.svg\" alt=\"CI\" style=\"pointer-events: none;\" class=\"inline\"/>", "index.html#building-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg", null ],
     [ "Third-party", "index.html#third-party", [
       [ "Special thanks to Sahak Grigoryan.", "index.html#special-thanks-to-sahak-grigoryan", null ]
     ] ],
     [ "Build instructions", "md_BUILDING.html", [
       [ "Operating Systems", "md_BUILDING.html#operating-systems", null ],
       [ "Windows (10/11)", "md_BUILDING.html#windows-1011", [
-        [ "Install Visual Studio Community (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-community-or-any-other-ide", null ],
-        [ "Install Git", "md_BUILDING.html#autotoc_md2-install-git", null ],
-        [ "Install CMake", "md_BUILDING.html#autotoc_md3-install-cmake", null ]
+        [ "1. Install Visual Studio Community (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-community-or-any-other-ide", null ],
+        [ "2. Install Git", "md_BUILDING.html#autotoc_md2-install-git", null ],
+        [ "3. Install CMake", "md_BUILDING.html#autotoc_md3-install-cmake", null ]
       ] ],
       [ "Ubuntu (22.04/24.04)", "md_BUILDING.html#ubuntu-22042404", [
-        [ "Install Visual Studio Code (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
-        [ "Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages", null ]
+        [ "1. Install Visual Studio Code (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
+        [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages", null ]
       ] ],
       [ "macOS (14/15)", "md_BUILDING.html#macos-1415", [
-        [ "Install Xcode (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
-        [ "Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages-1", null ]
+        [ "1. Install Xcode (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
+        [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages-1", null ]
       ] ],
       [ "Build Project", "md_BUILDING.html#build-project", [
         [ "Visual Studio (2022)", "md_BUILDING.html#visual-studio-2022", null ],
@@ -81,8 +81,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"structecsm_1_1Ref.html#a9f0dafb41674995cbe68739b8186edc9"
+"structecsm_1_1ID.html#aa6e47bd5957312c11e7a5a6ed536fe6d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
 var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';
