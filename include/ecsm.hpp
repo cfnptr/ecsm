@@ -335,6 +335,7 @@ public:
 	};
 
 	using Systems = tsl::robin_map<std::type_index, System*>;
+	using SystemGroups = tsl::robin_map<std::type_index, std::vector<System*>>;
 	using ComponentTypes = tsl::robin_map<std::type_index, System*>;
 	using ComponentNames = tsl::robin_map<std::string, System*, SvHash, SvEqual>;
 	using Events = tsl::robin_map<std::string, Event*, SvHash, SvEqual>;
@@ -344,6 +345,7 @@ public:
 	using GarbageComponents = std::set<GarbageComponent>;
 private:
 	Systems systems;
+	SystemGroups systemGroups;
 	ComponentTypes componentTypes;
 	ComponentNames componentNames;
 	EntityPool entities;
@@ -384,7 +386,7 @@ public:
 	 * 
 	 * @throw EcsmError if system is already created or component type registered.
 	 */
-	template<class T = System, typename... Args>
+	template<class T, typename... Args>
 	void createSystem(Args&&... args)
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -413,7 +415,7 @@ public:
 	 * @tparam T target system type
 	 * @throw EcsmError if system is not found.
 	 */
-	template<class T = System>
+	template<class T>
 	void destroySystem()
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -431,7 +433,7 @@ public:
 	 * @tparam T target system type
 	 * @return True if system is destroyed, otherwise false.
 	 */
-	template<class T = System>
+	template<class T>
 	bool tryDestroySystem()
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -439,18 +441,227 @@ public:
 	}
 
 	/*******************************************************************************************************************
+	 * @brief Adds specified system to the system group.
+	 * 
+	 * @param groupType typeid() of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @throw EcsmError if system is already added.
+	 */
+	void addGroupSystem(std::type_index groupType, System* system);
+	/**
+	 * @brief Adds specified system to the system group.
+	 * 
+	 * @tparam T type of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @throw EcsmError if system is already added.
+	 */
+	template<class T>
+	void addGroupSystem(System* system)
+	{
+		assert(dynamic_cast<T*>(system));
+		return addGroupSystem(typeid(T), system);
+	}
+	/**
+	 * @brief Adds specified system to the system group.
+	 * 
+	 * @tparam G type of the system group
+	 * @tparam T target system type
+	 *
+	 * @throw EcsmError if system is not found or already added.
+	 */
+	template<class G, class S>
+	void addGroupSystem()
+	{
+		static_assert(std::is_base_of_v<System, S>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<G, S>, "System must be castable to the group class.");
+		return addGroupSystem(typeid(G), get<S>());
+	}
+
+	/**
+	 * @brief Adds specified system to the system group if exist.
+	 * 
+	 * @param groupType typeid() of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @return True if system is added to the group, otherwise false.
+	 */
+	bool tryAddGroupSystem(std::type_index groupType, System* system);
+	/**
+	 * @brief Adds specified system to the system group if exist.
+	 * 
+	 * @tparam T type of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @return True if system is added to the group, otherwise false.
+	 */
+	template<class T>
+	bool tryAddGroupSystem(System* system)
+	{
+		assert(dynamic_cast<T*>(system));
+		return tryAddGroupSystem(typeid(T), system);
+	}
+	/**
+	 * @brief Adds specified system to the system group if exist.
+	 * 
+	 * @tparam G type of the system group
+	 * @tparam T target system type
+	 *
+	 * @return True if system is added to the group, otherwise false.
+	 */
+	template<class G, class S>
+	bool tryAddGroupSystem()
+	{
+		static_assert(std::is_base_of_v<System, S>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<G, S>, "System must be castable to the group class.");
+		auto system = tryGet<S>();
+		if (!system)
+			return false;
+		return tryAddGroupSystem(typeid(G), system);
+	}
+
+	/*******************************************************************************************************************
+	 * @brief Removes specified system from the system group.
+	 * 
+	 * @param groupType typeid() of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @throw EcsmError if system group is not found, or system is not added.
+	 */
+	void removeGroupSystem(std::type_index groupType, System* system);
+	/**
+	 * @brief Removes specified system from the system group.
+	 * 
+	 * @tparam T type of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @throw EcsmError if system group is not found, or system is not added.
+	 */
+	template<class T>
+	void removeGroupSystem(System* system)
+	{
+		assert(dynamic_cast<T*>(system));
+		return removeGroupSystem(typeid(T), system);
+	}
+	/**
+	 * @brief Removes specified system from the system group.
+	 * 
+	 * @tparam G type of the system group
+	 * @tparam T target system type
+	 *
+	 * @throw EcsmError if system or group is not found, or system is not added.
+	 */
+	template<class G, class S>
+	void removeGroupSystem()
+	{
+		static_assert(std::is_base_of_v<System, S>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<G, S>, "System must be castable to the group class.");
+		return removeGroupSystem(typeid(G), get<S>());
+	}
+
+	/**
+	 * @brief Removes specified system from the system group if exist.
+	 * 
+	 * @param groupType typeid() of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @return True if system is removed from the group, otherwise false.
+	 */
+	bool tryRemoveGroupSystem(std::type_index groupType, System* system);
+	/**
+	 * @brief Removes specified system from the system group if exist.
+	 * 
+	 * @tparam T type of the system group
+	 * @param[in] system target system instance
+	 *
+	 * @return True if system is removed from the group, otherwise false.
+	 */
+	template<class T>
+	bool tryRemoveGroupSystem(System* system)
+	{
+		assert(dynamic_cast<T*>(system));
+		return tryRemoveGroupSystem(typeid(T), system);
+	}
+	/**
+	 * @brief Removes specified system from the system group if exist.
+	 * 
+	 * @tparam G type of the system group
+	 * @tparam T target system type
+	 *
+	 * @return True if system is removed from the group, otherwise false.
+	 */
+	template<class G, class S>
+	bool tryRemoveGroupSystem()
+	{
+		static_assert(std::is_base_of_v<System, S>, "Must be derived from the System class.");
+		static_assert(std::is_base_of_v<G, S>, "System must be castable to the group class.");
+		auto system = tryGet<S>();
+		if (!system)
+			return false;
+		return tryRemoveGroupSystem(typeid(G), system);
+	}
+
+	/*******************************************************************************************************************
+	 * @brief Returns true if system group is exist.
+	 * @param type target system group typeid()
+	 */
+	bool hasSystemGroup(std::type_index type) const noexcept { return systemGroups.find(type) != systemGroups.end(); }
+	/**
+	 * @brief Returns true if system group is exist.
+	 * @tparam T target system group type
+	 */
+	template<class T>
+	bool hasSystemGroup() const noexcept { return has(typeid(T)); }
+
+	/**
+	 * @brief Returns specified system group.
+	 * @param type target system group typeid()
+	 * @throw EcsmError if system group is not found.
+	 */
+	const std::vector<System*>& getSystemGroup(std::type_index type) const
+	{
+		auto result = systemGroups.find(type);
+		if (result == systemGroups.end())
+			throw EcsmError("System group is not registered. (type: " + typeToString(type) + ")");
+		return result->second;
+	}
+	/**
+	 * @brief Returns specified system group.
+	 * @tparam T target system group type
+	 * @throw EcsmError if system group is not found.
+	 */
+	template<class T>
+	const std::vector<System*>& getSystemGroup() const { return getSystemGroup(typeid(T)); }
+
+	/**
+	 * @brief Returns specified system group if exist, otherwise nullptr.
+	 * @param type target system group typeid()
+	 */
+	const std::vector<System*>* tryGetSystemGroup(std::type_index type) const noexcept
+	{
+		auto result = systemGroups.find(type);
+		if (result == systemGroups.end())
+			return nullptr;
+		return &result->second;
+	}
+	/**
+	 * @brief Returns specified system group if exist, otherwise nullptr.
+	 * @tparam T target system group type
+	 */
+	template<class T>
+	const std::vector<System*>* tryGetSystemGroup() const noexcept { return tryGetSystemGroup(typeid(T)); }
+
+	/*******************************************************************************************************************
 	 * @brief Returns true if system is created.
 	 * @param type target system typeid()
 	 */
-	bool has(std::type_index type) const noexcept
-	{
-		return systems.find(type) != systems.end();
-	}
+	bool has(std::type_index type) const noexcept { return systems.find(type) != systems.end(); }
 	/**
 	 * @brief Returns true if system is created.
 	 * @tparam T target system type
 	 */
-	template<class T = System>
+	template<class T>
 	bool has() const noexcept
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -475,7 +686,7 @@ public:
 	 * @tparam T target system type
 	 * @throw EcsmError if system is not found.
 	 */
-	template<class T = System>
+	template<class T>
 	T* get() const
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -495,7 +706,7 @@ public:
 	 * @brief Returns system instance if created, otherwise nullptr.
 	 * @tparam T target system type
 	 */
-	template<class T = System>
+	template<class T>
 	T* tryGet() const noexcept
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
@@ -548,7 +759,7 @@ public:
 	 * @return Returns @ref View of the created component.
 	 * @throw EcsmError if component type is not registered, or component is already added.
 	 */
-	template<class T = Component>
+	template<class T>
 	View<T> add(ID<Entity> entity)
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -576,7 +787,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	template<class T = Component>
+	template<class T>
 	void remove(ID<Entity> entity)
 	{ 
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -603,7 +814,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 */
-	template<class T = Component>
+	template<class T>
 	bool isGarbage(ID<Entity> entity) const noexcept
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -631,7 +842,7 @@ public:
 	 *
 	 * @throw EcsmError if source or destination component is not found.
 	 */
-	template<class T = Component>
+	template<class T>
 	void copy(ID<Entity> source, ID<Entity> destination)
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -665,7 +876,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 */
-	template<class T = Component>
+	template<class T>
 	bool has(ID<Entity> entity) const noexcept
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -701,7 +912,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	template<class T = Component>
+	template<class T>
 	View<T> get(ID<Entity> entity) const
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -732,7 +943,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 */
-	template<class T = Component>
+	template<class T>
 	View<T> tryGet(ID<Entity> entity) const noexcept
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -768,7 +979,7 @@ public:
 	 *
 	 * @throw EcsmError if component is not found.
 	 */
-	template<class T = Component>
+	template<class T>
 	ID<T> getID(ID<Entity> entity) const
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -798,7 +1009,7 @@ public:
 	 * @param entity entity instance
 	 * @tparam T target component type
 	 */
-	template<class T = Component>
+	template<class T>
 	ID<T> tryGetID(ID<Entity> entity) const noexcept
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -852,7 +1063,7 @@ public:
 	 * 
 	 * @throw EcsmError if component is not found.
 	 */
-	template<class T = Component>
+	template<class T>
 	void reset(ID<Entity> entity, bool full = true)
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
@@ -1006,6 +1217,11 @@ public:
 	 * @note Use manager functions to access systems.
 	 */
 	const Systems& getSystems() const noexcept { return systems; }
+	/**
+	 * @brief Returns registered system groups.
+	 * @note Use manager functions to access system groups.
+	 */
+	const SystemGroups& getSystemGroups() const noexcept { return systemGroups; }
 	/**
 	 * @brief Returns all manager component types.
 	 * @note Use manager functions to access components.

@@ -220,6 +220,93 @@ bool Manager::tryDestroySystem(std::type_index type)
 }
 
 //**********************************************************************************************************************
+void Manager::addGroupSystem(std::type_index groupType, System* system)
+{
+	assert(system);
+
+	auto result = systemGroups.find(groupType);
+	if (result == systemGroups.end())
+	{
+		std::vector<System*> group = { system };
+		systemGroups.emplace(groupType, std::move(group));
+	}
+	else
+	{
+		const auto& groupSystems = result->second;
+		for (auto groupSystem : groupSystems)
+		{
+			if (system == groupSystem)
+			{
+				throw EcsmError("System is already added to the group. ("
+					"groupType:" + typeToString(groupType) + ")");
+			}
+		}
+		result.value().push_back(system);
+	}
+}
+bool Manager::tryAddGroupSystem(std::type_index groupType, System* system)
+{
+	assert(system);
+
+	auto result = systemGroups.find(groupType);
+	if (result == systemGroups.end())
+	{
+		std::vector<System*> group = { system };
+		systemGroups.emplace(groupType, std::move(group));
+	}
+	else
+	{
+		const auto& groupSystems = result->second;
+		for (auto groupSystem : groupSystems)
+		{
+			if (system == groupSystem)
+				return false;
+		}
+		result.value().push_back(system);
+	}
+	return true;
+}
+
+void Manager::removeGroupSystem(std::type_index groupType, System* system)
+{
+	auto result = systemGroups.find(groupType);
+	if (result == systemGroups.end())
+	{
+		throw EcsmError("System group does not exist. ("
+			"groupType:" + typeToString(groupType) + ")");
+	}
+
+	auto& groupSystems = result.value();
+	for (auto i = groupSystems.begin(); i != groupSystems.end(); i++)
+	{
+		if (system != *i)
+			continue;
+		groupSystems.erase(i);
+		return;
+	}
+
+	throw EcsmError("System is not added to the group. ("
+		"groupType:" + typeToString(groupType) + ")");
+}
+bool Manager::tryRemoveGroupSystem(std::type_index groupType, System* system)
+{
+	auto result = systemGroups.find(groupType);
+	if (result == systemGroups.end())
+		return false;
+
+	auto& groupSystems = result.value();
+	for (auto i = groupSystems.begin(); i != groupSystems.end(); i++)
+	{
+		if (system != *i)
+			continue;
+		groupSystems.erase(i);
+		return true;
+	}
+
+	return false;
+}
+
+//**********************************************************************************************************************
 View<Component> Manager::add(ID<Entity> entity, std::type_index componentType)
 {
 	assert(entity);
