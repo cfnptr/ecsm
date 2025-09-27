@@ -361,7 +361,7 @@ private:
 
 	void addSystem(System* system, std::type_index type);
 public:
-	bool isRunning = false;
+	volatile bool isRunning = false;
 
 	/**
 	 * @brief Creates a new manager instance.
