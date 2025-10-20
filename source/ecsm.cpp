@@ -692,7 +692,7 @@ void Manager::disposeGarbageComponents()
 	{
 		auto entityView = entities.get(garbagePair.second);
 		auto componentData = entityView->findComponent(garbagePair.first);
-		assert(!componentData); // Corrupted entity component destruction order.
+		assert(componentData); // Corrupted entity component destruction order.
 		componentData->system->destroyComponent(componentData->instance);
 		entityView->removeComponent(componentData);
 	}
