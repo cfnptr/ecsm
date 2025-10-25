@@ -1331,9 +1331,9 @@ class ComponentSystem : public System
 {
 public:
 	typedef T ComponentType; /**< Type of the system component. */
-	using Components = LinearPool<T, DestroyComponents>; /**< System component pool type. */
+	using ComponentPool = LinearPool<T, DestroyComponents>; /**< System component pool type. */
 protected:
-	Components components; /**< System component pool. */
+	ComponentPool components; /**< System component pool. */
 
 	/**
 	 * @brief Creates a new component instance for the entity.
@@ -1367,7 +1367,7 @@ public:
 	/**
 	 * @brief Returns system component pool.
 	 */
-	const Components& getComponents() const noexcept { return components; }
+	const ComponentPool& getComponents() const noexcept { return components; }
 	/**
 	 * @brief Returns specific component name of the system.
 	 */
