@@ -140,7 +140,7 @@ protected:
 	 */
 	virtual void resetComponent(View<Component> component, bool full);
 	/**
-	 * @brief Copies system component data from source to destination.
+	 * @brief Copies system component data from the source to destination.
 	 * @details You should use @ref Manager to copy component data of entities.
 	 * @note Override it to define a custom component of the system.
 	 *
@@ -1020,7 +1020,7 @@ public:
 	 * @brief Returns true if entity has components.
 	 * @param entity target entity instance
 	 */
-	uint32_t hasComponents(ID<Entity> entity) const noexcept
+	bool hasComponents(ID<Entity> entity) const noexcept
 	{
 		return (uint32_t)entities.get(entity)->hasComponents();
 	}
@@ -1051,8 +1051,10 @@ public:
 				"type: " + typeToString(componentType) + ", "
 				"entity:" + std::to_string(*entity) + ")");
 		}
+
 		auto componentView = componentData->system->getComponent(componentData->instance);
 		componentData->system->resetComponent(componentView, full);
+		componentView->entity = entity; // Note: full reset may clear all data.
 	}
 	/**
 	 * @brief Resets entity component data.
@@ -1336,7 +1338,7 @@ protected:
 	ComponentPool components; /**< System component pool. */
 
 	/**
-	 * @brief Creates a new component instance for the entity.
+	 * @brief Creates a new system component instance for the entity.
 	 * @details You should use @ref Manager to add components to the entity.
 	 */
 	ID<Component> createComponent(ID<Entity> entity) override
@@ -1344,7 +1346,7 @@ protected:
 		return ID<Component>(components.create());
 	}
 	/**
-	 * @brief Destroys component instance.
+	 * @brief Destroys system component instance.
 	 * @details You should use @ref Manager to remove components from the entity.
 	 */
 	void destroyComponent(ID<Component> instance) override
@@ -1354,15 +1356,22 @@ protected:
 		components.destroy(ID<T>(instance));
 	}
 	/**
-	 * @brief Resets component data.
+	 * @brief Resets system component data.
 	 * @details You should use @ref Manager to remove components from the entity.
 	 */
-	void resetComponent(View<Component> component, bool full) override { }
+	void resetComponent(View<Component> component, bool full) override
+	{
+		if (full)
+			**View<T>(component) = T();
+	}
 	/**
-	 * @brief Copies component data from source to destination.
+	 * @brief Copies system component data from the source to destination.
 	 * @details You should use @ref Manager to copy component data of entities.
 	 */
-	void copyComponent(View<Component> source, View<Component> destination) override { }
+	void copyComponent(View<Component> source, View<Component> destination) override
+	{
+		**View<T>(destination) = **View<T>(source);
+	}
 public:
 	/**
 	 * @brief Returns system component pool.
@@ -1396,16 +1405,6 @@ public:
 	 */
 	void disposeComponents() override { components.dispose(); }
 
-	/**
-	 * @brief Returns true if entity has specific component.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	bool hasComponent(ID<Entity> entity) const
-	{
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		return entityView->findComponent(typeid(T).hash_code());
-	}
 	/**
 	 * @brief Returns entity specific component view.
 	 * @param entity target entity with component

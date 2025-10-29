@@ -370,10 +370,13 @@ void Manager::copy(ID<Entity> source, ID<Entity> destination, std::type_index co
 			"entity:" + std::to_string(*destination) + ")");
 	}
 
-	auto srcComponent = srcComponentData->system->getComponent(srcComponentData->instance);
-	auto dstComponent = dstComponentData->system->getComponent(dstComponentData->instance);
-	srcComponentData->system->resetComponent(dstComponent, false);
-	srcComponentData->system->copyComponent(srcComponent, dstComponent);
+	auto system = srcComponentData->system;
+	auto srcComponentView = system->getComponent(srcComponentData->instance);
+	auto dstComponentView = system->getComponent(dstComponentData->instance);
+	system->resetComponent(dstComponentView, true);
+	srcComponentView->entity = source; // Note: full reset may clear all data.
+	system->copyComponent(srcComponentView, dstComponentView);
+	dstComponentView->entity = destination; // Note: copy may clear all data.
 }
 ID<Entity> Manager::duplicate(ID<Entity> entity)
 {
@@ -391,8 +394,8 @@ ID<Entity> Manager::duplicate(ID<Entity> entity)
 		auto duplicateComponent = system->createComponent(duplicateEntity);
 		auto sourceView = system->getComponent(componentData.instance);
 		auto destinationView = system->getComponent(duplicateComponent);
-		destinationView->entity = duplicateEntity;
 		system->copyComponent(sourceView, destinationView);
+		destinationView->entity = duplicateEntity; // Note: copy may clear all data.
 
 		auto duplicateView = entities.get(duplicateEntity); // Do not optimize/move getter here!
 		if (duplicateView->findComponent(componentData.type))
@@ -416,7 +419,9 @@ void Manager::resetComponents(ID<Entity> entity, bool full)
 	{
 		const auto& componentData = components[i];
 		auto componentView = componentData.system->getComponent(componentData.instance);
+		auto entity = componentView->getEntity();
 		componentData.system->resetComponent(componentView, full);
+		componentView->entity = entity; // Note: full reset may clear all data.
 	}
 }
 
