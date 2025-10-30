@@ -1032,8 +1032,29 @@ public:
 	{
 		return (uint32_t)entities.get(entity)->getComponentCount();
 	}
-	
+
 	/**
+	 * @brief Resets entity components data.
+	 * @param entity target entity instance
+	 * @param full reset all component data
+	 */
+	void resetComponents(ID<Entity> entity, bool full = true);
+
+	/**
+	 * @brief Increases entity component array capacity.
+	 * 
+	 * @param entity target entity instance
+	 * @param capacity component array capacity
+	 */
+	void reserveComponents(ID<Entity> entity, uint32_t capacity)
+	{
+		auto entityView = entities.get(entity);
+		if (capacity <= entityView->capacity)
+			return;
+		entityView->reserve(capacity);
+	}
+	
+	/*******************************************************************************************************************
 	 * @brief Resets entity component data.
 	 *
 	 * @param entity target entity instance
@@ -1071,25 +1092,39 @@ public:
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		reset(entity, typeid(T), full);
 	}
-	/**
-	 * @brief Resets entity components data.
-	 * @param entity target entity instance
-	 * @param full reset all component data
-	 */
-	void resetComponents(ID<Entity> entity, bool full = true);
 
 	/**
-	 * @brief Increases entity component array capacity.
-	 * 
+	 * @brief Resets entity component data, if added.
+	 * @return True if component exists and was resetted.
+	 *
 	 * @param entity target entity instance
-	 * @param capacity component array capacity
+	 * @param componentType target component typeid()
+	 * @param full reset all component data
 	 */
-	void reserveComponents(ID<Entity> entity, uint32_t capacity)
+	bool tryReset(ID<Entity> entity, std::type_index componentType, bool full = true) noexcept
 	{
-		auto entityView = entities.get(entity);
-		if (capacity <= entityView->capacity)
-			return;
-		entityView->reserve(capacity);
+		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
+		if (!componentData)
+			return false;
+
+		auto componentView = componentData->system->getComponent(componentData->instance);
+		componentData->system->resetComponent(componentView, full);
+		componentView->entity = entity; // Note: full reset may clear all data.
+		return true;
+	}
+	/**
+	 * @brief Resets entity component data, if added.
+	 * @return True if component exists and was resetted.
+	 * 
+	 * @param entity entity instance
+	 * @param full reset all component data
+	 * @tparam T target component type
+	 */
+	template<class T>
+	bool tryReset(ID<Entity> entity, bool full = true)
+	{
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		return tryReset(entity, typeid(T), full);
 	}
 
 	/*******************************************************************************************************************
@@ -1434,25 +1469,6 @@ public:
 		if (!componentData)
 			return {};
 		return components.get(ID<T>(componentData->instance));
-	}
-	/**
-	 * @brief Resets entity specific component data.
-	 * @param entity target entity with component
-	 * @param full reset all component data
-	 * @note This function is faster than the Manager one.
-	 */
-	void resetComponentData(ID<Entity> entity, bool full = true)
-	{
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		auto componentData = entityView->findComponent(typeid(T).hash_code());
-		if (!componentData)
-		{
-			throw EcsmError("Component is not added. ("
-				"type: " + typeToString(typeid(T)) + ", "
-				"entity:" + std::to_string(*entity) + ")");
-		}
-		auto component = components.get(ID<T>(componentData->instance));
-		resetComponent(View<Component>(component), full);
 	}
 };
 
