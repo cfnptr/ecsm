@@ -1202,9 +1202,12 @@ public:
 	/**
 	 * @brief Calls all event subscribers if event exist.
 	 * @param name target event name
-	 * @return True if event is found.
+	 * @param andOrdered including ordered events
+	 *
+	 * @return True if event is found and matches andOrdered state.
 	 */
-	bool tryRunEvent(std::string_view name);
+	bool tryRunEvent(std::string_view name, bool andOrdered = false);
+
 	/**
 	 * @brief Runs all ordered events.
 	 * @details Unordered events subscribers are not called.

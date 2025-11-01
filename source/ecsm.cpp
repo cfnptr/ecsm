@@ -568,11 +568,11 @@ void Manager::runEvent(std::string_view name)
 	for (const auto& onEvent : subscribers)
 		onEvent();
 }
-bool Manager::tryRunEvent(std::string_view name)
+bool Manager::tryRunEvent(std::string_view name, bool andOrdered)
 {
 	assert(!name.empty());
 	auto result = events.find(name);
-	if (result == events.end())
+	if (result == events.end() || (!andOrdered && result->second->isOrdered))
 		return false;
 
 	const auto& subscribers = result->second->subscribers;
