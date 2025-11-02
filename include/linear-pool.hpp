@@ -231,7 +231,7 @@ public:
 	 * @param[in] view target item view
 	 */
 	template<class U>
-	constexpr explicit OptView(const OptView<U>& view) noexcept : view(view._getView())
+	constexpr explicit OptView(const OptView<U>& view) noexcept : view(view.getView_())
 	#ifndef NDEBUG
 		, nullChecked(view.isNullChecked())
 	#endif
@@ -321,7 +321,7 @@ private:
 public:
 	bool isNullChecked() const noexcept { return nullChecked; }
 	#endif
-	const View<T>& _getView() const noexcept { return view; }
+	const View<T>& getView_() const noexcept { return view; }
 };
 
 /***********************************************************************************************************************
