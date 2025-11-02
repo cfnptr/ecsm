@@ -44,7 +44,7 @@ std::type_index System::getComponentType() const
 }
 View<Component> System::getComponent(ID<Component> instance)
 {
-	return {};
+	throw EcsmError("System has no components.");
 }
 void System::disposeComponents()
 {

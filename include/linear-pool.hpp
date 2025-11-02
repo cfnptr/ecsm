@@ -30,6 +30,8 @@
 namespace ecsm
 {
 
+template<class T>
+class OptView;
 template<class T, bool Destroy = true>
 class LinearPool;
 
@@ -98,7 +100,7 @@ public:
 };
 
 /***********************************************************************************************************************
- * @brief View of the item in the @ref LinearPool.
+ * @brief View of the item in the @ref LinearPool. (Non-nullable)
  * @tparam T type of the item in the linear pool
  * 
  * @details
@@ -111,27 +113,18 @@ struct View final
 private:
 	T* item = nullptr;
 
+	constexpr View() noexcept = default;
 	#ifndef NDEBUG
-	/**
-	 * @brief Creates a new view.
-	 */
-	constexpr View(T* item, const uint64_t& poolVersion) noexcept :
+	constexpr View(T* item, const std::atomic_uint64_t& poolVersion) noexcept :
 		item(item), poolVersion(&poolVersion), version(poolVersion) { }
 	#else
-	/**
-	 * @brief Creates a new view.
-	 */
 	constexpr View(T* item) noexcept : item(item) { }
 	#endif
 	
+	friend class OptView<T>;
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
-	/**
-	 * @brief Creates a new null item view.
-	 */
-	constexpr View() = default;
-
 	/**
 	 * @brief Changes the type of the item view.
 	 * @details Useful in cases where we need to cast item view type.
@@ -147,7 +140,7 @@ public:
 	{ }
 
 	/**
-	 * @brief Item data accessor.
+	 * @brief View item data accessor.
 	 */
 	T* operator->()
 	{
@@ -158,7 +151,7 @@ public:
 		return item;
 	}
 	/**
-	 * @brief Item constant data accessor.
+	 * @brief View item constant data accessor.
 	 */
 	const T* operator->() const
 	{
@@ -192,19 +185,143 @@ public:
 		return item;
 	}
 
-	/**
-	 * @brief Returns true if item view is not null.
-	 */
-	constexpr explicit operator bool() const noexcept { return item; }
-
-#ifndef NDEBUG
+	#ifndef NDEBUG
 private:
-	const uint64_t* poolVersion = nullptr;
+	const std::atomic_uint64_t* poolVersion = nullptr;
 	uint64_t version = 0;
 public:
-	const uint64_t* getPoolVersion() const noexcept { return poolVersion; }
+	const std::atomic_uint64_t* getPoolVersion() const noexcept { return poolVersion; }
 	uint64_t getVersion() const noexcept { return version; }
-#endif
+	#endif
+};
+
+/***********************************************************************************************************************
+ * @brief Optional view of the item in the @ref LinearPool. (Nullable)
+ * @tparam T type of the item in the linear pool
+ * @details See the @ref View<T>.
+ */
+template<class T>
+struct OptView final
+{
+private:
+	View<T> view = {};
+public:
+	/**
+	 * @brief Creates a new null optional view.
+	 */
+	constexpr OptView() noexcept = default;
+
+	/**
+	 * @brief Creates a new optional view. (Nullable)
+	 *
+	 * @tparam U is a new type of the item view
+	 * @param[in] view target item view
+	 */
+	template<class U>
+	constexpr explicit OptView(const View<U>& view) noexcept : view(view)
+	#ifndef NDEBUG
+		, nullChecked(true)
+	#endif
+	{ }
+	/**
+	 * @brief Changes the type of the item optional view. (Nullable)
+	 * @details Useful in cases where we need to cast item view type.
+	 * 
+	 * @tparam U is a new type of the item view
+	 * @param[in] view target item view
+	 */
+	template<class U>
+	constexpr explicit OptView(const OptView<U>& view) noexcept : view(view._getView())
+	#ifndef NDEBUG
+		, nullChecked(view.isNullChecked())
+	#endif
+	{ }
+
+	/**
+	 * @brief Returns true if item optional view is not null.
+	 */
+	constexpr explicit operator bool() noexcept
+	{
+		#ifndef NDEBUG
+		nullChecked = true;
+		#endif
+		return view.item;
+	}
+	/**
+	 * @brief Converts optional view to the non-nullable view.
+	 */
+	constexpr explicit operator const View<T>&() const
+	{
+		#ifndef NDEBUG
+		if (!nullChecked)
+			throw EcsmError("Item was not checked for null.");
+		if (!view.item)
+			throw EcsmError("Item is null.");
+		#endif
+		return view;
+	}
+
+	/**
+	 * @brief Optional view item data accessor.
+	 */
+	T* operator->()
+	{
+		#ifndef NDEBUG
+		if (!nullChecked)
+			throw EcsmError("Item was not checked for null.");
+		if (!view.item)
+			throw EcsmError("Item is null.");
+		#endif
+		return view.operator->();
+	}
+	/**
+	 * @brief Optional view item constant data accessor.
+	 */
+	const T* operator->() const
+	{
+		#ifndef NDEBUG
+		if (!nullChecked)
+			throw EcsmError("Item was not checked for null.");
+		if (!view.item)
+			throw EcsmError("Item is null.");
+		#endif
+		return view.operator->();
+	}
+
+	/**
+	 * @brief Returns pointer to the item memory in the pool.
+	 */
+	T* operator*()
+	{
+		#ifndef NDEBUG
+		if (!nullChecked)
+			throw EcsmError("Item was not checked for null.");
+		if (!view.item)
+			throw EcsmError("Item is null.");
+		#endif
+		return view.operator*();
+	}
+	/**
+	 * @brief Returns pointer to the constant item memory in the pool.
+	 */
+	const T* operator*() const
+	{
+		#ifndef NDEBUG
+		if (!nullChecked)
+			throw EcsmError("Item was not checked for null.");
+		if (!view.item)
+			throw EcsmError("Item is null.");
+		#endif
+		return view.operator*();
+	}
+
+	#ifndef NDEBUG
+private:
+	volatile bool nullChecked = false;
+public:
+	bool isNullChecked() const noexcept { return nullChecked; }
+	#endif
+	const View<T>& _getView() const noexcept { return view; }
 };
 
 /***********************************************************************************************************************
@@ -212,14 +329,14 @@ public:
  * @tparam T type of the item in the linear pool
  * 
  * @details
- * Useful in cases where we need to track item usage in the 
- * program and destroy it when it's not needed anymore.
+ * Useful in cases where we need to track item usage in the program and 
+ * destroy it when it's not needed anymore. Also see the @ref ID<T>.
  */
 template<typename T>
 struct Ref final
 {
 private:
-	std::atomic<int64_t>* counter = nullptr;
+	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
 	constexpr Ref() = default;
@@ -411,7 +528,7 @@ class LinearPool final
 	std::vector<ID<T>> garbageItems;
 
 	#ifndef NDEBUG
-	uint64_t version = 0;
+	std::atomic_uint64_t version = 0;
 	bool isChanging = false;
 	#endif
 public:
@@ -496,7 +613,7 @@ public:
 
 		#ifndef NDEBUG
 		isChanging = false;
-		version++;
+		version++; // Protects from the use after free.
 		#endif
 
 		return ID<T>(++occupancy);

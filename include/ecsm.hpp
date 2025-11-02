@@ -919,24 +919,24 @@ public:
 		return View<T>(get(entity, typeid(T)));
 	}
 
-	/**
-	 * @brief Returns component data accessor if exist, otherwise null. (@ref View)
+	/*******************************************************************************************************************
+	 * @brief Returns component data accessor if exist, otherwise null. (@ref OptView)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
 	 * @param entity entity instance
 	 * @param componentType target component typeid()
 	 */
-	View<Component> tryGet(ID<Entity> entity, std::type_index componentType) const noexcept
+	OptView<Component> tryGet(ID<Entity> entity, std::type_index componentType) const noexcept
 	{
 		auto componentData = entities.get(entity)->findComponent(componentType.hash_code());
 		GarbageComponent garbagePair = std::make_pair(componentType.hash_code(), entity);
 		if (!componentData || garbageComponents.find(garbagePair) != garbageComponents.end())
 			return {};
-		return componentData->system->getComponent(componentData->instance);
+		return OptView<Component>(componentData->system->getComponent(componentData->instance));
 	}
 	/**
-	 * @brief Returns component data accessor if exist, otherwise null. (@ref View)
+	 * @brief Returns component data accessor if exist, otherwise null. (@ref OptView)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
@@ -944,10 +944,40 @@ public:
 	 * @tparam T target component type
 	 */
 	template<class T>
-	View<T> tryGet(ID<Entity> entity) const noexcept
+	OptView<T> tryGet(ID<Entity> entity) const noexcept
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
-		return View<T>(tryGet(entity, typeid(T)));
+		return OptView<T>(tryGet(entity, typeid(T)));
+	}
+
+	/**
+	 * @brief Returns component data accessor if exist, otherwise creates a new one. (@ref View)
+	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
+	 * 
+	 * @param entity entity instance
+	 * @param componentType target component typeid()
+	 */
+	View<Component> getOrAdd(ID<Entity> entity, std::type_index componentType) noexcept
+	{
+		auto componentView = tryGet(entity, componentType);
+		if (componentView)
+			return View<Component>(componentView);
+		return add(entity, componentType);
+	}
+	/**
+	 * @brief Returns component data accessor if exist, otherwise creates a new one. (@ref View)
+	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
+	 * 
+	 * @param entity entity instance
+	 * @tparam T target component type
+	 */
+	template<class T>
+	View<T> getOrAdd(ID<Entity> entity) noexcept
+	{
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		return View<T>(getOrAdd(entity, typeid(T)));
 	}
 
 	/*******************************************************************************************************************
@@ -1442,37 +1472,6 @@ public:
 	 * @details Components are not destroyed immediately, only after the dispose call.
 	 */
 	void disposeComponents() override { components.dispose(); }
-
-	/**
-	 * @brief Returns entity specific component view.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	View<T> getComponent(ID<Entity> entity) const
-	{
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		auto componentData = entityView->findComponent(typeid(T).hash_code());
-		if (!componentData)
-		{
-			throw EcsmError("Component is not added. ("
-				"type: " + typeToString(typeid(T)) + ", "
-				"entity:" + std::to_string(*entity) + ")");
-		}
-		return components.get(ID<T>(componentData->instance));
-	}
-	/**
-	 * @brief Returns entity specific component view if exist.
-	 * @param entity target entity with component
-	 * @note This function is faster than the Manager one.
-	 */
-	View<T> tryGetComponent(ID<Entity> entity) const
-	{
-		const auto entityView = Manager::Instance::get()->getEntities().get(entity);
-		auto componentData = entityView->findComponent(typeid(T).hash_code());
-		if (!componentData)
-			return {};
-		return components.get(ID<T>(componentData->instance));
-	}
 };
 
 /***********************************************************************************************************************
