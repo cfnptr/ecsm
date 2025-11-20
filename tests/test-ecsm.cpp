@@ -35,6 +35,7 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 {
 	TestSystem()
 	{
+		auto manager = Manager::Instance::get();
 		ECSM_SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
 		ECSM_SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		ECSM_SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
@@ -43,6 +44,7 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 	{
 		if (Manager::Instance::get()->isRunning)
 		{
+			auto manager = Manager::Instance::get();
 			ECSM_UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
 			ECSM_UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
 			ECSM_UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);

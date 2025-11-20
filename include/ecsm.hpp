@@ -60,24 +60,20 @@ struct SvEqual
 /**
  * @brief Subscribes @ref System function to the event.
  */
-#define ECSM_SUBSCRIBE_TO_EVENT(name, func) \
-	ecsm::Manager::Instance::get()->subscribeToEvent(name, std::bind(&func, this))
+#define ECSM_SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event.
  */
-#define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) \
-	ecsm::Manager::Instance::get()->unsubscribeFromEvent(name, std::bind(&func, this))
+#define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
  * @brief Subscribes @ref System function to the event if exist.
  */
-#define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) \
-	ecsm::Manager::Instance::get()->trySubscribeToEvent(name, std::bind(&func, this))
+#define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) manager->trySubscribeToEvent(name, std::bind(&func, this))
 /**
  * @brief Unsubscribes @ref System function from the event if exist.
  */
-#define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) \
-	ecsm::Manager::Instance::get()->tryUnsubscribeFromEvent(name, std::bind(&func, this))
+#define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) manager->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
 /***********************************************************************************************************************
  * @brief Base component structure.

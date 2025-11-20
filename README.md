@@ -33,26 +33,23 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 {
     PhysicsSystem()
     {
+        auto manager = Manager::Instance::get();
         ECSM_SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
     }
     ~PhysicsSystem() final
     {
         if (Manager::get()->isRunning)
+        {
+            auto manager = Manager::Instance::get();
             ECSM_UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
-    }
-
-    void copyComponent(View<Component> source, View<Component> destination) final
-    {
-        const auto sourceView = View<RigidBodyComponent>(source);
-        auto destinationView = View<RigidBodyComponent>(destination);
-        destinationView->size = sourceView->size;
+        }
     }
 
     void update()
     {
         for (auto& component : components)
         {
-            if (!component->getEntity())
+            if (!component.getEntity())
                 continue;
 
             // Process your component
