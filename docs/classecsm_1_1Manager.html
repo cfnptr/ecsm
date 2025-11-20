@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.4.0</span>
+   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.5.0</span>
    </div>
   </td>
  </tr>
@@ -71,6 +71,8 @@ Classes</h2></td></tr>
 Public Types</h2></td></tr>
 <tr class="memitem:afc536c59f6fcd9e8625915c03dfcc25b" id="r_afc536c59f6fcd9e8625915c03dfcc25b"><td class="memItemLeft" align="right" valign="top"><a id="afc536c59f6fcd9e8625915c03dfcc25b" name="afc536c59f6fcd9e8625915c03dfcc25b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Systems</b> = tsl::robin_map&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a>, <a class="el" href="classecsm_1_1System.html">System</a>*&gt;</td></tr>
+<tr class="memitem:a6167b8ab6d36cf2508c7da380b68c6bb" id="r_a6167b8ab6d36cf2508c7da380b68c6bb"><td class="memItemLeft" align="right" valign="top"><a id="a6167b8ab6d36cf2508c7da380b68c6bb" name="a6167b8ab6d36cf2508c7da380b68c6bb"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SystemGroups</b> = tsl::robin_map&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a>, <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt;<a class="el" href="classecsm_1_1System.html">System</a>*&gt;&gt;</td></tr>
 <tr class="memitem:a8f9cb44a52a6cd48c467444714b61bf8" id="r_a8f9cb44a52a6cd48c467444714b61bf8"><td class="memItemLeft" align="right" valign="top"><a id="a8f9cb44a52a6cd48c467444714b61bf8" name="a8f9cb44a52a6cd48c467444714b61bf8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentTypes</b> = tsl::robin_map&lt;<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a>, <a class="el" href="classecsm_1_1System.html">System</a>*&gt;</td></tr>
 <tr class="memitem:a840457004c14fc935d5f44e94e57a02d" id="r_a840457004c14fc935d5f44e94e57a02d"><td class="memItemLeft" align="right" valign="top"><a id="a840457004c14fc935d5f44e94e57a02d" name="a840457004c14fc935d5f44e94e57a02d"></a>
@@ -95,32 +97,79 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a829d7114e3ed38c555af0fb4e974a6f6" id="r_a829d7114e3ed38c555af0fb4e974a6f6"><td class="memItemLeft" align="right" valign="top"><a id="a829d7114e3ed38c555af0fb4e974a6f6" name="a829d7114e3ed38c555af0fb4e974a6f6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~Manager</b> ()</td></tr>
 <tr class="memdesc:a829d7114e3ed38c555af0fb4e974a6f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys manager and all components/entities/systems. <br /></td></tr>
-<tr class="memitem:a48f021b26d5ab8bffa3c87709d0cf618" id="r_a48f021b26d5ab8bffa3c87709d0cf618"><td class="memTemplParams" colspan="2">template&lt;class T = System, typename... Args&gt; </td></tr>
+<tr class="memitem:a48f021b26d5ab8bffa3c87709d0cf618" id="r_a48f021b26d5ab8bffa3c87709d0cf618"><td class="memTemplParams" colspan="2">template&lt;class T, typename... Args&gt; </td></tr>
 <tr class="memitem:a48f021b26d5ab8bffa3c87709d0cf618 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48f021b26d5ab8bffa3c87709d0cf618">createSystem</a> (Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a48f021b26d5ab8bffa3c87709d0cf618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new system instance.  <br /></td></tr>
 <tr class="memitem:a6f4541244ad3bfc388f4fb370739c643" id="r_a6f4541244ad3bfc388f4fb370739c643"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f4541244ad3bfc388f4fb370739c643">destroySystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type)</td></tr>
 <tr class="memdesc:a6f4541244ad3bfc388f4fb370739c643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system.  <br /></td></tr>
-<tr class="memitem:afa983543eb596d414193b3ea52676583" id="r_afa983543eb596d414193b3ea52676583"><td class="memTemplParams" colspan="2">template&lt;class T = System&gt; </td></tr>
+<tr class="memitem:afa983543eb596d414193b3ea52676583" id="r_afa983543eb596d414193b3ea52676583"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:afa983543eb596d414193b3ea52676583 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa983543eb596d414193b3ea52676583">destroySystem</a> ()</td></tr>
 <tr class="memdesc:afa983543eb596d414193b3ea52676583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system.  <br /></td></tr>
 <tr class="memitem:a366c68845e87e655b4cf1072ea67f247" id="r_a366c68845e87e655b4cf1072ea67f247"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a366c68845e87e655b4cf1072ea67f247">tryDestroySystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type)</td></tr>
 <tr class="memdesc:a366c68845e87e655b4cf1072ea67f247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system if exist.  <br /></td></tr>
-<tr class="memitem:a795d367d6163959fc68566cdde7536a1" id="r_a795d367d6163959fc68566cdde7536a1"><td class="memTemplParams" colspan="2">template&lt;class T = System&gt; </td></tr>
+<tr class="memitem:a795d367d6163959fc68566cdde7536a1" id="r_a795d367d6163959fc68566cdde7536a1"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a795d367d6163959fc68566cdde7536a1 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a795d367d6163959fc68566cdde7536a1">tryDestroySystem</a> ()</td></tr>
 <tr class="memdesc:a795d367d6163959fc68566cdde7536a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates and destroys system if exist.  <br /></td></tr>
+<tr class="memitem:ada0f0e4cd72aa118e88e396ca2ab0cb7" id="r_ada0f0e4cd72aa118e88e396ca2ab0cb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada0f0e4cd72aa118e88e396ca2ab0cb7">addGroupSystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> groupType, <a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:ada0f0e4cd72aa118e88e396ca2ab0cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group.  <br /></td></tr>
+<tr class="memitem:a517271be9bf6a20565e4872531841d2c" id="r_a517271be9bf6a20565e4872531841d2c"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a517271be9bf6a20565e4872531841d2c template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a517271be9bf6a20565e4872531841d2c">addGroupSystem</a> (<a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a517271be9bf6a20565e4872531841d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group.  <br /></td></tr>
+<tr class="memitem:af1868aee36b7d245c23390754dd754ad" id="r_af1868aee36b7d245c23390754dd754ad"><td class="memTemplParams" colspan="2">template&lt;class G, class S&gt; </td></tr>
+<tr class="memitem:af1868aee36b7d245c23390754dd754ad template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1868aee36b7d245c23390754dd754ad">addGroupSystem</a> ()</td></tr>
+<tr class="memdesc:af1868aee36b7d245c23390754dd754ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group.  <br /></td></tr>
+<tr class="memitem:a473050e4ab4e1f61122526bbea7f5bcf" id="r_a473050e4ab4e1f61122526bbea7f5bcf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a473050e4ab4e1f61122526bbea7f5bcf">tryAddGroupSystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> groupType, <a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a473050e4ab4e1f61122526bbea7f5bcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group if exist.  <br /></td></tr>
+<tr class="memitem:a3399a16d1313fd3f57ca37d75c848f38" id="r_a3399a16d1313fd3f57ca37d75c848f38"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a3399a16d1313fd3f57ca37d75c848f38 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3399a16d1313fd3f57ca37d75c848f38">tryAddGroupSystem</a> (<a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a3399a16d1313fd3f57ca37d75c848f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group if exist.  <br /></td></tr>
+<tr class="memitem:a7df3fcba3fd9bbcc416fdf09fd924b8a" id="r_a7df3fcba3fd9bbcc416fdf09fd924b8a"><td class="memTemplParams" colspan="2">template&lt;class G, class S&gt; </td></tr>
+<tr class="memitem:a7df3fcba3fd9bbcc416fdf09fd924b8a template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7df3fcba3fd9bbcc416fdf09fd924b8a">tryAddGroupSystem</a> ()</td></tr>
+<tr class="memdesc:a7df3fcba3fd9bbcc416fdf09fd924b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds specified system to the system group if exist.  <br /></td></tr>
+<tr class="memitem:a8190824ddad2518fe31ebd3ef841b7f8" id="r_a8190824ddad2518fe31ebd3ef841b7f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8190824ddad2518fe31ebd3ef841b7f8">removeGroupSystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> groupType, <a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a8190824ddad2518fe31ebd3ef841b7f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group.  <br /></td></tr>
+<tr class="memitem:a7758808de12410ea04985fe2bb4b2c21" id="r_a7758808de12410ea04985fe2bb4b2c21"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a7758808de12410ea04985fe2bb4b2c21 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7758808de12410ea04985fe2bb4b2c21">removeGroupSystem</a> (<a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a7758808de12410ea04985fe2bb4b2c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group.  <br /></td></tr>
+<tr class="memitem:a5b566fbdf5421db87a8bdf85157b9c40" id="r_a5b566fbdf5421db87a8bdf85157b9c40"><td class="memTemplParams" colspan="2">template&lt;class G, class S&gt; </td></tr>
+<tr class="memitem:a5b566fbdf5421db87a8bdf85157b9c40 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b566fbdf5421db87a8bdf85157b9c40">removeGroupSystem</a> ()</td></tr>
+<tr class="memdesc:a5b566fbdf5421db87a8bdf85157b9c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group.  <br /></td></tr>
+<tr class="memitem:a8da6c26483d355af9035565de38b42bd" id="r_a8da6c26483d355af9035565de38b42bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8da6c26483d355af9035565de38b42bd">tryRemoveGroupSystem</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> groupType, <a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:a8da6c26483d355af9035565de38b42bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group if exist.  <br /></td></tr>
+<tr class="memitem:aa6b6a80e349e75618bfa4afcf67e3de1" id="r_aa6b6a80e349e75618bfa4afcf67e3de1"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:aa6b6a80e349e75618bfa4afcf67e3de1 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6b6a80e349e75618bfa4afcf67e3de1">tryRemoveGroupSystem</a> (<a class="el" href="classecsm_1_1System.html">System</a> *system)</td></tr>
+<tr class="memdesc:aa6b6a80e349e75618bfa4afcf67e3de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group if exist.  <br /></td></tr>
+<tr class="memitem:ac600d8c9bb96e9cd37cb0845f756974c" id="r_ac600d8c9bb96e9cd37cb0845f756974c"><td class="memTemplParams" colspan="2">template&lt;class G, class S&gt; </td></tr>
+<tr class="memitem:ac600d8c9bb96e9cd37cb0845f756974c template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac600d8c9bb96e9cd37cb0845f756974c">tryRemoveGroupSystem</a> ()</td></tr>
+<tr class="memdesc:ac600d8c9bb96e9cd37cb0845f756974c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes specified system from the system group if exist.  <br /></td></tr>
+<tr class="memitem:af3fded87ed2c4abe38397808e4f203a5" id="r_af3fded87ed2c4abe38397808e4f203a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3fded87ed2c4abe38397808e4f203a5">hasSystemGroup</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const noexcept</td></tr>
+<tr class="memdesc:af3fded87ed2c4abe38397808e4f203a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if system group is exist.  <br /></td></tr>
+<tr class="memitem:a2cbf90fc43c3c304ce50b391f62d1359" id="r_a2cbf90fc43c3c304ce50b391f62d1359"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a2cbf90fc43c3c304ce50b391f62d1359 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cbf90fc43c3c304ce50b391f62d1359">hasSystemGroup</a> () const noexcept</td></tr>
+<tr class="memdesc:a2cbf90fc43c3c304ce50b391f62d1359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if system group is exist.  <br /></td></tr>
+<tr class="memitem:a345ea93c25790f97ad3500f3077403d6" id="r_a345ea93c25790f97ad3500f3077403d6"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a345ea93c25790f97ad3500f3077403d6">getSystemGroup</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const</td></tr>
+<tr class="memdesc:a345ea93c25790f97ad3500f3077403d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specified system group.  <br /></td></tr>
+<tr class="memitem:a4b519ff309aa97a93e8519c8b6125208" id="r_a4b519ff309aa97a93e8519c8b6125208"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a4b519ff309aa97a93e8519c8b6125208 template"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b519ff309aa97a93e8519c8b6125208">getSystemGroup</a> () const</td></tr>
+<tr class="memdesc:a4b519ff309aa97a93e8519c8b6125208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specified system group.  <br /></td></tr>
+<tr class="memitem:ad8b134f99f5b55f768a0912fd224d09c" id="r_ad8b134f99f5b55f768a0912fd224d09c"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8b134f99f5b55f768a0912fd224d09c">tryGetSystemGroup</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const noexcept</td></tr>
+<tr class="memdesc:ad8b134f99f5b55f768a0912fd224d09c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specified system group if exist, otherwise nullptr.  <br /></td></tr>
+<tr class="memitem:a5dedb4f16fc5f4172f7acd36956b9ffd" id="r_a5dedb4f16fc5f4172f7acd36956b9ffd"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a5dedb4f16fc5f4172f7acd36956b9ffd template"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dedb4f16fc5f4172f7acd36956b9ffd">tryGetSystemGroup</a> () const noexcept</td></tr>
+<tr class="memdesc:a5dedb4f16fc5f4172f7acd36956b9ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns specified system group if exist, otherwise nullptr.  <br /></td></tr>
 <tr class="memitem:a8dbf72d374a02b37a2241e2e62ddb664" id="r_a8dbf72d374a02b37a2241e2e62ddb664"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8dbf72d374a02b37a2241e2e62ddb664">has</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const noexcept</td></tr>
 <tr class="memdesc:a8dbf72d374a02b37a2241e2e62ddb664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if system is created.  <br /></td></tr>
-<tr class="memitem:a7429b1d5c5a83d764657b26a5e5ab2e3" id="r_a7429b1d5c5a83d764657b26a5e5ab2e3"><td class="memTemplParams" colspan="2">template&lt;class T = System&gt; </td></tr>
+<tr class="memitem:a7429b1d5c5a83d764657b26a5e5ab2e3" id="r_a7429b1d5c5a83d764657b26a5e5ab2e3"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a7429b1d5c5a83d764657b26a5e5ab2e3 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7429b1d5c5a83d764657b26a5e5ab2e3">has</a> () const noexcept</td></tr>
 <tr class="memdesc:a7429b1d5c5a83d764657b26a5e5ab2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if system is created.  <br /></td></tr>
 <tr class="memitem:ac5dff531542852eae67318c670ee02ec" id="r_ac5dff531542852eae67318c670ee02ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classecsm_1_1System.html">System</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5dff531542852eae67318c670ee02ec">get</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const</td></tr>
 <tr class="memdesc:ac5dff531542852eae67318c670ee02ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns system instance.  <br /></td></tr>
-<tr class="memitem:a4fb6c393ec18d5964e351aff9c1c64cc" id="r_a4fb6c393ec18d5964e351aff9c1c64cc"><td class="memTemplParams" colspan="2">template&lt;class T = System&gt; </td></tr>
+<tr class="memitem:a4fb6c393ec18d5964e351aff9c1c64cc" id="r_a4fb6c393ec18d5964e351aff9c1c64cc"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a4fb6c393ec18d5964e351aff9c1c64cc template"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fb6c393ec18d5964e351aff9c1c64cc">get</a> () const</td></tr>
 <tr class="memdesc:a4fb6c393ec18d5964e351aff9c1c64cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns system instance.  <br /></td></tr>
 <tr class="memitem:a361a2045ddfc259de24d64d301c55183" id="r_a361a2045ddfc259de24d64d301c55183"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classecsm_1_1System.html">System</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a361a2045ddfc259de24d64d301c55183">tryGet</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> type) const noexcept</td></tr>
 <tr class="memdesc:a361a2045ddfc259de24d64d301c55183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns system instance if created, otherwise nullptr.  <br /></td></tr>
-<tr class="memitem:a602df29a60af539965750d3be180a183" id="r_a602df29a60af539965750d3be180a183"><td class="memTemplParams" colspan="2">template&lt;class T = System&gt; </td></tr>
+<tr class="memitem:a602df29a60af539965750d3be180a183" id="r_a602df29a60af539965750d3be180a183"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a602df29a60af539965750d3be180a183 template"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a602df29a60af539965750d3be180a183">tryGet</a> () const noexcept</td></tr>
 <tr class="memdesc:a602df29a60af539965750d3be180a183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns system instance if created, otherwise nullptr.  <br /></td></tr>
 <tr class="memitem:ab19ef77d5d8153a9378a4773489cdd02" id="r_ab19ef77d5d8153a9378a4773489cdd02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab19ef77d5d8153a9378a4773489cdd02">createEntity</a> ()</td></tr>
@@ -131,64 +180,74 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a65dd5291bb6ba3e0cb62c25276afcd89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity internal data accessor. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
 <tr class="memitem:a140896943f23f254ea97dfa6bbc65487" id="r_a140896943f23f254ea97dfa6bbc65487"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a140896943f23f254ea97dfa6bbc65487">add</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType)</td></tr>
 <tr class="memdesc:a140896943f23f254ea97dfa6bbc65487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new component to the entity.  <br /></td></tr>
-<tr class="memitem:a762a238647e85558f6e9a8c0edc75486" id="r_a762a238647e85558f6e9a8c0edc75486"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a762a238647e85558f6e9a8c0edc75486" id="r_a762a238647e85558f6e9a8c0edc75486"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a762a238647e85558f6e9a8c0edc75486 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a762a238647e85558f6e9a8c0edc75486">add</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity)</td></tr>
 <tr class="memdesc:a762a238647e85558f6e9a8c0edc75486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new component to the entity.  <br /></td></tr>
 <tr class="memitem:aea82d86f55e549cec1d370ca73bce1a7" id="r_aea82d86f55e549cec1d370ca73bce1a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea82d86f55e549cec1d370ca73bce1a7">remove</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType)</td></tr>
 <tr class="memdesc:aea82d86f55e549cec1d370ca73bce1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes component from the entity.  <br /></td></tr>
-<tr class="memitem:a24234410165eb665d5b8e3516f7f74ad" id="r_a24234410165eb665d5b8e3516f7f74ad"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a24234410165eb665d5b8e3516f7f74ad" id="r_a24234410165eb665d5b8e3516f7f74ad"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a24234410165eb665d5b8e3516f7f74ad template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24234410165eb665d5b8e3516f7f74ad">remove</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity)</td></tr>
 <tr class="memdesc:a24234410165eb665d5b8e3516f7f74ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes component from the entity.  <br /></td></tr>
 <tr class="memitem:a250b63fa1ea75864cadba5692ce0e1d1" id="r_a250b63fa1ea75864cadba5692ce0e1d1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a250b63fa1ea75864cadba5692ce0e1d1">isGarbage</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const noexcept</td></tr>
 <tr class="memdesc:a250b63fa1ea75864cadba5692ce0e1d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if target entity component was removed and is in the garbage pool.  <br /></td></tr>
-<tr class="memitem:a847c9da587c7a9afab69c2d4a097d536" id="r_a847c9da587c7a9afab69c2d4a097d536"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a847c9da587c7a9afab69c2d4a097d536" id="r_a847c9da587c7a9afab69c2d4a097d536"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a847c9da587c7a9afab69c2d4a097d536 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a847c9da587c7a9afab69c2d4a097d536">isGarbage</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
 <tr class="memdesc:a847c9da587c7a9afab69c2d4a097d536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if target entity component was removed and is in the garbage pool.  <br /></td></tr>
 <tr class="memitem:a555b1d3f8eb797786fb16ebd5f87a00e" id="r_a555b1d3f8eb797786fb16ebd5f87a00e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a555b1d3f8eb797786fb16ebd5f87a00e">copy</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; source, <a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; destination, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType)</td></tr>
 <tr class="memdesc:a555b1d3f8eb797786fb16ebd5f87a00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source entity to destination.  <br /></td></tr>
-<tr class="memitem:a57bb9c027d24036d301067568f20b6a5" id="r_a57bb9c027d24036d301067568f20b6a5"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a57bb9c027d24036d301067568f20b6a5" id="r_a57bb9c027d24036d301067568f20b6a5"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a57bb9c027d24036d301067568f20b6a5 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57bb9c027d24036d301067568f20b6a5">copy</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; source, <a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; destination)</td></tr>
 <tr class="memdesc:a57bb9c027d24036d301067568f20b6a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies component data from source entity to destination.  <br /></td></tr>
 <tr class="memitem:ab64351c27cb6b33f9164fec1a4e0c8e1" id="r_ab64351c27cb6b33f9164fec1a4e0c8e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab64351c27cb6b33f9164fec1a4e0c8e1">duplicate</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity)</td></tr>
 <tr class="memdesc:ab64351c27cb6b33f9164fec1a4e0c8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a duplicate of specified entity.  <br /></td></tr>
 <tr class="memitem:afad0996aa0ca0d81b468ca68989029fb" id="r_afad0996aa0ca0d81b468ca68989029fb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afad0996aa0ca0d81b468ca68989029fb">has</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const noexcept</td></tr>
 <tr class="memdesc:afad0996aa0ca0d81b468ca68989029fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if entity has target component.  <br /></td></tr>
-<tr class="memitem:a2fab8baf6f6441bd8e7a29a02a21aca8" id="r_a2fab8baf6f6441bd8e7a29a02a21aca8"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a2fab8baf6f6441bd8e7a29a02a21aca8" id="r_a2fab8baf6f6441bd8e7a29a02a21aca8"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a2fab8baf6f6441bd8e7a29a02a21aca8 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fab8baf6f6441bd8e7a29a02a21aca8">has</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
 <tr class="memdesc:a2fab8baf6f6441bd8e7a29a02a21aca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if entity has target component.  <br /></td></tr>
 <tr class="memitem:aabe3d7dba34e6e72d32fe15410a3c087" id="r_aabe3d7dba34e6e72d32fe15410a3c087"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe3d7dba34e6e72d32fe15410a3c087">get</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const</td></tr>
 <tr class="memdesc:aabe3d7dba34e6e72d32fe15410a3c087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
-<tr class="memitem:a4e5ec2c7e5b9a8dfc24edcc82178284b" id="r_a4e5ec2c7e5b9a8dfc24edcc82178284b"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a4e5ec2c7e5b9a8dfc24edcc82178284b" id="r_a4e5ec2c7e5b9a8dfc24edcc82178284b"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a4e5ec2c7e5b9a8dfc24edcc82178284b template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e5ec2c7e5b9a8dfc24edcc82178284b">get</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const</td></tr>
 <tr class="memdesc:a4e5ec2c7e5b9a8dfc24edcc82178284b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
-<tr class="memitem:a5270fade348d1527c02264533f723baf" id="r_a5270fade348d1527c02264533f723baf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5270fade348d1527c02264533f723baf">tryGet</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const noexcept</td></tr>
-<tr class="memdesc:a5270fade348d1527c02264533f723baf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise null. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
-<tr class="memitem:a8c493b54f875f21813046b977349a7ae" id="r_a8c493b54f875f21813046b977349a7ae"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
-<tr class="memitem:a8c493b54f875f21813046b977349a7ae template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c493b54f875f21813046b977349a7ae">tryGet</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
-<tr class="memdesc:a8c493b54f875f21813046b977349a7ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise null. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
+<tr class="memitem:a78b0592900203146094fc9bc692a29da" id="r_a78b0592900203146094fc9bc692a29da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classecsm_1_1OptView.html">OptView</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78b0592900203146094fc9bc692a29da">tryGet</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const noexcept</td></tr>
+<tr class="memdesc:a78b0592900203146094fc9bc692a29da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise null. (<a class="el" href="classecsm_1_1OptView.html">OptView</a>)  <br /></td></tr>
+<tr class="memitem:a65af42666c98c48f41173818d3c7b665" id="r_a65af42666c98c48f41173818d3c7b665"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a65af42666c98c48f41173818d3c7b665 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classecsm_1_1OptView.html">OptView</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65af42666c98c48f41173818d3c7b665">tryGet</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
+<tr class="memdesc:a65af42666c98c48f41173818d3c7b665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise null. (<a class="el" href="classecsm_1_1OptView.html">OptView</a>)  <br /></td></tr>
+<tr class="memitem:a008cd4fdff6afb1418b99180a9b325c3" id="r_a008cd4fdff6afb1418b99180a9b325c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a008cd4fdff6afb1418b99180a9b325c3">getOrAdd</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) noexcept</td></tr>
+<tr class="memdesc:a008cd4fdff6afb1418b99180a9b325c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise creates a new one. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
+<tr class="memitem:aa748428008f8dd437871a6289db60da6" id="r_aa748428008f8dd437871a6289db60da6"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:aa748428008f8dd437871a6289db60da6 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa748428008f8dd437871a6289db60da6">getOrAdd</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) noexcept</td></tr>
+<tr class="memdesc:aa748428008f8dd437871a6289db60da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns component data accessor if exist, otherwise creates a new one. (<a class="el" href="structecsm_1_1View.html">View</a>)  <br /></td></tr>
 <tr class="memitem:a2d788c21fbe0abecca44f2384694a0b6" id="r_a2d788c21fbe0abecca44f2384694a0b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d788c21fbe0abecca44f2384694a0b6">getID</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const</td></tr>
 <tr class="memdesc:a2d788c21fbe0abecca44f2384694a0b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity component <a class="el" href="structecsm_1_1ID.html">ID</a>.  <br /></td></tr>
-<tr class="memitem:a1d1de5161ba21edcfa77159fe69fcbd0" id="r_a1d1de5161ba21edcfa77159fe69fcbd0"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a1d1de5161ba21edcfa77159fe69fcbd0" id="r_a1d1de5161ba21edcfa77159fe69fcbd0"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a1d1de5161ba21edcfa77159fe69fcbd0 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d1de5161ba21edcfa77159fe69fcbd0">getID</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const</td></tr>
 <tr class="memdesc:a1d1de5161ba21edcfa77159fe69fcbd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity component <a class="el" href="structecsm_1_1ID.html">ID</a>.  <br /></td></tr>
 <tr class="memitem:a55ca966d2d9f700e06c1fc44185d4a14" id="r_a55ca966d2d9f700e06c1fc44185d4a14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55ca966d2d9f700e06c1fc44185d4a14">tryGetID</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType) const noexcept</td></tr>
 <tr class="memdesc:a55ca966d2d9f700e06c1fc44185d4a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity component <a class="el" href="structecsm_1_1ID.html">ID</a> if added, otherwise null.  <br /></td></tr>
-<tr class="memitem:a688a30302fa6b1f37b385028037bbb23" id="r_a688a30302fa6b1f37b385028037bbb23"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
+<tr class="memitem:a688a30302fa6b1f37b385028037bbb23" id="r_a688a30302fa6b1f37b385028037bbb23"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a688a30302fa6b1f37b385028037bbb23 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a688a30302fa6b1f37b385028037bbb23">tryGetID</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
 <tr class="memdesc:a688a30302fa6b1f37b385028037bbb23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity component <a class="el" href="structecsm_1_1ID.html">ID</a> if added, otherwise null.  <br /></td></tr>
-<tr class="memitem:ae17479bb0a0f1a24dcb452031e3d075e" id="r_ae17479bb0a0f1a24dcb452031e3d075e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae17479bb0a0f1a24dcb452031e3d075e">hasComponents</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
-<tr class="memdesc:ae17479bb0a0f1a24dcb452031e3d075e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if entity has components.  <br /></td></tr>
+<tr class="memitem:aa296a1a2030b3a7495c5301c601dc342" id="r_aa296a1a2030b3a7495c5301c601dc342"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa296a1a2030b3a7495c5301c601dc342">hasComponents</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
+<tr class="memdesc:aa296a1a2030b3a7495c5301c601dc342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if entity has components.  <br /></td></tr>
 <tr class="memitem:abbf6c87cc9064ad60d1bb85bf5fec845" id="r_abbf6c87cc9064ad60d1bb85bf5fec845"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbf6c87cc9064ad60d1bb85bf5fec845">getComponentCount</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity) const noexcept</td></tr>
 <tr class="memdesc:abbf6c87cc9064ad60d1bb85bf5fec845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns entity component count.  <br /></td></tr>
-<tr class="memitem:ac9c055d5a25e558b60703517ab56e749" id="r_ac9c055d5a25e558b60703517ab56e749"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9c055d5a25e558b60703517ab56e749">reset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType, bool full=true)</td></tr>
-<tr class="memdesc:ac9c055d5a25e558b60703517ab56e749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data.  <br /></td></tr>
-<tr class="memitem:a274d9db7f89e1050f6cc42e3a9ae8529" id="r_a274d9db7f89e1050f6cc42e3a9ae8529"><td class="memTemplParams" colspan="2">template&lt;class T = Component&gt; </td></tr>
-<tr class="memitem:a274d9db7f89e1050f6cc42e3a9ae8529 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a274d9db7f89e1050f6cc42e3a9ae8529">reset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, bool full=true)</td></tr>
-<tr class="memdesc:a274d9db7f89e1050f6cc42e3a9ae8529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data.  <br /></td></tr>
 <tr class="memitem:a3471a7aafeb5c418f177f4ff8984496e" id="r_a3471a7aafeb5c418f177f4ff8984496e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3471a7aafeb5c418f177f4ff8984496e">resetComponents</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, bool full=true)</td></tr>
 <tr class="memdesc:a3471a7aafeb5c418f177f4ff8984496e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity components data.  <br /></td></tr>
 <tr class="memitem:aa7adc08b6a122d67fd680be71831c8e9" id="r_aa7adc08b6a122d67fd680be71831c8e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7adc08b6a122d67fd680be71831c8e9">reserveComponents</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, uint32_t capacity)</td></tr>
 <tr class="memdesc:aa7adc08b6a122d67fd680be71831c8e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increases entity component array capacity.  <br /></td></tr>
+<tr class="memitem:ac9c055d5a25e558b60703517ab56e749" id="r_ac9c055d5a25e558b60703517ab56e749"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9c055d5a25e558b60703517ab56e749">reset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType, bool full=true)</td></tr>
+<tr class="memdesc:ac9c055d5a25e558b60703517ab56e749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data.  <br /></td></tr>
+<tr class="memitem:a274d9db7f89e1050f6cc42e3a9ae8529" id="r_a274d9db7f89e1050f6cc42e3a9ae8529"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a274d9db7f89e1050f6cc42e3a9ae8529 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a274d9db7f89e1050f6cc42e3a9ae8529">reset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, bool full=true)</td></tr>
+<tr class="memdesc:a274d9db7f89e1050f6cc42e3a9ae8529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data.  <br /></td></tr>
+<tr class="memitem:a6dad7eea27cd8e76ace86bcd4b9e29b8" id="r_a6dad7eea27cd8e76ace86bcd4b9e29b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6dad7eea27cd8e76ace86bcd4b9e29b8">tryReset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, <a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a> componentType, bool full=true) noexcept</td></tr>
+<tr class="memdesc:a6dad7eea27cd8e76ace86bcd4b9e29b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data, if added.  <br /></td></tr>
+<tr class="memitem:ad4312f4a09d1d2c417175f31ee894506" id="r_ad4312f4a09d1d2c417175f31ee894506"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:ad4312f4a09d1d2c417175f31ee894506 template"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4312f4a09d1d2c417175f31ee894506">tryReset</a> (<a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt; entity, bool full=true)</td></tr>
+<tr class="memdesc:ad4312f4a09d1d2c417175f31ee894506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets entity component data, if added.  <br /></td></tr>
 <tr class="memitem:aa8635bb81770b733ab46cbe97e976dad" id="r_aa8635bb81770b733ab46cbe97e976dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8635bb81770b733ab46cbe97e976dad">registerEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name)</td></tr>
 <tr class="memdesc:aa8635bb81770b733ab46cbe97e976dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new unordered event.  <br /></td></tr>
 <tr class="memitem:a4255088336ed216f8af645b102fa58df" id="r_a4255088336ed216f8af645b102fa58df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4255088336ed216f8af645b102fa58df">tryRegisterEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name)</td></tr>
@@ -209,8 +268,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a85454620f522825d7ee5382bb31d4852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns event data container by name if it exist, otherwise null.  <br /></td></tr>
 <tr class="memitem:ae2d9a40f0cf0a9bedcd1a07b748cd36c" id="r_ae2d9a40f0cf0a9bedcd1a07b748cd36c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2d9a40f0cf0a9bedcd1a07b748cd36c">runEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name)</td></tr>
 <tr class="memdesc:ae2d9a40f0cf0a9bedcd1a07b748cd36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all event subscribers.  <br /></td></tr>
-<tr class="memitem:a6d598de563bb85a376696f5b7b056339" id="r_a6d598de563bb85a376696f5b7b056339"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d598de563bb85a376696f5b7b056339">tryRunEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name)</td></tr>
-<tr class="memdesc:a6d598de563bb85a376696f5b7b056339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all event subscribers if event exist.  <br /></td></tr>
+<tr class="memitem:aa813139ba8953739c982189b1834fe44" id="r_aa813139ba8953739c982189b1834fe44"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa813139ba8953739c982189b1834fe44">tryRunEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name, bool andOrdered=false)</td></tr>
+<tr class="memdesc:aa813139ba8953739c982189b1834fe44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all event subscribers if event exist.  <br /></td></tr>
 <tr class="memitem:a4f55f1d4b7c03c5b976e15e4e46b3fe4" id="r_a4f55f1d4b7c03c5b976e15e4e46b3fe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f55f1d4b7c03c5b976e15e4e46b3fe4">runOrderedEvents</a> ()</td></tr>
 <tr class="memdesc:a4f55f1d4b7c03c5b976e15e4e46b3fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs all ordered events.  <br /></td></tr>
 <tr class="memitem:a7607a67c98def74200b098b63fcbb02a" id="r_a7607a67c98def74200b098b63fcbb02a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7607a67c98def74200b098b63fcbb02a">subscribeToEvent</a> (<a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a> name, const <a class="elRef" href="https://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt; void()&gt; &amp;onEvent)</td></tr>
@@ -223,6 +282,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0be8f0a006c8681432ec29f0a5c8e43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes existing event subscriber if exist.  <br /></td></tr>
 <tr class="memitem:a642ee20321726831578850ca3a509685" id="r_a642ee20321726831578850ca3a509685"><td class="memItemLeft" align="right" valign="top">const Systems &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a642ee20321726831578850ca3a509685">getSystems</a> () const noexcept</td></tr>
 <tr class="memdesc:a642ee20321726831578850ca3a509685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager systems.  <br /></td></tr>
+<tr class="memitem:afd92f35aa6ce3ecf93a911d34e0f1d31" id="r_afd92f35aa6ce3ecf93a911d34e0f1d31"><td class="memItemLeft" align="right" valign="top">const SystemGroups &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd92f35aa6ce3ecf93a911d34e0f1d31">getSystemGroups</a> () const noexcept</td></tr>
+<tr class="memdesc:afd92f35aa6ce3ecf93a911d34e0f1d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns registered system groups.  <br /></td></tr>
 <tr class="memitem:aca4005e9bb71f1f630ba0fc7348a466d" id="r_aca4005e9bb71f1f630ba0fc7348a466d"><td class="memItemLeft" align="right" valign="top">const ComponentTypes &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca4005e9bb71f1f630ba0fc7348a466d">getComponentTypes</a> () const noexcept</td></tr>
 <tr class="memdesc:aca4005e9bb71f1f630ba0fc7348a466d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all manager component types.  <br /></td></tr>
 <tr class="memitem:ac6891b664097750afddef82d9113fedf" id="r_ac6891b664097750afddef82d9113fedf"><td class="memItemLeft" align="right" valign="top">const ComponentNames &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6891b664097750afddef82d9113fedf">getComponentNames</a> () const noexcept</td></tr>
@@ -275,8 +336,8 @@ static <a class="el" href="classecsm_1_1Manager.html">Manager</a> *&#160;</td><t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a35e1fbda907c4c69651e7ffed1543106" id="r_a35e1fbda907c4c69651e7ffed1543106"><td class="memItemLeft" align="right" valign="top"><a id="a35e1fbda907c4c69651e7ffed1543106" name="a35e1fbda907c4c69651e7ffed1543106"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b> = false</td></tr>
+<tr class="memitem:afdf24e281764d1399ee4a5cbb1ae92f9" id="r_afdf24e281764d1399ee4a5cbb1ae92f9"><td class="memItemLeft" align="right" valign="top"><a id="afdf24e281764d1399ee4a5cbb1ae92f9" name="afdf24e281764d1399ee4a5cbb1ae92f9"></a>
+volatile bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b> = false</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -379,7 +440,7 @@ Static Protected Attributes</h2></td></tr>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System, typename... Args&gt; </div>
+template&lt;class T, typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -459,7 +520,7 @@ template&lt;class T = System, typename... Args&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -526,7 +587,7 @@ template&lt;class T = System&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -553,6 +614,692 @@ template&lt;class T = System&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if system is destroyed, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="ada0f0e4cd72aa118e88e396ca2ab0cb7" name="ada0f0e4cd72aa118e88e396ca2ab0cb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada0f0e4cd72aa118e88e396ca2ab0cb7">&#9670;&#160;</a></span>addGroupSystem() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>groupType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">groupType</td><td>typeid() of the system group </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system is already added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a517271be9bf6a20565e4872531841d2c" name="a517271be9bf6a20565e4872531841d2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a517271be9bf6a20565e4872531841d2c">&#9670;&#160;</a></span>addGroupSystem() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>type of the system group </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system is already added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af1868aee36b7d245c23390754dd754ad" name="af1868aee36b7d245c23390754dd754ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1868aee36b7d245c23390754dd754ad">&#9670;&#160;</a></span>addGroupSystem() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class G, class S&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addGroupSystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">G</td><td>type of the system group </td></tr>
+    <tr><td class="paramname">T</td><td>target system type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system is not found or already added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a473050e4ab4e1f61122526bbea7f5bcf" name="a473050e4ab4e1f61122526bbea7f5bcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a473050e4ab4e1f61122526bbea7f5bcf">&#9670;&#160;</a></span>tryAddGroupSystem() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryAddGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>groupType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group if exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">groupType</td><td>typeid() of the system group </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is added to the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="a3399a16d1313fd3f57ca37d75c848f38" name="a3399a16d1313fd3f57ca37d75c848f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3399a16d1313fd3f57ca37d75c848f38">&#9670;&#160;</a></span>tryAddGroupSystem() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryAddGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group if exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>type of the system group </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is added to the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="a7df3fcba3fd9bbcc416fdf09fd924b8a" name="a7df3fcba3fd9bbcc416fdf09fd924b8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7df3fcba3fd9bbcc416fdf09fd924b8a">&#9670;&#160;</a></span>tryAddGroupSystem() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class G, class S&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryAddGroupSystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds specified system to the system group if exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">G</td><td>type of the system group </td></tr>
+    <tr><td class="paramname">T</td><td>target system type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is added to the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="a8190824ddad2518fe31ebd3ef841b7f8" name="a8190824ddad2518fe31ebd3ef841b7f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8190824ddad2518fe31ebd3ef841b7f8">&#9670;&#160;</a></span>removeGroupSystem() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void removeGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>groupType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">groupType</td><td>typeid() of the system group </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system group is not found, or system is not added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7758808de12410ea04985fe2bb4b2c21" name="a7758808de12410ea04985fe2bb4b2c21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7758808de12410ea04985fe2bb4b2c21">&#9670;&#160;</a></span>removeGroupSystem() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void removeGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>type of the system group </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system group is not found, or system is not added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5b566fbdf5421db87a8bdf85157b9c40" name="a5b566fbdf5421db87a8bdf85157b9c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b566fbdf5421db87a8bdf85157b9c40">&#9670;&#160;</a></span>removeGroupSystem() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class G, class S&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void removeGroupSystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">G</td><td>type of the system group </td></tr>
+    <tr><td class="paramname">T</td><td>target system type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system or group is not found, or system is not added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8da6c26483d355af9035565de38b42bd" name="a8da6c26483d355af9035565de38b42bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8da6c26483d355af9035565de38b42bd">&#9670;&#160;</a></span>tryRemoveGroupSystem() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryRemoveGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>groupType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group if exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">groupType</td><td>typeid() of the system group </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is removed from the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="aa6b6a80e349e75618bfa4afcf67e3de1" name="aa6b6a80e349e75618bfa4afcf67e3de1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6b6a80e349e75618bfa4afcf67e3de1">&#9670;&#160;</a></span>tryRemoveGroupSystem() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryRemoveGroupSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classecsm_1_1System.html">System</a> *</td>          <td class="paramname"><span class="paramname"><em>system</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group if exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>type of the system group </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">system</td><td>target system instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is removed from the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="ac600d8c9bb96e9cd37cb0845f756974c" name="ac600d8c9bb96e9cd37cb0845f756974c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac600d8c9bb96e9cd37cb0845f756974c">&#9670;&#160;</a></span>tryRemoveGroupSystem() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class G, class S&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryRemoveGroupSystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes specified system from the system group if exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">G</td><td>type of the system group </td></tr>
+    <tr><td class="paramname">T</td><td>target system type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if system is removed from the group, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="af3fded87ed2c4abe38397808e4f203a5" name="af3fded87ed2c4abe38397808e4f203a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3fded87ed2c4abe38397808e4f203a5">&#9670;&#160;</a></span>hasSystemGroup() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hasSystemGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if system group is exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>target system group typeid() </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2cbf90fc43c3c304ce50b391f62d1359" name="a2cbf90fc43c3c304ce50b391f62d1359"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cbf90fc43c3c304ce50b391f62d1359">&#9670;&#160;</a></span>hasSystemGroup() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hasSystemGroup </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if system group is exist. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target system group type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a345ea93c25790f97ad3500f3077403d6" name="a345ea93c25790f97ad3500f3077403d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a345ea93c25790f97ad3500f3077403d6">&#9670;&#160;</a></span>getSystemGroup() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; &amp; getSystemGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specified system group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>target system group typeid() </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system group is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4b519ff309aa97a93e8519c8b6125208" name="a4b519ff309aa97a93e8519c8b6125208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b519ff309aa97a93e8519c8b6125208">&#9670;&#160;</a></span>getSystemGroup() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; &amp; getSystemGroup </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specified system group. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target system group type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if system group is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad8b134f99f5b55f768a0912fd224d09c" name="ad8b134f99f5b55f768a0912fd224d09c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8b134f99f5b55f768a0912fd224d09c">&#9670;&#160;</a></span>tryGetSystemGroup() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; * tryGetSystemGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specified system group if exist, otherwise nullptr. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>target system group typeid() </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5dedb4f16fc5f4172f7acd36956b9ffd" name="a5dedb4f16fc5f4172f7acd36956b9ffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dedb4f16fc5f4172f7acd36956b9ffd">&#9670;&#160;</a></span>tryGetSystemGroup() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="elRef" href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a>&lt; <a class="el" href="classecsm_1_1System.html">System</a> * &gt; * tryGetSystemGroup </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns specified system group if exist, otherwise nullptr. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target system group type </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -595,7 +1342,7 @@ template&lt;class T = System&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -670,7 +1417,7 @@ template&lt;class T = System&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -744,7 +1491,7 @@ template&lt;class T = System&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = System&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -913,7 +1660,7 @@ template&lt;class T = System&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1000,7 +1747,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1087,7 +1834,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1172,7 +1919,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1289,7 +2036,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1376,7 +2123,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1418,8 +2165,8 @@ template&lt;class T = Component&gt; </div>
 
 </div>
 </div>
-<a id="a5270fade348d1527c02264533f723baf" name="a5270fade348d1527c02264533f723baf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5270fade348d1527c02264533f723baf">&#9670;&#160;</a></span>tryGet() <span class="overload">[3/4]</span></h2>
+<a id="a78b0592900203146094fc9bc692a29da" name="a78b0592900203146094fc9bc692a29da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78b0592900203146094fc9bc692a29da">&#9670;&#160;</a></span>tryGet() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1428,7 +2175,7 @@ template&lt;class T = Component&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt; tryGet </td>
+          <td class="memname"><a class="el" href="classecsm_1_1OptView.html">OptView</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt; tryGet </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
         </tr>
@@ -1445,7 +2192,7 @@ template&lt;class T = Component&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns component data accessor if exist, otherwise null. (<a class="el" href="structecsm_1_1View.html">View</a>) </p>
+<p>Returns component data accessor if exist, otherwise null. (<a class="el" href="classecsm_1_1OptView.html">OptView</a>) </p>
 <dl class="section warning"><dt>Warning</dt><dd>Do not store views, use them only in place. Because component memory can be reallocated later. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>It also checks for component in the garbage pool.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1458,19 +2205,19 @@ template&lt;class T = Component&gt; </div>
 
 </div>
 </div>
-<a id="a8c493b54f875f21813046b977349a7ae" name="a8c493b54f875f21813046b977349a7ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c493b54f875f21813046b977349a7ae">&#9670;&#160;</a></span>tryGet() <span class="overload">[4/4]</span></h2>
+<a id="a65af42666c98c48f41173818d3c7b665" name="a65af42666c98c48f41173818d3c7b665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65af42666c98c48f41173818d3c7b665">&#9670;&#160;</a></span>tryGet() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt; tryGet </td>
+          <td class="memname"><a class="el" href="classecsm_1_1OptView.html">OptView</a>&lt; T &gt; tryGet </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span></td><td>)</td>
           <td> const</td>
@@ -1483,7 +2230,90 @@ template&lt;class T = Component&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns component data accessor if exist, otherwise null. (<a class="el" href="structecsm_1_1View.html">View</a>) </p>
+<p>Returns component data accessor if exist, otherwise null. (<a class="el" href="classecsm_1_1OptView.html">OptView</a>) </p>
+<dl class="section warning"><dt>Warning</dt><dd>Do not store views, use them only in place. Because component memory can be reallocated later. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>It also checks for component in the garbage pool.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>entity instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target component type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a008cd4fdff6afb1418b99180a9b325c3" name="a008cd4fdff6afb1418b99180a9b325c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a008cd4fdff6afb1418b99180a9b325c3">&#9670;&#160;</a></span>getOrAdd() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structecsm_1_1View.html">View</a>&lt; <a class="el" href="structecsm_1_1Component.html">Component</a> &gt; getOrAdd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns component data accessor if exist, otherwise creates a new one. (<a class="el" href="structecsm_1_1View.html">View</a>) </p>
+<dl class="section warning"><dt>Warning</dt><dd>Do not store views, use them only in place. Because component memory can be reallocated later. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>It also checks for component in the garbage pool.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>entity instance </td></tr>
+    <tr><td class="paramname">componentType</td><td>target component typeid() </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa748428008f8dd437871a6289db60da6" name="aa748428008f8dd437871a6289db60da6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa748428008f8dd437871a6289db60da6">&#9670;&#160;</a></span>getOrAdd() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structecsm_1_1View.html">View</a>&lt; T &gt; getOrAdd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns component data accessor if exist, otherwise creates a new one. (<a class="el" href="structecsm_1_1View.html">View</a>) </p>
 <dl class="section warning"><dt>Warning</dt><dd>Do not store views, use them only in place. Because component memory can be reallocated later. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>It also checks for component in the garbage pool.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1552,7 +2382,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1640,7 +2470,7 @@ template&lt;class T = Component&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T = Component&gt; </div>
+template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1676,8 +2506,8 @@ template&lt;class T = Component&gt; </div>
 
 </div>
 </div>
-<a id="ae17479bb0a0f1a24dcb452031e3d075e" name="ae17479bb0a0f1a24dcb452031e3d075e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae17479bb0a0f1a24dcb452031e3d075e">&#9670;&#160;</a></span>hasComponents()</h2>
+<a id="aa296a1a2030b3a7495c5301c601dc342" name="aa296a1a2030b3a7495c5301c601dc342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa296a1a2030b3a7495c5301c601dc342">&#9670;&#160;</a></span>hasComponents()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1686,7 +2516,7 @@ template&lt;class T = Component&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t hasComponents </td>
+          <td class="memname">bool hasComponents </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span></td><td>)</td>
           <td> const</td>
@@ -1736,108 +2566,6 @@ template&lt;class T = Component&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entity</td><td>target entity instance </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac9c055d5a25e558b60703517ab56e749" name="ac9c055d5a25e558b60703517ab56e749"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9c055d5a25e558b60703517ab56e749">&#9670;&#160;</a></span>reset() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void reset </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resets entity component data. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">entity</td><td>target entity instance </td></tr>
-    <tr><td class="paramname">componentType</td><td>target component typeid() </td></tr>
-    <tr><td class="paramname">full</td><td>reset all component data</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if component is not found. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a274d9db7f89e1050f6cc42e3a9ae8529" name="a274d9db7f89e1050f6cc42e3a9ae8529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a274d9db7f89e1050f6cc42e3a9ae8529">&#9670;&#160;</a></span>reset() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T = Component&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void reset </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resets entity component data. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">entity</td><td>entity instance </td></tr>
-    <tr><td class="paramname">full</td><td>reset all component data </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>target component type</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if component is not found. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1906,6 +2634,200 @@ template&lt;class T = Component&gt; </div>
   <table class="params">
     <tr><td class="paramname">entity</td><td>target entity instance </td></tr>
     <tr><td class="paramname">capacity</td><td>component array capacity </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac9c055d5a25e558b60703517ab56e749" name="ac9c055d5a25e558b60703517ab56e749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9c055d5a25e558b60703517ab56e749">&#9670;&#160;</a></span>reset() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets entity component data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>target entity instance </td></tr>
+    <tr><td class="paramname">componentType</td><td>target component typeid() </td></tr>
+    <tr><td class="paramname">full</td><td>reset all component data</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if component is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a274d9db7f89e1050f6cc42e3a9ae8529" name="a274d9db7f89e1050f6cc42e3a9ae8529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a274d9db7f89e1050f6cc42e3a9ae8529">&#9670;&#160;</a></span>reset() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets entity component data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>entity instance </td></tr>
+    <tr><td class="paramname">full</td><td>reset all component data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target component type</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classecsm_1_1EcsmError.html" title="ECSM error (exception) class.">EcsmError</a></td><td>if component is not found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6dad7eea27cd8e76ace86bcd4b9e29b8" name="a6dad7eea27cd8e76ace86bcd4b9e29b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dad7eea27cd8e76ace86bcd4b9e29b8">&#9670;&#160;</a></span>tryReset() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryReset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/types/type_index.html">std::type_index</a></td>          <td class="paramname"><span class="paramname"><em>componentType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets entity component data, if added. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if component exists and was resetted.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>target entity instance </td></tr>
+    <tr><td class="paramname">componentType</td><td>target component typeid() </td></tr>
+    <tr><td class="paramname">full</td><td>reset all component data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad4312f4a09d1d2c417175f31ee894506" name="ad4312f4a09d1d2c417175f31ee894506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4312f4a09d1d2c417175f31ee894506">&#9670;&#160;</a></span>tryReset() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tryReset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structecsm_1_1ID.html">ID</a>&lt; <a class="el" href="classecsm_1_1Entity.html">Entity</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>entity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets entity component data, if added. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if component exists and was resetted.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>entity instance </td></tr>
+    <tr><td class="paramname">full</td><td>reset all component data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>target component type </td></tr>
   </table>
   </dd>
 </dl>
@@ -2218,8 +3140,8 @@ template&lt;class T = Component&gt; </div>
 
 </div>
 </div>
-<a id="a6d598de563bb85a376696f5b7b056339" name="a6d598de563bb85a376696f5b7b056339"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d598de563bb85a376696f5b7b056339">&#9670;&#160;</a></span>tryRunEvent()</h2>
+<a id="aa813139ba8953739c982189b1834fe44" name="aa813139ba8953739c982189b1834fe44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa813139ba8953739c982189b1834fe44">&#9670;&#160;</a></span>tryRunEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2227,8 +3149,12 @@ template&lt;class T = Component&gt; </div>
         <tr>
           <td class="memname">bool tryRunEvent </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a></td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td class="paramtype"><a class="elRef" href="https://en.cppreference.com/w/cpp/string/basic_string_view.html">std::string_view</a></td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>andOrdered</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2237,10 +3163,11 @@ template&lt;class T = Component&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>target event name </td></tr>
+    <tr><td class="paramname">andOrdered</td><td>including ordered events</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if event is found. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if event is found and matches andOrdered state. </dd></dl>
 
 </div>
 </div>
@@ -2428,6 +3355,34 @@ template&lt;class T = Component&gt; </div>
 
 <p>Returns all manager systems. </p>
 <dl class="section note"><dt>Note</dt><dd>Use manager functions to access systems. </dd></dl>
+
+</div>
+</div>
+<a id="afd92f35aa6ce3ecf93a911d34e0f1d31" name="afd92f35aa6ce3ecf93a911d34e0f1d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd92f35aa6ce3ecf93a911d34e0f1d31">&#9670;&#160;</a></span>getSystemGroups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SystemGroups &amp; getSystemGroups </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns registered system groups. </p>
+<dl class="section note"><dt>Note</dt><dd>Use manager functions to access system groups. </dd></dl>
 
 </div>
 </div>

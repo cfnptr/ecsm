@@ -12,6 +12,7 @@ var annotated_dup =
       [ "ID", "structecsm_1_1ID.html", "structecsm_1_1ID" ],
       [ "LinearPool", "classecsm_1_1LinearPool.html", "classecsm_1_1LinearPool" ],
       [ "Manager", "classecsm_1_1Manager.html", "classecsm_1_1Manager" ],
+      [ "OptView", "classecsm_1_1OptView.html", "classecsm_1_1OptView" ],
       [ "Ref", "structecsm_1_1Ref.html", "structecsm_1_1Ref" ],
       [ "Singleton", "classecsm_1_1Singleton.html", "classecsm_1_1Singleton" ],
       [ "SvEqual", "structecsm_1_1SvEqual.html", null ],

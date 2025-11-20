@@ -15,6 +15,7 @@ var hierarchy =
     [ "ID< T >", "structecsm_1_1ID.html", null ],
     [ "LinearPool< T, DestroyItems >::Iterator", "structecsm_1_1LinearPool_1_1Iterator.html", null ],
     [ "LinearPool< T, DestroyItems >", "classecsm_1_1LinearPool.html", null ],
+    [ "OptView< T >", "classecsm_1_1OptView.html", null ],
     [ "Ref< T >", "structecsm_1_1Ref.html", null ],
     [ "Singleton< T, UseManager >", "classecsm_1_1Singleton.html", null ],
     [ "Singleton< DoNotDestroySystem >", "classecsm_1_1Singleton.html", [

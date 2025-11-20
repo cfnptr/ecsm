@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.4.0</span>
+   <div id="projectname">ECSM<span id="projectnumber">&#160;v0.5.0</span>
    </div>
   </td>
  </tr>
@@ -168,9 +168,8 @@ instance = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code hl_function" href="classecsm_1_1Singleton.html#a1525ea5b29375d5ae0c50f5cdeb60ffa">ecsm::Manager::Instance::get</a>()-&gt;subscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">manager-&gt;subscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 <div class="ttc" id="abind_html"><div class="ttname"><a href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a></div><div class="ttdeci">T bind(T... args)</div></div>
-<div class="ttc" id="aclassecsm_1_1Singleton_html_a1525ea5b29375d5ae0c50f5cdeb60ffa"><div class="ttname"><a href="classecsm_1_1Singleton.html#a1525ea5b29375d5ae0c50f5cdeb60ffa">ecsm::Singleton::get</a></div><div class="ttdeci">static T * get()</div><div class="ttdoc">Returns class singleton or manager instance.</div><div class="ttdef"><b>Definition</b> singleton.hpp:99</div></div>
 </div><!-- fragment -->
 <p>Subscribes System function to the event. </p>
 
@@ -194,7 +193,7 @@ instance = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code hl_function" href="classecsm_1_1Singleton.html#a1525ea5b29375d5ae0c50f5cdeb60ffa">ecsm::Manager::Instance::get</a>()-&gt;unsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">manager-&gt;unsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Unsubscribes System function from the event. </p>
 
@@ -218,7 +217,7 @@ instance = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code hl_function" href="classecsm_1_1Singleton.html#a1525ea5b29375d5ae0c50f5cdeb60ffa">ecsm::Manager::Instance::get</a>()-&gt;trySubscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">manager-&gt;trySubscribeToEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Subscribes System function to the event if exist. </p>
 
@@ -242,7 +241,7 @@ instance = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code hl_function" href="classecsm_1_1Singleton.html#a1525ea5b29375d5ae0c50f5cdeb60ffa">ecsm::Manager::Instance::get</a>()-&gt;tryUnsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
+<b>Value:</b><div class="fragment"><div class="line">manager-&gt;tryUnsubscribeFromEvent(name, <a class="code hl_functionRef" href="https://en.cppreference.com/w/cpp/utility/functional/bind.html">std::bind</a>(&amp;func, <span class="keyword">this</span>))</div>
 </div><!-- fragment -->
 <p>Unsubscribes System function from the event if exist. </p>
 
