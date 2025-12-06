@@ -135,7 +135,7 @@ public:
 	template<class U>
 	constexpr explicit View(const View<U>& view) noexcept : item((T*)*view)
 	#ifndef NDEBUG
-		, poolVersion(view.getPoolVersion()), version(view.getVersion())
+		, poolVersion(view.getPoolVersion()), version(view.getViewVersion())
 	#endif
 	{ }
 
@@ -191,7 +191,7 @@ private:
 	uint64_t version = 0;
 public:
 	const std::atomic_uint64_t* getPoolVersion() const noexcept { return poolVersion; }
-	uint64_t getVersion() const noexcept { return version; }
+	uint64_t getViewVersion() const noexcept { return version; }
 	#endif
 };
 
