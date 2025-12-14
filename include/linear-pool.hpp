@@ -339,7 +339,7 @@ private:
 	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
-	constexpr Ref() = default;
+	constexpr Ref() noexcept = default;
 
 	/**
 	 * @brief Creates a new item reference. (Allocates counter)
