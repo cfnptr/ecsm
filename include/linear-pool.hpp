@@ -31,7 +31,7 @@ namespace ecsm
 {
 
 template<class T>
-class OptView;
+struct OptView;
 template<class T, bool Destroy = true>
 class LinearPool;
 
@@ -121,7 +121,7 @@ private:
 	constexpr View(T* item) noexcept : item(item) { }
 	#endif
 	
-	friend class OptView<T>;
+	friend struct OptView<T>;
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
