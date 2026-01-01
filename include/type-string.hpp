@@ -65,4 +65,4 @@ static std::string typeToString()
 	return typeToString(typeid(T));
 }
 
-}; // namespace ecsm
+} // namespace ecsm
