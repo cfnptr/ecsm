@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2022-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,20 +58,20 @@ struct SvEqual
 };
 
 /**
- * @brief Subscribes @ref System function to the event.
+ * @brief Subscribes @ref ecsm::System function to the event.
  */
 #define ECSM_SUBSCRIBE_TO_EVENT(name, func) manager->subscribeToEvent(name, std::bind(&func, this))
 /**
- * @brief Unsubscribes @ref System function from the event.
+ * @brief Unsubscribes @ref ecsm::System function from the event.
  */
 #define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
- * @brief Subscribes @ref System function to the event if exist.
+ * @brief Subscribes @ref ecsm::System function to the event if exist.
  */
 #define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) manager->trySubscribeToEvent(name, std::bind(&func, this))
 /**
- * @brief Unsubscribes @ref System function from the event if exist.
+ * @brief Unsubscribes @ref ecsm::System function from the event if exist.
  */
 #define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) manager->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
@@ -187,9 +187,9 @@ public:
 	 */
 	struct ComponentData final
 	{
-		size_t type = 0;
-		System* system = nullptr;
-		ID<Component> instance = {};
+		size_t type = 0;             /**< Component type hash code. */
+		System* system = nullptr;    /**< Component system instance. */
+		ID<Component> instance = {}; /**< Component pool instance. */
 	};
 private:
 	ComponentData* components = nullptr;
@@ -309,10 +309,16 @@ public:
 	{
 		using Subscribers = std::vector<std::function<void()>>;
 
-		std::string name;
-		Subscribers subscribers;
-		bool isOrdered = false;
+		std::string name;        /**< Unique name of the event. */
+		Subscribers subscribers; /**< Event subscribers array. */
+		bool isOrdered = false;  /**< Does this event execute in order. */
 
+		/**
+		 * @brief Creates a new event container.
+		 *
+		 * @param name target event name
+		 * @param isOrdered should event execute in order
+		 */
 		Event(std::string_view name, bool isOrdered = true) : 
 			name(name), isOrdered(isOrdered) { }
 
@@ -321,7 +327,7 @@ public:
 		 */
 		bool hasSubscribers() const noexcept { return !subscribers.empty(); }
 		/**
-		 * @brief Calls all event subscribers.
+		 * @brief Calls all event subscribers. (Ordered)
 		 */
 		void run() const
 		{
@@ -357,7 +363,7 @@ private:
 
 	void addSystem(System* system, std::type_index type);
 public:
-	volatile bool isRunning = false;
+	volatile bool isRunning = false; /**< Is manager update loop running. */
 
 	/**
 	 * @brief Creates a new manager instance.

@@ -1,6 +1,10 @@
 var classecsm_1_1Entity =
 [
-    [ "ComponentData", "classecsm_1_1Entity.html#structecsm_1_1Entity_1_1ComponentData", null ],
+    [ "ComponentData", "classecsm_1_1Entity.html#structecsm_1_1Entity_1_1ComponentData", [
+      [ "type", "classecsm_1_1Entity.html#a4b9e5194831dc1c27484a9a7a32e9b09", null ],
+      [ "system", "classecsm_1_1Entity.html#af27ccd765f13a4b7bd119dc7579e2746", null ],
+      [ "instance", "classecsm_1_1Entity.html#a6ad7ebfeb6a9e1f5a2e90f6c39e273db", null ]
+    ] ],
     [ "destroy", "classecsm_1_1Entity.html#a7bffc6f6c447af261125c1a2a45e85af", null ],
     [ "getComponents", "classecsm_1_1Entity.html#a59cae77cbb478d1b0a457a653ee01ebb", null ],
     [ "getComponentCount", "classecsm_1_1Entity.html#ac39a6a768e11471e2c1ade3bc245613f", null ],

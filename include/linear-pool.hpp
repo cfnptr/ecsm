@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2022-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,6 +54,9 @@ private:
 	friend class LinearPool<T, true>;
 	friend class LinearPool<T, false>;
 public:
+	/**
+	 * @brief Creates null item identitifier.
+	 */
 	constexpr ID() noexcept = default;
 
 	/**
@@ -190,7 +193,13 @@ private:
 	const std::atomic_uint64_t* poolVersion = nullptr;
 	uint64_t version = 0;
 public:
+	/**
+	 * @brief Returns view parent linear pool version pointer. (Debug only!)
+	 */
 	const std::atomic_uint64_t* getPoolVersion() const noexcept { return poolVersion; }
+	/**
+	 * @brief Returns item view version number. (Debug only!)
+	 */
 	uint64_t getViewVersion() const noexcept { return version; }
 	#endif
 };
@@ -207,7 +216,7 @@ private:
 	View<T> view = {};
 public:
 	/**
-	 * @brief Creates a new null optional view.
+	 * @brief Creates null optional view.
 	 */
 	constexpr OptView() noexcept = default;
 
@@ -319,8 +328,14 @@ public:
 private:
 	volatile bool nullChecked = false;
 public:
+	/**
+	 * @brief Returns true if view was checked for null. (Debug only!)
+	 */
 	bool isNullChecked() const noexcept { return nullChecked; }
 	#endif
+	/**
+	 * @brief Returns optional view internal item view.
+	 */
 	const View<T>& getView_() const noexcept { return view; }
 };
 
@@ -339,8 +354,10 @@ private:
 	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
+	/**
+	 * @brief Creates null item reference.
+	 */
 	constexpr Ref() noexcept = default;
-
 	/**
 	 * @brief Creates a new item reference. (Allocates counter)
 	 * @param item target item instance
@@ -351,6 +368,7 @@ public:
 		if (item)
 			counter = new std::atomic<int64_t>(1);
 	}
+
 	/**
 	 * @brief Destroys item reference. (Decrements or deallocates counter)
 	 */

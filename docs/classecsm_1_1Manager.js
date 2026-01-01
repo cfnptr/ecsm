@@ -103,5 +103,6 @@ var classecsm_1_1Manager =
     [ "setSingletonCurrent", "classecsm_1_1Manager.html#a30a05f157da7d98642e705fa549c27f2", null ],
     [ "unsetSingletonCurrent", "classecsm_1_1Manager.html#a53826f67d5c9a2876b138c3f4bc835a6", null ],
     [ "setSingleton", "classecsm_1_1Manager.html#a13860914a422213aecadfc1a2737059f", null ],
-    [ "unsetSingleton", "classecsm_1_1Manager.html#ab802efe00138b8e31a2a376a41c5b155", null ]
+    [ "unsetSingleton", "classecsm_1_1Manager.html#ab802efe00138b8e31a2a376a41c5b155", null ],
+    [ "isRunning", "classecsm_1_1Manager.html#afdf24e281764d1399ee4a5cbb1ae92f9", null ]
 ];

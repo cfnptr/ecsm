@@ -5,10 +5,14 @@ var ecsm_8hpp =
     [ "Component", "structecsm_1_1Component.html", "structecsm_1_1Component" ],
     [ "System", "classecsm_1_1System.html", "classecsm_1_1System" ],
     [ "Entity", "classecsm_1_1Entity.html", "classecsm_1_1Entity" ],
-    [ "Entity::ComponentData", "classecsm_1_1Entity.html#structecsm_1_1Entity_1_1ComponentData", null ],
+    [ "Entity::ComponentData", "classecsm_1_1Entity.html#structecsm_1_1Entity_1_1ComponentData", [
+      [ "type", "classecsm_1_1Entity.html#a4b9e5194831dc1c27484a9a7a32e9b09", null ],
+      [ "system", "classecsm_1_1Entity.html#af27ccd765f13a4b7bd119dc7579e2746", null ],
+      [ "instance", "classecsm_1_1Entity.html#a6ad7ebfeb6a9e1f5a2e90f6c39e273db", null ]
+    ] ],
     [ "Manager", "classecsm_1_1Manager.html", "classecsm_1_1Manager" ],
     [ "Manager::Event", "structecsm_1_1Manager_1_1Event.html", "structecsm_1_1Manager_1_1Event" ],
-    [ "ComponentSystem< T, DestroyComponents >", "classecsm_1_1ComponentSystem.html", "classecsm_1_1ComponentSystem" ],
+    [ "ComponentSystem&lt; T, DestroyComponents &gt;", "classecsm_1_1ComponentSystem.html", "classecsm_1_1ComponentSystem" ],
     [ "DoNotDestroyComponent", "structecsm_1_1DoNotDestroyComponent.html", "structecsm_1_1DoNotDestroyComponent" ],
     [ "DoNotDestroySystem", "classecsm_1_1DoNotDestroySystem.html", "classecsm_1_1DoNotDestroySystem" ],
     [ "DoNotDuplicateComponent", "structecsm_1_1DoNotDuplicateComponent.html", "structecsm_1_1DoNotDuplicateComponent" ],

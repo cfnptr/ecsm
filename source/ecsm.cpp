@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2022-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 using namespace ecsm;
 
-//**********************************************************************************************************************
 ID<Component> System::createComponent(ID<Entity> entity)
 {
 	throw EcsmError("System has no components.");
@@ -51,7 +50,6 @@ void System::disposeComponents()
 	return;
 }
 
-//**********************************************************************************************************************
 bool Entity::destroy()
 {
 	for (uint32_t i = 0; i < count; i++)

@@ -48,12 +48,12 @@ var NAVTREE =
         [ "1. Install Visual Studio Code (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
         [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages", null ]
       ] ],
-      [ "macOS (14/15)", "md_BUILDING.html#macos-1415", [
+      [ "macOS (15/26)", "md_BUILDING.html#macos-1526", [
         [ "1. Install Xcode (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
         [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages-1", null ]
       ] ],
       [ "Build Project", "md_BUILDING.html#build-project", [
-        [ "Visual Studio (2022)", "md_BUILDING.html#visual-studio-2022", null ],
+        [ "Visual Studio", "md_BUILDING.html#visual-studio", null ],
         [ "Visual Studio Code (VS Code)", "md_BUILDING.html#visual-studio-code-vs-code", null ]
       ] ]
     ] ],
@@ -62,7 +62,7 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ]
@@ -81,7 +81,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"md_BUILDING.html#autotoc_md3-install-cmake"
+"index.html#building-cihttpsgithubcomcfnptrecsmactionsworkflowscmakeymlbadgesvg"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
