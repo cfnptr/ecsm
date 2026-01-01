@@ -12,11 +12,14 @@ See the [documentation](https://cfnptr.github.io/ecsm)
 ## Features
 
 * Straightforward template architecture
-* Custom event creation support
-* Cache friendly linear pools
 * Acceptable compilation time
+* Custom event creation support
+* Custom system groups creation
+* Cache friendly linear pools
 * Fast component iteration
 * Fast entity component access
+* Smart pool item views (zero-cost)
+* Deferred components destruction
 * Singleton class pattern
 
 ## Usage example
@@ -80,9 +83,12 @@ void ecsmExample()
 
 ## Supported operating systems
 
-* Windows
-* macOS
-* Ubuntu (Linux)
+* Windows (10/11)
+* Ubuntu (22.04/24.04)
+* macOS (15/26)
+
+This list includes only those systems on which functionality testing is conducted.
+However, you can also compile it under any other Linux distribution or operating system.
 
 ## Build requirements
 
