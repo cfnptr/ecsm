@@ -644,7 +644,7 @@ public:
 	 * @param instance item identifier in the pool or null
 	 * @tparam T type of the item in the linear pool
 	 */
-	void destroy(ID<T> instance)
+	void destroy(ID<T>& instance)
 	{
 		if (!instance)
 			return;
@@ -657,6 +657,7 @@ public:
 		#endif
 
 		garbageItems.push_back(instance);
+		instance = {};
 	}
 
 	/*******************************************************************************************************************

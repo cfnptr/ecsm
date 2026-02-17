@@ -725,7 +725,7 @@ public:
 	 * @note Entities are not destroyed immediately, only after the dispose call.
 	 * @param instance target entity instance or null
 	 */
-	void destroy(ID<Entity> instance) { entities.destroy(instance); }
+	void destroy(ID<Entity>& instance) { entities.destroy(instance); }
 	/**
 	 * @brief Returns entity internal data accessor. (@ref View)
 	 * @warning Do not store views, use them only in place. Because entity memory can be reallocated later.
@@ -1421,9 +1421,10 @@ protected:
 	 */
 	void destroyComponent(ID<Component> instance) override
 	{
-		auto component = components.get(ID<T>(instance));
-		resetComponent(View<Component>(component), false);
-		components.destroy(ID<T>(instance));
+		auto component = ID<T>(instance);
+		auto componentView = components.get(component);
+		resetComponent(View<Component>(componentView), false);
+		components.destroy(component);
 	}
 	/**
 	 * @brief Resets system component data.
