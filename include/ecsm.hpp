@@ -723,7 +723,7 @@ public:
 	/**
 	 * @brief Destroys entity instance and it components.
 	 * @note Entities are not destroyed immediately, only after the dispose call.
-	 * @param instance target entity instance or null
+	 * @param[in,out] instance target entity instance or null
 	 */
 	void destroy(ID<Entity>& instance) { entities.destroy(instance); }
 	/**

@@ -641,7 +641,7 @@ public:
 	 * @brief Destroys linear pool item.
 	 * @details It puts items to the garbage array, and destroys them after @ref dispose() call.
 	 * 
-	 * @param instance item identifier in the pool or null
+	 * @param[in,out] instance item identifier in the pool or null
 	 * @tparam T type of the item in the linear pool
 	 */
 	void destroy(ID<T>& instance)
