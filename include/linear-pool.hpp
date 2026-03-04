@@ -55,7 +55,7 @@ private:
 	friend class LinearPool<T, false>;
 public:
 	/**
-	 * @brief Creates null item identitifier.
+	 * @brief Creates null item identifier.
 	 */
 	constexpr ID() noexcept = default;
 
