@@ -47,8 +47,7 @@ static std::string typeToString(std::type_index type)
 	std::string result;
 	if (strlen(name) > 0)
 		result.assign(name);
-	else
-		result = std::to_string(type.hash_code());
+	else result = std::to_string(type.hash_code());
 
 	#ifdef __GNUG__
 	free(demangledName);

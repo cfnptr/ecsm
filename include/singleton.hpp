@@ -70,7 +70,6 @@ protected:
 				"type: " + typeToString(typeid(T)) + ")");
 		}
 		singletonInstance = (T*)this;
-		return;
 	}
 	/**
 	 * @brief Unsets this class singleton instance.
@@ -106,7 +105,7 @@ public:
 			"type: " + typeToString(typeid(T)) + ")");
 	}
 	/**
-	 * @brief Returns class singleton or manager instance if exist.
+	 * @brief Returns class singleton or manager instance if exists.
 	 */
 	static T* tryGet()
 	{

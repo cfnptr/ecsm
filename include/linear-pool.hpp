@@ -772,7 +772,7 @@ public:
 
 	/*******************************************************************************************************************
 	 * @brief Actually destroys items.
-	 * @details See the @ref destroy(). It marks destroyed item memory as free, and can reuse it later.
+	 * @details See the @ref LinearPool::destroy(). It marks destroyed item memory as free, and can reuse it later.
 	 */
 	void dispose()
 	{

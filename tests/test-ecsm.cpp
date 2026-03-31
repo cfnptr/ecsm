@@ -40,7 +40,7 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 		ECSM_SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		ECSM_SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
-	~TestSystem() final
+	~TestSystem() override
 	{
 		if (Manager::Instance::get()->isRunning)
 		{
@@ -53,14 +53,14 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 		unsetSingleton();
 	}
 
-	void copyComponent(View<Component> source, View<Component> destination) final
+	void copyComponent(View<Component> source, View<Component> destination) override
 	{
 		const auto sourceView = View<TestComponent>(source);
 		auto destinationView = View<TestComponent>(destination);
 		destinationView->ID = sourceView->ID;
 		destinationView->someData = sourceView->someData;
 	}
-	string_view getComponentName() const final
+	string_view getComponentName() const override
 	{
 		return "Test";
 	}

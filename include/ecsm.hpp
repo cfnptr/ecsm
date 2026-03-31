@@ -67,11 +67,11 @@ struct SvEqual
 #define ECSM_UNSUBSCRIBE_FROM_EVENT(name, func) manager->unsubscribeFromEvent(name, std::bind(&func, this))
 
 /**
- * @brief Subscribes @ref ecsm::System function to the event if exist.
+ * @brief Subscribes @ref ecsm::System function to the event if exists.
  */
 #define ECSM_TRY_SUBSCRIBE_TO_EVENT(name, func) manager->trySubscribeToEvent(name, std::bind(&func, this))
 /**
- * @brief Unsubscribes @ref ecsm::System function from the event if exist.
+ * @brief Unsubscribes @ref ecsm::System function from the event if exists.
  */
 #define ECSM_TRY_UNSUBSCRIBE_FROM_EVENT(name, func) manager->tryUnsubscribeFromEvent(name, std::bind(&func, this))
 
@@ -196,7 +196,7 @@ private:
 	uint32_t capacity = 0;
 	uint32_t count = 0;
 
-	inline static int compareComps(const void* a, const void* b) noexcept
+	static int compareComps(const void* a, const void* b) noexcept
 	{
 		const auto l = (const ComponentData*)a;
 		const auto r = (const ComponentData*)b;
@@ -210,8 +210,7 @@ private:
 		this->capacity = capacity;
 		if (this->capacity == 0)
 			components = (ComponentData*)malloc(sizeof(ComponentData) * capacity);
-		else
-			components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
+		else components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
 		if (!components) abort();
 	}
 	void addComponent(size_t type, System* system, ID<Component> instance)
@@ -425,13 +424,13 @@ public:
 	}
 
 	/**
-	 * @brief Terminates and destroys system if exist.
+	 * @brief Terminates and destroys system if exists.
 	 * @param type target system typeid()
 	 * @return True if system is destroyed, otherwise false.
 	 */
 	bool tryDestroySystem(std::type_index type);
 	/**
-	 * @brief Terminates and destroys system if exist.
+	 * @brief Terminates and destroys system if exists.
 	 * @tparam T target system type
 	 * @return True if system is destroyed, otherwise false.
 	 */
@@ -469,7 +468,7 @@ public:
 	 * @brief Adds specified system to the system group.
 	 * 
 	 * @tparam G type of the system group
-	 * @tparam T target system type
+	 * @tparam S target system type
 	 *
 	 * @throw EcsmError if system is not found or already added.
 	 */
@@ -482,7 +481,7 @@ public:
 	}
 
 	/**
-	 * @brief Adds specified system to the system group if exist.
+	 * @brief Adds specified system to the system group if exists.
 	 * 
 	 * @param groupType typeid() of the system group
 	 * @param[in] system target system instance
@@ -491,7 +490,7 @@ public:
 	 */
 	bool tryAddGroupSystem(std::type_index groupType, System* system);
 	/**
-	 * @brief Adds specified system to the system group if exist.
+	 * @brief Adds specified system to the system group if exists.
 	 * 
 	 * @tparam T type of the system group
 	 * @param[in] system target system instance
@@ -505,10 +504,10 @@ public:
 		return tryAddGroupSystem(typeid(T), system);
 	}
 	/**
-	 * @brief Adds specified system to the system group if exist.
+	 * @brief Adds specified system to the system group if exists.
 	 * 
 	 * @tparam G type of the system group
-	 * @tparam T target system type
+	 * @tparam S target system type
 	 *
 	 * @return True if system is added to the group, otherwise false.
 	 */
@@ -550,7 +549,7 @@ public:
 	 * @brief Removes specified system from the system group.
 	 * 
 	 * @tparam G type of the system group
-	 * @tparam T target system type
+	 * @tparam S target system type
 	 *
 	 * @throw EcsmError if system or group is not found, or system is not added.
 	 */
@@ -563,7 +562,7 @@ public:
 	}
 
 	/**
-	 * @brief Removes specified system from the system group if exist.
+	 * @brief Removes specified system from the system group if exists.
 	 * 
 	 * @param groupType typeid() of the system group
 	 * @param[in] system target system instance
@@ -572,7 +571,7 @@ public:
 	 */
 	bool tryRemoveGroupSystem(std::type_index groupType, System* system);
 	/**
-	 * @brief Removes specified system from the system group if exist.
+	 * @brief Removes specified system from the system group if exists.
 	 * 
 	 * @tparam T type of the system group
 	 * @param[in] system target system instance
@@ -586,10 +585,10 @@ public:
 		return tryRemoveGroupSystem(typeid(T), system);
 	}
 	/**
-	 * @brief Removes specified system from the system group if exist.
+	 * @brief Removes specified system from the system group if exists.
 	 * 
 	 * @tparam G type of the system group
-	 * @tparam T target system type
+	 * @tparam S target system type
 	 *
 	 * @return True if system is removed from the group, otherwise false.
 	 */
@@ -637,7 +636,7 @@ public:
 	const std::vector<System*>& getSystemGroup() const { return getSystemGroup(typeid(T)); }
 
 	/**
-	 * @brief Returns specified system group if exist, otherwise nullptr.
+	 * @brief Returns specified system group if exists, otherwise nullptr.
 	 * @param type target system group typeid()
 	 */
 	const std::vector<System*>* tryGetSystemGroup(std::type_index type) const noexcept
@@ -648,7 +647,7 @@ public:
 		return &result->second;
 	}
 	/**
-	 * @brief Returns specified system group if exist, otherwise nullptr.
+	 * @brief Returns specified system group if exists, otherwise nullptr.
 	 * @tparam T target system group type
 	 */
 	template<class T>
@@ -672,7 +671,7 @@ public:
 
 	/**
 	 * @brief Returns system instance.
-	 * @warning Be carefull with system pointer, it can be destroyed later.
+	 * @warning Be careful with system pointer, it can be destroyed later.
 	 * @param type target system typeid()
 	 * @throw EcsmError if system is not found.
 	 */
@@ -721,7 +720,7 @@ public:
 	 */
 	ID<Entity> createEntity() { return entities.create(); }
 	/**
-	 * @brief Destroys entity instance and it components.
+	 * @brief Destroys entity instance and its components.
 	 * @note Entities are not destroyed immediately, only after the dispose call.
 	 * @param[in,out] instance target entity instance or null
 	 */
@@ -922,7 +921,7 @@ public:
 	}
 
 	/*******************************************************************************************************************
-	 * @brief Returns component data accessor if exist, otherwise null. (@ref OptView)
+	 * @brief Returns component data accessor if exists, otherwise null. (@ref OptView)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
@@ -938,7 +937,7 @@ public:
 		return OptView<Component>(componentData->system->getComponent(componentData->instance));
 	}
 	/**
-	 * @brief Returns component data accessor if exist, otherwise null. (@ref OptView)
+	 * @brief Returns component data accessor if exists, otherwise null. (@ref OptView)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
@@ -953,7 +952,7 @@ public:
 	}
 
 	/**
-	 * @brief Returns component data accessor if exist, otherwise creates a new one. (@ref View)
+	 * @brief Returns component data accessor if exists, otherwise creates a new one. (@ref View)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
@@ -968,7 +967,7 @@ public:
 		return add(entity, componentType);
 	}
 	/**
-	 * @brief Returns component data accessor if exist, otherwise creates a new one. (@ref View)
+	 * @brief Returns component data accessor if exists, otherwise creates a new one. (@ref View)
 	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
 	 * @note It also checks for component in the garbage pool.
 	 * 
@@ -1062,7 +1061,7 @@ public:
 	 */
 	uint32_t getComponentCount(ID<Entity> entity) const noexcept
 	{
-		return (uint32_t)entities.get(entity)->getComponentCount();
+		return entities.get(entity)->getComponentCount();
 	}
 
 	/**
@@ -1127,7 +1126,7 @@ public:
 
 	/**
 	 * @brief Resets entity component data, if added.
-	 * @return True if component exists and was resetted.
+	 * @return True if component exists and was reset.
 	 *
 	 * @param entity target entity instance
 	 * @param componentType target component typeid()
@@ -1146,7 +1145,7 @@ public:
 	}
 	/**
 	 * @brief Resets entity component data, if added.
-	 * @return True if component exists and was resetted.
+	 * @return True if component exists and was reset.
 	 * 
 	 * @param entity entity instance
 	 * @param full reset all component data
@@ -1198,7 +1197,7 @@ public:
 	 */
 	void unregisterEvent(std::string_view name);
 	/**
-	 * @brief Unregisters event if exist.
+	 * @brief Unregisters event if exists.
 	 * @param name target event name
 	 * @return True if event is unregistered, otherwise false.
 	 */
@@ -1220,7 +1219,7 @@ public:
 	 */
 	const Event& getEvent(std::string_view name) const;
 	/**
-	 * @brief Returns event data container by name if it exist, otherwise null.
+	 * @brief Returns event data container by name if exists, otherwise null.
 	 * @param name target event name
 	 */
 	const Event* tryGetEvent(std::string_view name) const;
@@ -1275,7 +1274,7 @@ public:
 	 */
 	bool trySubscribeToEvent(std::string_view name, const std::function<void()>& onEvent);
 	/**
-	 * @brief Removes existing event subscriber if exist.
+	 * @brief Removes existing event subscriber if exists.
 	 * 
 	 * @param name target event name
 	 * @param[in] onEvent on event function callback
@@ -1369,7 +1368,7 @@ public:
 	 */
 	void lock() { locker.lock(); }
 	/**
-	 * @brief Tries to locks manager for synchronous access. (MT-Safe)
+	 * @brief Tries to lock manager for synchronous access. (MT-Safe)
 	 * @note Use it if you want to access manager from multiple threads asynchronously.
 	 */
 	bool tryLock() noexcept { return locker.try_lock(); }

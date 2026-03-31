@@ -417,7 +417,6 @@ void Manager::resetComponents(ID<Entity> entity, bool full)
 	{
 		const auto& componentData = components[i];
 		auto componentView = componentData.system->getComponent(componentData.instance);
-		auto entity = componentView->getEntity();
 		componentData.system->resetComponent(componentView, full);
 		componentView->entity = entity; // Note: full reset may clear all data.
 	}
