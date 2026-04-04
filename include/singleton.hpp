@@ -58,6 +58,15 @@ protected:
 		if (set)
 			setSingleton();
 	}
+	/**
+	 * @brief Destroys singleton class instance.
+	 * @note It also unsets singleton if it's the same as this system.
+	 */
+	virtual ~Singleton()
+	{
+		if (this == singletonInstance)
+			unsetSingleton();
+	}
 
 	/**
 	 * @brief Sets a new class singleton instance.

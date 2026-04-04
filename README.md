@@ -39,14 +39,6 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
         auto manager = Manager::Instance::get();
         ECSM_SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
     }
-    ~PhysicsSystem() final
-    {
-        if (Manager::get()->isRunning)
-        {
-            auto manager = Manager::Instance::get();
-            ECSM_UNSUBSCRIBE_FROM_EVENT("Update", PhysicsSystem::update);
-        }
-    }
 
     void update()
     {
@@ -62,7 +54,7 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
     friend class ecsm::Manager;
 };
 
-void ecsmExample()
+void entryPoint()
 {
     auto manager = new ecsm::Manager();
     manager->createSystem<PhysicsSystem>();
@@ -75,8 +67,8 @@ void ecsmExample()
     auto rigidBodyView = manager->add<RigidBodyComponent>(rigidBody);
     rigidBodyView->size = 1.0f;
 
-    manager->start();
-
+    manager->enterLoop();
+    manager->terminate();
     delete manager;
 }
 ```

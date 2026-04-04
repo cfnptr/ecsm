@@ -354,6 +354,7 @@ private:
 	OrderedEvents orderedEvents;
 	GarbageComponents garbageComponents;
 	std::mutex locker;
+	uint64_t tickIndex = 0;
 	bool initialized = false;
 
 	#ifndef NDEBUG
@@ -364,7 +365,7 @@ private:
 public:
 	volatile bool isRunning = false; /**< Is manager update loop running. */
 
-	/**
+	/*******************************************************************************************************************
 	 * @brief Creates a new manager instance.
 	 * @param setSingleton set manager singleton instance
 	 */
@@ -374,11 +375,11 @@ public:
 	 */
 	~Manager();
 
-	/*******************************************************************************************************************
+	/**
 	 * @brief Creates a new system instance.
 	 * 
 	 * @details
-	 * Instantiates a new system and registers it component, 
+	 * Allocates a new system instance and registers it component, 
 	 * but initialization occurs only after the @ref initialize() call.
 	 * 
 	 * @tparam T target system type
@@ -391,6 +392,8 @@ public:
 	void createSystem(Args&&... args)
 	{
 		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
+		if (initialized)
+			throw EcsmError("Manager is already initialized, can't create a new system.");
 		#ifndef NDEBUG
 		if (isChanging)
 			throw EcsmError("Creation of the system inside other create/destroy is not allowed.");
@@ -403,42 +406,6 @@ public:
 		#ifndef NDEBUG
 		isChanging = false;
 		#endif
-	}
-
-	/**
-	 * @brief Terminates and destroys system.
-	 * @param type target system typeid()
-	 * @throw EcsmError if system is not found.
-	 */
-	void destroySystem(std::type_index type);
-	/**
-	 * @brief Terminates and destroys system.
-	 * @tparam T target system type
-	 * @throw EcsmError if system is not found.
-	 */
-	template<class T>
-	void destroySystem()
-	{
-		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
-		destroySystem(typeid(T));
-	}
-
-	/**
-	 * @brief Terminates and destroys system if exists.
-	 * @param type target system typeid()
-	 * @return True if system is destroyed, otherwise false.
-	 */
-	bool tryDestroySystem(std::type_index type);
-	/**
-	 * @brief Terminates and destroys system if exists.
-	 * @tparam T target system type
-	 * @return True if system is destroyed, otherwise false.
-	 */
-	template<class T>
-	bool tryDestroySystem()
-	{
-		static_assert(std::is_base_of_v<System, T>, "Must be derived from the System class.");
-		return tryDestroySystem(typeid(T));
 	}
 
 	/*******************************************************************************************************************
@@ -1324,27 +1291,36 @@ public:
 	 */
 	const GarbageComponents& getGarbageComponents() const noexcept { return garbageComponents; }
 	/**
+	 * @brief Returns current tick index since manager creation. (Total update count)
+	 */
+	uint64_t getTickIndex() const noexcept { return tickIndex; }
+	/**
 	 * @brief Returns true if manager is initialized.
+	 * @note You can't add more systems after manager initialization.
 	 */
 	bool isInitialized() const noexcept { return initialized; }
 
 	/*******************************************************************************************************************
-	 * @brief Initializes all created systems.
+	 * @brief Initializes all manager created systems.
 	 * @throw EcsmError if manager is already initialized.
 	 */
 	void initialize();
+	/**
+	 * @brief Terminates all manager created systems.
+	 * @throw EcsmError if manager is already terminated.
+	 */
+	void terminate();
 
 	/**
-	 * @brief Runs ordered events and disposes destroyed resources on each tick.
+	 * @brief Runs ordered events and disposes destroyed resources.
 	 * @throw EcsmError if manager is not initialized.
 	 */
 	void update();
-
 	/**
-	 * @brief Enters update loop. Executes @ref update() on each tick.
+	 * @brief Enters update loop. Executes @ref Manager::update() on each tick.
 	 * @throw EcsmError if manager is not initialized.
 	 */
-	void start();
+	void enterLoop();
 
 	/*******************************************************************************************************************
 	 * @brief Actually destroys garbage components.

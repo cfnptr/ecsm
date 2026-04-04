@@ -76,13 +76,6 @@ Manager::Manager(bool setSingleton) : Singleton(setSingleton)
 }
 Manager::~Manager()
 {
-	if (initialized)
-	{
-		runEvent("PreDeinit");
-		runEvent("Deinit");
-		runEvent("PostDeinit");
-	}
-
 	entities.clear(false);
 
 	#ifndef NDEBUG
@@ -128,93 +121,6 @@ void Manager::addSystem(System* system, std::type_index type)
 
 	if (!systems.emplace(type, system).second)
 		throw EcsmError("System is already created. (name: " + typeToString(type) + ")");
-
-	if (isRunning)
-	{
-		runEvent("PreInit");
-		runEvent("Init");
-		runEvent("PostInit");
-	}
-}
-
-//**********************************************************************************************************************
-void Manager::destroySystem(std::type_index type)
-{
-	#ifndef NDEBUG
-	if (isChanging)
-		throw EcsmError("Destruction of the system inside other create/destroy is not allowed.");
-	isChanging = true;
-	#endif
-
-	auto searchResult = systems.find(type);
-	if (searchResult == systems.end())
-		throw EcsmError("System is not created. (type: " + typeToString(type) + ")");
-
-	if (isRunning)
-	{
-		runEvent("PreDeinit");
-		runEvent("Deinit");
-		runEvent("PostDeinit");
-	}
-
-	auto system = searchResult->second;
-	systems.erase(searchResult);
-	
-	auto componentName = system->getComponentName();
-	if (!componentName.empty())
-	{
-		auto eraseResult = componentNames.erase(componentName);
-		if (eraseResult != 1)
-		{
-			throw EcsmError("Failed to erase system component name. ("
-				"componentName: " + std::string(componentName) + ", "
-				"systemType: " + typeToString(type) + ")");
-		}
-	}
-
-	auto componentType = system->getComponentType();
-	if (componentType != typeid(Component))
-	{
-		auto eraseResult = componentTypes.erase(componentType);
-		if (eraseResult != 1)
-		{
-			throw EcsmError("Failed to erase system component type. ("
-				"componentType: " + typeToString(componentType) + ", "
-				"systemType: " + typeToString(type) + ")");
-		}
-	}
-
-	delete system;
-
-	#ifndef NDEBUG
-	isChanging = false;
-	#endif
-}
-bool Manager::tryDestroySystem(std::type_index type)
-{
-	#ifndef NDEBUG
-	if (isChanging)
-		throw EcsmError("Destruction of the system inside other create/destroy is not allowed.");
-	isChanging = true;
-	#endif
-
-	auto result = systems.find(type);
-	if (result != systems.end())
-	{
-		#ifndef NDEBUG
-		isChanging = false;
-		#endif
-		return false;
-	}
-
-	auto system = result->second;
-	systems.erase(result);
-	delete system;
-
-	#ifndef NDEBUG
-	isChanging = false;
-	#endif
-	return true;
 }
 
 //**********************************************************************************************************************
@@ -664,6 +570,16 @@ void Manager::initialize()
 	runEvent("PostInit");
 	initialized = true;
 }
+void Manager::terminate()
+{
+	if (!initialized)
+		throw EcsmError("Manager is already terminated.");
+
+	runEvent("PreDeinit");
+	runEvent("Deinit");
+	runEvent("PostDeinit");
+	initialized = false;
+}
 
 void Manager::update()
 {
@@ -675,15 +591,15 @@ void Manager::update()
 	disposeGarbageComponents();
 	disposeEntities();
 	disposeSystemComponents();
+	tickIndex++;
 	locker.unlock();
 }
-void Manager::start()
+void Manager::enterLoop()
 {
 	if (!initialized)
 		throw EcsmError("Manager is not initialized.");
 
 	isRunning = true;
-
 	while (isRunning)
 		update();
 }

@@ -40,18 +40,6 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 		ECSM_SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		ECSM_SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
 	}
-	~TestSystem() override
-	{
-		if (Manager::Instance::get()->isRunning)
-		{
-			auto manager = Manager::Instance::get();
-			ECSM_UNSUBSCRIBE_FROM_EVENT("Init", TestSystem::init);
-			ECSM_UNSUBSCRIBE_FROM_EVENT("Update", TestSystem::update);
-			ECSM_UNSUBSCRIBE_FROM_EVENT("PostUpdate", TestSystem::postUpdate);
-		}
-
-		unsetSingleton();
-	}
 
 	void copyComponent(View<Component> source, View<Component> destination) override
 	{
@@ -186,12 +174,10 @@ static void testCommonFlow()
 	if (componentMemory->ID != 0) // WARNING! You should't do this, it's just safety check!
 		throw runtime_error("Bad test component data after dispose.");
 
-	manager->destroySystem<TestSystem>();
-
-	if (manager->has<TestSystem>())
-		throw runtime_error("Test system is not destroyed.");
-
 	manager->unregisterEvent("PostUpdate");
+	if (manager->hasEvent("PostUpdate"))
+		throw runtime_error("PostUpdate not unregistered.");
+
 	delete manager;
 }
 
