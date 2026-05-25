@@ -37,7 +37,7 @@ class PhysicsSystem final : public ComponentSystem<RigidBodyComponent, false>
 {
     PhysicsSystem()
     {
-        auto manager = Manager::Instance::get();
+        auto manager = Manager::getInstance();
         ECSM_SUBSCRIBE_TO_EVENT("Update", PhysicsSystem::update);
     }
 

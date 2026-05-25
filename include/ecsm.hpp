@@ -170,6 +170,12 @@ public:
 	 * @details Components are not destroyed immediately, only after the dispose call.
 	 */
 	virtual void disposeComponents();
+
+	/**
+	 * @brief Unloads and frees cached system resources.
+	 * @details A system destruction alternative.
+	 */
+	virtual void unload();
 };
 
 /***********************************************************************************************************************
@@ -335,6 +341,7 @@ public:
 		}
 	};
 
+	//using Singleton<Manager, false>::get;
 	using Systems = tsl::robin_map<std::type_index, System*>;
 	using SystemGroups = tsl::robin_map<std::type_index, std::vector<System*>>;
 	using ComponentTypes = tsl::robin_map<std::type_index, System*>;

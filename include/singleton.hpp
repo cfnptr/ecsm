@@ -44,8 +44,7 @@ template<class T, bool UseManager = true>
 class Singleton
 {
 public:
-	typedef T ItemType;                        /**< Type of the singleton class. */
-	typedef Singleton<T, UseManager> Instance; /**< Singleton instance class type. */
+	typedef T ItemType; /**< Type of the singleton class. */
 protected:
 	inline static T* singletonInstance = nullptr; /**< Singleton class instance. */
 
@@ -93,7 +92,7 @@ public:
 	/**
 	 * @brief Returns true if class singleton or manager instance is exist.
 	 */
-	static bool has()
+	static bool hasInstance()
 	{
 		if (singletonInstance)
 			return true;
@@ -104,7 +103,7 @@ public:
 	/**
 	 * @brief Returns class singleton or manager instance.
 	 */
-	static T* get()
+	static T* getInstance()
 	{
 		if (singletonInstance)
 			return singletonInstance;
@@ -116,7 +115,7 @@ public:
 	/**
 	 * @brief Returns class singleton or manager instance if exists.
 	 */
-	static T* tryGet()
+	static T* tryGetInstance()
 	{
 		if (singletonInstance)
 			return singletonInstance;

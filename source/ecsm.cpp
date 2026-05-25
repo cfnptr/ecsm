@@ -50,6 +50,11 @@ void System::disposeComponents()
 	return;
 }
 
+void System::unload()
+{
+	return;
+}
+
 bool Entity::destroy()
 {
 	for (uint32_t i = 0; i < count; i++)

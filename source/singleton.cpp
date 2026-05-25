@@ -17,16 +17,16 @@
 
 void* ecsm::getManagerSystem(std::type_index type)
 {
-	auto manager = Manager::Instance::get();
+	auto manager = Manager::getInstance();
 	return manager->get(type);
 }
 bool ecsm::hasManagerSystem(std::type_index type)
 {
-	auto manager = Manager::Instance::get();
+	auto manager = Manager::getInstance();
 	return manager->has(type);
 }
 void* ecsm::tryGetManagerSystem(std::type_index type)
 {
-	auto manager = Manager::Instance::get();
+	auto manager = Manager::getInstance();
 	return manager->tryGet(type);
 }

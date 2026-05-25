@@ -35,7 +35,7 @@ class TestSystem final : public ComponentSystem<TestComponent>, public Singleton
 {
 	TestSystem()
 	{
-		auto manager = Manager::Instance::get();
+		auto manager = Manager::getInstance();
 		ECSM_SUBSCRIBE_TO_EVENT("Init", TestSystem::init);
 		ECSM_SUBSCRIBE_TO_EVENT("Update", TestSystem::update);
 		ECSM_SUBSCRIBE_TO_EVENT("PostUpdate", TestSystem::postUpdate);
@@ -89,7 +89,7 @@ public:
 static void testCommonFlow()
 {
 	auto manager = new Manager();
-	auto managerSingleton = Manager::Instance::get();
+	auto managerSingleton = Manager::getInstance();
 
 	if (manager != managerSingleton)
 		throw runtime_error("Different manager and singleton instance.");
@@ -106,7 +106,7 @@ static void testCommonFlow()
 
 	auto system = manager->get<TestSystem>();
 
-	if (system != TestSystem::Instance::get())
+	if (system != TestSystem::getInstance())
 		throw runtime_error("Different manager and system singleton instance.");
 	if (system->isInitialized != false)
 		throw runtime_error("Test system is already initialized.");

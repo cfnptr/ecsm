@@ -44,9 +44,9 @@ class LinearPool;
  * can be uniquely identified by its identifier, which helps in managing and referencing items.
  */
 template<class T>
-struct ID final
+struct ID
 {
-private:
+protected:
 	uint32_t index = 0;
 
 	constexpr ID(uint32_t index) noexcept : index(index) { }
@@ -348,9 +348,9 @@ public:
  * destroy it when it's not needed anymore. Also see the @ref ID<T>.
  */
 template<typename T>
-struct Ref final
+struct Ref
 {
-private:
+protected:
 	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
