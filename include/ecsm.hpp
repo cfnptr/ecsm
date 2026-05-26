@@ -14,7 +14,7 @@
 
 /***********************************************************************************************************************
  * @file
- * @brief Entity Component System Manager classes.
+ * @brief Entity-Component-System-Manager classes.
  */
 
 #pragma once

@@ -23,7 +23,7 @@ if(TARGET ecsm-static)
 endif()
 
 project(ecsm VERSION 0.6.0 LANGUAGES CXX
-	DESCRIPTION "Easy to use Entity Component System Manager C++ library"
+	DESCRIPTION "Easy to use Entity Component System (ECS) C++ library"
 	HOMEPAGE_URL "https://github.com/cfnptr/ecsm")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -32,14 +32,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 option(ECSM_BUILD_SHARED "Build ECSM shared library" ON)
 option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 
+set(ECSM_SOURCES source/ecsm.cpp source/singleton.cpp)
 add_subdirectory(libraries/robin-map)
 
-add_library(ecsm-static STATIC source/ecsm.cpp source/singleton.cpp)
+add_library(ecsm-static STATIC ${ECSM_SOURCES})
 target_link_libraries(ecsm-static PUBLIC tsl::robin_map)
 target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 if(ECSM_BUILD_SHARED)
-	add_library(ecsm-shared SHARED source/ecsm.cpp source/singleton.cpp)
+	add_library(ecsm-shared SHARED ${ECSM_SOURCES})
 	set_target_properties(ecsm-shared PROPERTIES
 		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
 	target_link_libraries(ecsm-shared PUBLIC tsl::robin_map)

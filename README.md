@@ -1,6 +1,6 @@
-# ECSM
+# Entity-Component-System-Manager
 
-Easy to use template based C++ **Entity Component System Manager** [library](https://github.com/cfnptr/ecsm).
+Easy to use template based C++ **ECS** [library](https://github.com/cfnptr/ecsm).
 
 The ECS pattern, or Entity-Component-System pattern, is a design pattern commonly used in game development and 
 simulation software. It is a way to organize and manage the behavior and data of objects within a system. 
