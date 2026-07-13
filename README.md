@@ -1,4 +1,4 @@
-# Entity-Component-System-Manager
+# ECSM
 
 Easy to use template based C++ **ECS** [library](https://github.com/cfnptr/ecsm).
 

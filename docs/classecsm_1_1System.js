@@ -8,5 +8,6 @@ var classecsm_1_1System =
     [ "getComponentName", "classecsm_1_1System.html#a7e425eeeced33050b22c2468f206a341", null ],
     [ "getComponentType", "classecsm_1_1System.html#a08e4087c24b92a0a6b6d7e70f4802fc3", null ],
     [ "getComponent", "classecsm_1_1System.html#afa19be9a00b0a94fd6528d20b0393f80", null ],
-    [ "disposeComponents", "classecsm_1_1System.html#ad10850018caf219d629f145a07e4835b", null ]
+    [ "disposeComponents", "classecsm_1_1System.html#ad10850018caf219d629f145a07e4835b", null ],
+    [ "unload", "classecsm_1_1System.html#a78c8934a93ffde8a19858806051cf608", null ]
 ];

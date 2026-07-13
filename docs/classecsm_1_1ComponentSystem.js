@@ -11,5 +11,6 @@ var classecsm_1_1ComponentSystem =
     [ "getComponentType", "classecsm_1_1ComponentSystem.html#af2d98204ffde58b516c1d6a0d71c399b", null ],
     [ "getComponent", "classecsm_1_1ComponentSystem.html#a09648fafd1c95e62c2030c6349b3c1ca", null ],
     [ "disposeComponents", "classecsm_1_1ComponentSystem.html#ae3591fbf7d6547e79124a65da45ea2a7", null ],
+    [ "unload", "classecsm_1_1ComponentSystem.html#a78c8934a93ffde8a19858806051cf608", null ],
     [ "components", "classecsm_1_1ComponentSystem.html#a73a0891b79619223a8b05f4c9463344d", null ]
 ];
