@@ -354,6 +354,8 @@ protected:
 	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
+	uint32_t unused = 0; /**< Unused reference value for external usage. */
+
 	/**
 	 * @brief Creates null item reference.
 	 */

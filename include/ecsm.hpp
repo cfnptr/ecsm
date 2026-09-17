@@ -741,7 +741,7 @@ public:
 		return View<T>(add(entity, typeid(T)));
 	}
 
-	/**
+	/*******************************************************************************************************************
 	 * @brief Removes component from the entity.
 	 * @details See the @ref remove<T>(ID<Entity> entity).
 	 * @note Components are not destroyed immediately, only after the dispose call.
@@ -953,6 +953,43 @@ public:
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
 		return View<T>(getOrAdd(entity, typeid(T)));
+	}
+
+	/**
+	 * @brief Returns component data accessor if exists, otherwise creates a new one. (@ref View)
+	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
+	 * 
+	 * @param entity entity instance
+	 * @param componentType target component typeid()
+	 * @param[out] isAdded returns true if component was added
+	 */
+	View<Component> getOrAdd(ID<Entity> entity, std::type_index componentType, bool& isAdded) noexcept
+	{
+		auto componentView = tryGet(entity, componentType);
+		if (componentView)
+		{
+			isAdded = false;
+			return View<Component>(componentView);
+		}
+		auto newComponentView = add(entity, componentType);
+		isAdded = true;
+		return newComponentView;
+	}
+	/**
+	 * @brief Returns component data accessor if exists, otherwise creates a new one. (@ref View)
+	 * @warning Do not store views, use them only in place. Because component memory can be reallocated later.
+	 * @note It also checks for component in the garbage pool.
+	 * 
+	 * @param entity entity instance
+	 * @param[out] isAdded returns true if component was added
+	 * @tparam T target component type
+	 */
+	template<class T>
+	View<T> getOrAdd(ID<Entity> entity, bool& isAdded) noexcept
+	{
+		static_assert(std::is_base_of_v<Component, T>, "Must be derived from the Component struct.");
+		return View<T>(getOrAdd(entity, typeid(T), isAdded));
 	}
 
 	/*******************************************************************************************************************
