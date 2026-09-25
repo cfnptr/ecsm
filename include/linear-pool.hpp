@@ -392,13 +392,16 @@ public:
 		ref.counter->fetch_add(1, std::memory_order_relaxed);
 		counter = ref.counter;
 		item = ref.item;
+		unused = ref.unused;
 	}
 	Ref(Ref&& ref) noexcept
 	{
 		counter = ref.counter;
 		item = ref.item;
+		unused = ref.unused;
 		ref.counter = nullptr;
 		ref.item = ID<T>();
+		ref.unused = 0;
 	}
 
 	Ref& operator=(const Ref& ref) noexcept
@@ -415,6 +418,7 @@ public:
 				ref.counter->fetch_add(1, std::memory_order_relaxed);
 			counter = ref.counter;
 			item = ref.item;
+			unused = ref.unused;
 		}
 		return *this;
 	}
@@ -430,8 +434,10 @@ public:
 
 			counter = ref.counter;
 			item = ref.item;
+			unused = ref.unused;
 			ref.counter = nullptr;
 			ref.item = ID<T>();
+			ref.unused = 0;
 		}
 		return *this;
 	}
