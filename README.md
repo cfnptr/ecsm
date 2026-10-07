@@ -109,6 +109,6 @@ git clone --recursive -j8 https://github.com/cfnptr/ecsm
 
 ## Third-party
 
-* [robin-map](https://github.com/Tessil/robin-map) (MIT license)
+* [Abseil](https://github.com/abseil/abseil-cpp) (Apache-2.0 license)
 
 ### Special thanks to Sahak Grigoryan.

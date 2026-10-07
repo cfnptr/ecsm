@@ -44,8 +44,8 @@ target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 if(ECSM_BUILD_SHARED)
 	add_library(ecsm-shared SHARED ${ECSM_SOURCES})
-	set_target_properties(ecsm-shared PROPERTIES
-		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	set_target_properties(ecsm-shared PROPERTIES OUTPUT_NAME "ecsm" 
+		WINDOWS_EXPORT_ALL_SYMBOLS ON POSITION_INDEPENDENT_CODE ON)
 	target_link_libraries(ecsm-shared PUBLIC ${ECSM_LINK_LIBS})
 	target_include_directories(ecsm-shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
 endif()
