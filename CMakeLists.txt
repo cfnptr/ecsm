@@ -32,6 +32,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 option(ECSM_BUILD_SHARED "Build ECSM shared library" ON)
 option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 
+if(ECSM_BUILD_SHARED) # Note: fix for Abseil shared lib.
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
 set(ABSL_MSVC_STATIC_RUNTIME ON CACHE BOOL "" FORCE)
 add_subdirectory(libraries/abseil)
 
@@ -44,8 +48,8 @@ target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 if(ECSM_BUILD_SHARED)
 	add_library(ecsm-shared SHARED ${ECSM_SOURCES})
-	set_target_properties(ecsm-shared PROPERTIES OUTPUT_NAME "ecsm" 
-		WINDOWS_EXPORT_ALL_SYMBOLS ON POSITION_INDEPENDENT_CODE ON)
+	set_target_properties(ecsm-shared PROPERTIES 
+		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
 	target_link_libraries(ecsm-shared PUBLIC ${ECSM_LINK_LIBS})
 	target_include_directories(ecsm-shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
 endif()
