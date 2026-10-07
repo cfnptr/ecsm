@@ -35,8 +35,6 @@ option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 if(ECSM_BUILD_SHARED) # Note: fix for Abseil shared lib.
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
-
-set(ABSL_MSVC_STATIC_RUNTIME ON CACHE BOOL "" FORCE)
 add_subdirectory(libraries/abseil)
 
 set(ECSM_SOURCES source/ecsm.cpp source/singleton.cpp)
