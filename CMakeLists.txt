@@ -32,18 +32,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 option(ECSM_BUILD_SHARED "Build ECSM shared library" ON)
 option(ECSM_BUILD_TESTS "Build ECSM library tests" ON)
 
+set(ABSL_MSVC_STATIC_RUNTIME ON CACHE BOOL "" FORCE)
+add_subdirectory(libraries/abseil)
+
 set(ECSM_SOURCES source/ecsm.cpp source/singleton.cpp)
-add_subdirectory(libraries/robin-map)
+set(ECSM_LINK_LIBS absl::flat_hash_map absl::flat_hash_set)
 
 add_library(ecsm-static STATIC ${ECSM_SOURCES})
-target_link_libraries(ecsm-static PUBLIC tsl::robin_map)
+target_link_libraries(ecsm-static PUBLIC ${ECSM_LINK_LIBS})
 target_include_directories(ecsm-static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 if(ECSM_BUILD_SHARED)
 	add_library(ecsm-shared SHARED ${ECSM_SOURCES})
 	set_target_properties(ecsm-shared PROPERTIES
 		OUTPUT_NAME "ecsm" WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	target_link_libraries(ecsm-shared PUBLIC tsl::robin_map)
+	target_link_libraries(ecsm-shared PUBLIC ${ECSM_LINK_LIBS})
 	target_include_directories(ecsm-shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
 endif()
 

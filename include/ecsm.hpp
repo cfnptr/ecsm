@@ -20,15 +20,15 @@
 #pragma once
 #include "singleton.hpp"
 #include "linear-pool.hpp"
-#include "tsl/robin_map.h"
+#include "absl/container/flat_hash_set.h"
+#include "absl/container/flat_hash_map.h"
 
-#include <cassert>
-#include <cstdint>
-#include <set>
 #include <mutex>
 #include <functional>
 #include <string_view>
 #include <type_traits>
+#include <cassert>
+#include <cstdint>
 
 namespace ecsm
 {
@@ -38,24 +38,6 @@ struct Component;
 class System;
 class Manager;
 class SystemExt;
-
-/**
- * @brief String view heterogeneous hash functions.
- */
-struct SvHash
-{
-	using is_transparent = void;
-	std::size_t operator()(std::string_view sv) const { return std::hash<std::string_view>{}(sv); }
-	std::size_t operator()(const std::string& str) const { return std::hash<std::string>{}(str); }
-};
-/**
- * @brief String view heterogeneous equal functions.
- */
-struct SvEqual
-{
-	using is_transparent = void;
-	bool operator()(std::string_view lhs, std::string_view rhs) const noexcept { return lhs == rhs; }
-};
 
 /**
  * @brief Subscribes @ref ecsm::System function to the event.
@@ -342,15 +324,15 @@ public:
 	};
 
 	//using Singleton<Manager, false>::get;
-	using Systems = tsl::robin_map<std::type_index, System*>;
-	using SystemGroups = tsl::robin_map<std::type_index, std::vector<System*>>;
-	using ComponentTypes = tsl::robin_map<std::type_index, System*>;
-	using ComponentNames = tsl::robin_map<std::string, System*, SvHash, SvEqual>;
-	using Events = tsl::robin_map<std::string, Event*, SvHash, SvEqual>;
+	using Systems = absl::flat_hash_map<std::type_index, System*>;
+	using SystemGroups = absl::flat_hash_map<std::type_index, std::vector<System*>>;
+	using ComponentTypes = absl::flat_hash_map<std::type_index, System*>;
+	using ComponentNames = absl::flat_hash_map<std::string, System*>;
+	using Events = absl::flat_hash_map<std::string, Event*>;
 	using OrderedEvents = std::vector<const Event*>;
 	using EntityPool = LinearPool<Entity>;
 	using GarbageComponent = std::pair<size_t, ID<Entity>>;
-	using GarbageComponents = std::set<GarbageComponent>;
+	using GarbageComponents = absl::flat_hash_set<GarbageComponent>;
 private:
 	Systems systems;
 	SystemGroups systemGroups;

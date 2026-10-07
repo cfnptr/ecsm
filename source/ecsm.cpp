@@ -150,7 +150,7 @@ void Manager::addGroupSystem(std::type_index groupType, System* system)
 					"groupType:" + typeToString(groupType) + ")");
 			}
 		}
-		result.value().push_back(system);
+		result->second.push_back(system);
 	}
 }
 bool Manager::tryAddGroupSystem(std::type_index groupType, System* system)
@@ -171,7 +171,7 @@ bool Manager::tryAddGroupSystem(std::type_index groupType, System* system)
 			if (system == groupSystem)
 				return false;
 		}
-		result.value().push_back(system);
+		result->second.push_back(system);
 	}
 	return true;
 }
@@ -185,7 +185,7 @@ void Manager::removeGroupSystem(std::type_index groupType, System* system)
 			"groupType:" + typeToString(groupType) + ")");
 	}
 
-	auto& groupSystems = result.value();
+	auto& groupSystems = result->second;
 	for (auto i = groupSystems.begin(); i != groupSystems.end(); i++)
 	{
 		if (system != *i)
@@ -203,7 +203,7 @@ bool Manager::tryRemoveGroupSystem(std::type_index groupType, System* system)
 	if (result == systemGroups.end())
 		return false;
 
-	auto& groupSystems = result.value();
+	auto& groupSystems = result->second;
 	for (auto i = groupSystems.begin(); i != groupSystems.end(); i++)
 	{
 		if (system != *i)
