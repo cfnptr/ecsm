@@ -38,7 +38,7 @@ endif()
 add_subdirectory(libraries/abseil)
 
 set(ECSM_SOURCES source/ecsm.cpp source/singleton.cpp)
-set(ECSM_LINK_LIBS absl::flat_hash_map absl::flat_hash_set)
+set(ECSM_LINK_LIBS absl::btree absl::flat_hash_map absl::flat_hash_set)
 
 add_library(ecsm-static STATIC ${ECSM_SOURCES})
 target_link_libraries(ecsm-static PUBLIC ${ECSM_LINK_LIBS})
