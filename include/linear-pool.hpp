@@ -354,7 +354,7 @@ protected:
 	std::atomic_int64_t* counter = nullptr;
 	ID<T> item = {};
 public:
-	uint32_t unused = 0; /**< Unused reference value for external usage. */
+	uint32_t metadata = 0; /**< Metadata value for external usage. */
 
 	/**
 	 * @brief Creates null item reference.
@@ -362,10 +362,12 @@ public:
 	constexpr Ref() noexcept = default;
 	/**
 	 * @brief Creates a new item reference. (Allocates counter)
+	 *
 	 * @param item target item instance
+	 * @param metadate optional metadata value
 	 * @tparam T type of the item in the linear pool
 	 */
-	constexpr explicit Ref(ID<T> item) : item(item)
+	constexpr explicit Ref(ID<T> item, uint32_t metadata = 0) : item(item)
 	{
 		if (item)
 			counter = new std::atomic<int64_t>(1);
@@ -392,16 +394,16 @@ public:
 		ref.counter->fetch_add(1, std::memory_order_relaxed);
 		counter = ref.counter;
 		item = ref.item;
-		unused = ref.unused;
+		metadata = ref.metadata;
 	}
 	Ref(Ref&& ref) noexcept
 	{
 		counter = ref.counter;
 		item = ref.item;
-		unused = ref.unused;
+		metadata = ref.metadata;
 		ref.counter = nullptr;
 		ref.item = ID<T>();
-		ref.unused = 0;
+		ref.metadata = 0;
 	}
 
 	Ref& operator=(const Ref& ref) noexcept
@@ -418,7 +420,7 @@ public:
 				ref.counter->fetch_add(1, std::memory_order_relaxed);
 			counter = ref.counter;
 			item = ref.item;
-			unused = ref.unused;
+			metadata = ref.metadata;
 		}
 		return *this;
 	}
@@ -434,10 +436,10 @@ public:
 
 			counter = ref.counter;
 			item = ref.item;
-			unused = ref.unused;
+			metadata = ref.metadata;
 			ref.counter = nullptr;
 			ref.item = ID<T>();
-			ref.unused = 0;
+			ref.metadata = 0;
 		}
 		return *this;
 	}
