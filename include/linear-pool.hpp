@@ -17,6 +17,7 @@
  */
 
 #pragma once
+#include "ecsm-opt.hpp"
 #include "ecsm-error.hpp"
 
 #include <stack>
@@ -26,6 +27,7 @@
 #include <cassert>
 #include <cstring>
 #include <iterator>
+#include <functional>
 
 namespace ecsm
 {
@@ -454,13 +456,21 @@ public:
 		return counter->load(std::memory_order_relaxed);
 	}
 	/**
-	 * @brief Returns true if this is last item reference.
+	 * @brief Destroys item instance if this is the last reference.
+	 * @param[in] onDestroy on last reference destroy callback
 	 */
-	bool isLastRef() const noexcept
+	void destroy(const std::function<void()>& onDestroy)
 	{
+		assert(onDestroy);
 		if (!item)
-			return false;
-		return counter->load(std::memory_order_relaxed) == 1;
+			return;
+		if (counter->fetch_sub(1, std::memory_order_release) == 1)
+		{
+			onDestroy();
+			std::atomic_thread_fence(std::memory_order_acquire);
+			delete counter;
+		}
+		item = {}; metadata = 0;
 	}
 
 	/**

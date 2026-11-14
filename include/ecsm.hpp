@@ -24,7 +24,6 @@
 #include "absl/container/flat_hash_map.h"
 
 #include <mutex>
-#include <functional>
 #include <string_view>
 #include <type_traits>
 #include <cassert>
@@ -199,7 +198,9 @@ private:
 		if (this->capacity == 0)
 			components = (ComponentData*)malloc(sizeof(ComponentData) * capacity);
 		else components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
-		if (!components) abort();
+
+		if (!components)
+			throw EcsmError("Out of memory");
 	}
 	void addComponent(size_t type, System* system, ID<Component> instance)
 	{
@@ -215,7 +216,9 @@ private:
 				capacity *= 2;
 				components = (ComponentData*)realloc(components, sizeof(ComponentData) * capacity);
 			}
-			if (!components) abort();
+
+			if (!components)
+				throw EcsmError("Out of memory");
 		}
 		components[count++] = { type, system, instance };
 		qsort(components, count, sizeof(ComponentData), compareComps);

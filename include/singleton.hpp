@@ -18,6 +18,7 @@
  */
 
 #pragma once
+#include "ecsm-opt.hpp"
 #include "ecsm-error.hpp"
 #include "type-string.hpp"
 #include <cassert>
@@ -105,7 +106,7 @@ public:
 	 */
 	static T* getInstance()
 	{
-		if (singletonInstance)
+		if (LIKELY(singletonInstance))
 			return singletonInstance;
 		if constexpr (UseManager)
 			return (T*)getManagerSystem(typeid(T));
@@ -117,7 +118,7 @@ public:
 	 */
 	static T* tryGetInstance()
 	{
-		if (singletonInstance)
+		if (LIKELY(singletonInstance))
 			return singletonInstance;
 		if constexpr (UseManager)
 			return (T*)tryGetManagerSystem(typeid(T));
