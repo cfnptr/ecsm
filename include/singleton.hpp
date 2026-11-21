@@ -118,7 +118,7 @@ public:
 	 */
 	static T* tryGetInstance()
 	{
-		if (LIKELY(singletonInstance))
+		if (singletonInstance)
 			return singletonInstance;
 		if constexpr (UseManager)
 			return (T*)tryGetManagerSystem(typeid(T));

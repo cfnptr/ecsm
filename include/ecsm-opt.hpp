@@ -34,7 +34,7 @@
 	#define EXPECT(expr, value) __builtin_expect(expr, value)
 #else
 	/**
-	 * @brief Not supported by the used compiler.
+	 * @brief No support in current compiler.
 	 */
 	#define EXPECT(expr, value) (expr)
 #endif

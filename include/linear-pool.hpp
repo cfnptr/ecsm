@@ -466,8 +466,8 @@ public:
 			return;
 		if (counter->fetch_sub(1, std::memory_order_release) == 1)
 		{
-			onDestroy();
 			std::atomic_thread_fence(std::memory_order_acquire);
+			onDestroy();
 			delete counter;
 		}
 		item = {}; metadata = 0;
